@@ -59,7 +59,7 @@ type
 
   {** TZStreamRec ***********************************************************}
 
-  TZStreamRec = packed record
+  TZStreamRec = {$IFNDEF FPC}packed{$ENDIF} record // FPC: natural layout like C z_stream
     next_in: PChar; // next input byte
     avail_in: Longint; // number of bytes available at next_in
     total_in: Longint; // total nb of input bytes read so far
@@ -198,6 +198,10 @@ implementation
 {** link zlib 1.2.2 **************************************************************}
 {** bcc32 flags: -c -6 -O2 -Ve -X- -pr -a8 -b -d -k- -vi -tWM -r -RT- -DFASTEST **}
 
+{$IFDEF FPC}
+uses
+  paszlib;
+{$ELSE}
 {$L adler32.obj}
 {$L deflate.obj}
 {$L infback.obj}
@@ -207,6 +211,7 @@ implementation
 {$L trees.obj}
 {$L compress.obj}
 {$L crc32.obj}
+{$ENDIF}
 
 {*****************************************************************************
 *  note: do not reorder the above -- doing so will Result in external        *
@@ -284,6 +289,11 @@ const
 {*********************** Peter Morris not aligned move **********************}
 
 procedure MoveI32(const Source; var Dest; Count: Integer); register;
+{$IFDEF FPC}
+begin
+  Move(Source, Dest, Count);
+end;
+{$ELSE}
 asm
         cmp   ECX,0
         Je    @JustQuit
@@ -302,8 +312,12 @@ asm
         pop   ESI
     @JustQuit:
 end;
+{$ENDIF}
 {****************************************************************************}
 
+{$IFDEF FPC}
+{$I zlib_paszlib.inc}
+{$ELSE}
 {** deflate routines ********************************************************}
 
 function deflateInit_(var strm: TZStreamRec; level: Integer; version: PChar;
@@ -337,6 +351,8 @@ function inflateReset(var strm: TZStreamRec): Integer; external;
 function adler32; external;
 //function crc32; external;
 //function compressBound; external;
+
+{$ENDIF FPC}
 
 {** zlib function implementations *******************************************}
 
@@ -444,7 +460,7 @@ begin
         Inc(outSize, delta);
         ReallocMem(outBuffer, outSize);
 
-        zstream.next_out := PChar(Integer(outBuffer) + zstream.total_out);
+        zstream.next_out := PChar(outBuffer) + zstream.total_out;
         zstream.avail_out := delta;
       end;
     finally
@@ -485,7 +501,7 @@ begin
         Inc(outSize, delta);
         ReallocMem(outBuffer, outSize);
 
-        zstream.next_out := PChar(Integer(outBuffer) + zstream.total_out);
+        zstream.next_out := PChar(outBuffer) + zstream.total_out;
         zstream.avail_out := delta;
       end;
     finally
@@ -569,7 +585,7 @@ begin
         end;
 
 
-        zstream.next_out := PChar(Integer(outBuffer)+zstream.total_out);
+        zstream.next_out := PChar(outBuffer) + zstream.total_out;
         zstream.avail_out := delta;
       end;
 
@@ -673,7 +689,7 @@ begin
         end;
 
 
-        zstream.next_out := PChar(Integer(outBuffer)+zstream.total_out);
+        zstream.next_out := PChar(outBuffer) + zstream.total_out;
         zstream.avail_out := delta;
       end;
 
