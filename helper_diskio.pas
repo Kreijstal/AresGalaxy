@@ -28,7 +28,7 @@ interface
 
 uses
  Classes, Windows, SysUtils, ActiveX, ShlObj, ShellApi,
- Classes2, Helper_unicode {,TntStdCtrls, tntwindows,}
+ Classes2, Helper_unicode, {TntStdCtrls,} tntwindows,
  ares_types, ufrm_settings;
 
 const
@@ -488,7 +488,7 @@ begin
     pFrom := PWideChar(sFileName+chr(0));
     fFlags := FOF_ALLOWUNDO or FOF_NOCONFIRMATION or FOF_SILENT or FOF_NOERRORUI;
   end;
-  Result := (0 = ShFileOperationW(fosW));
+  Result := (0 = ShFileOperationW({$IFDEF FPC}@{$ENDIF}fosW));
 
  end else begin
 
@@ -498,7 +498,7 @@ begin
     pFrom := PAnsiChar(AnsiString(sFileName));
     fFlags := FOF_ALLOWUNDO or FOF_NOCONFIRMATION or FOF_SILENT or FOF_NOERRORUI;
    end;
-   Result := (0 = ShFileOperationA(fosA));
+   Result := (0 = ShFileOperationA({$IFDEF FPC}@{$ENDIF}fosA));
 
  end;
 
@@ -551,7 +551,7 @@ END;
 
 function getFileDateW(const FileName: widestring): Cardinal;
 var
- FH: Cardinal;
+ FH: THandle;
  Fname: WideString;
  FDate:longint;
  FDateTime: TDateTime;
@@ -583,7 +583,7 @@ end;
 
 function FileExistsW(const FileName: widestring): Boolean;
 var
-hand: Cardinal;
+hand: THandle;
 Fname: WideString;
   //  ReturnCode: Integer;
   //  SearchRec:ares_types.TSearchRecW;
@@ -646,7 +646,7 @@ end;
 
 function isWriteableFile(Filename: widestring): Boolean;
 var
-hand: Cardinal;
+hand: THandle;
 begin
 result := False;
 
@@ -669,7 +669,7 @@ end;
 
 function MyFileOpen(Filename: widestring; mode:integer): ThandleStream;
 var
-hand: Cardinal;
+hand: THandle;
 begin
 result := nil;
 
@@ -823,7 +823,7 @@ end;
 
 function GetHugeFileSize(const FileName: widestring): int64;
 var
-hand: Cardinal;
+hand: THandle;
 fname: WideString;
 begin
 result := 0;

@@ -27,8 +27,8 @@ unit thread_client;
 interface
 
 uses
- Classes,windows,blcksock,synsock,const_commands,
- sysutils,ares_types,ares_objects,const_ares,
+ {$IFDEF FPC}LCLType,{$ENDIF} Classes,windows,blcksock,synsock,const_commands,
+ sysutils,ares_types_root, ares_types,ares_objects,const_ares,
  registry,forms,comctrls,const_supernode_commands,
  classes2,comettrees,graphics,zlib,class_cmdlist,
  const_win_messages,const_timeouts,const_client;

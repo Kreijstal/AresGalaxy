@@ -27,8 +27,8 @@ unit helper_GUI_misc;
 interface
 
 uses
- classes,classes2,registry,windows,forms,ares_types,DSPack,activex,MSHTML,cometPageView,
- sysutils,graphics,comettopicpnl,ExtCtrls,Controls,xpbutton,TntStdCtrls,node_upgrade,
+ {$IFDEF FPC}LCLType,{$ENDIF} classes,classes2,registry,windows,forms,ares_types,DSPack,activex,{$IFNDEF FPC}MSHTML,{$ENDIF}cometPageView,
+ sysutils,graphics,comettopicpnl,ExtCtrls,Controls,xpbutton,TntStdCtrls,
  messages;
 
 procedure mainGui_applycolor;
@@ -101,7 +101,7 @@ var
  pnl: TCometPagePanel;
  processData:precord_chatProcessData;
 begin
-application.OnMessage := nil;
+{$IFNDEF FPC}application.OnMessage := nil;{$ENDIF} // LCL TApplication has no OnMessage
 switch_pause_media;
 
 unbold_results;
@@ -390,7 +390,7 @@ formhint_hide;
 mainGUI_screenlogo_init;
 imgscnlogo.visible := (not isvideoplaying);
 mainGui_refresh_caption;
-application.OnMessage := ufrmmain.ares_frmmain.MsgScreenHandler;
+{$IFNDEF FPC}application.OnMessage := ufrmmain.ares_frmmain.MsgScreenHandler;{$ENDIF} // LCL TApplication has no OnMessage
 helper_channellist.SendNoticeHasFocus(nil);
 end;
 
@@ -417,7 +417,7 @@ end;
 
 procedure mainGui_showsearch;
 begin
-application.OnMessage := nil;
+{$IFNDEF FPC}application.OnMessage := nil;{$ENDIF} // LCL TApplication has no OnMessage
 vars_global.was_on_src_tab := True;
  if ares_frmmain.edit_src_filter.glyphIndex=0 then begin
   ares_frmmain.edit_src_filter.glyphIndex := 12;
@@ -477,7 +477,7 @@ end;
 
 procedure mainGui_showoptions;
 begin
-application.OnMessage := nil;
+{$IFNDEF FPC}application.OnMessage := nil;{$ENDIF} // LCL TApplication has no OnMessage
 switch_pause_media;
 
 if frm_settings=nil then begin
@@ -534,7 +534,7 @@ procedure mainGui_showlibrary;
 var
 nodo:pCmtVnode;
 begin
-application.OnMessage := nil;
+{$IFNDEF FPC}application.OnMessage := nil;{$ENDIF} // LCL TApplication has no OnMessage
 switch_pause_media;
 
 unbold_results;

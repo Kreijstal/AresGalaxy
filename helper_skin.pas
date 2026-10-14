@@ -22,7 +22,7 @@ unit helper_skin;
 interface
 
 uses
-  windows, classes, registry, SysUtils, Graphics, Controls, XPButton, 
+  {$IFDEF FPC}LCLType,{$ENDIF} windows, classes, registry, SysUtils, Graphics, Controls, XPButton, 
   TntStdCtrls, CometTrees, TntForms, forms, ufrm_settings;
 
 type
@@ -240,7 +240,7 @@ if not helper_skin.SkinnedFrameLoaded then exit;
  tempBitmap.canvas.font.size := form.canvas.font.size;
  tempBitmap.canvas.font.style := [fsBold];
 
- rc := rect(helper_skin.FCaptionRect.left,helper_skin.FCaptionRect.top,form.width-helper_skin.FrameTopRigthBitmap.SourceCopyWidth,helper_skin.FrameTopLeftBitmap.SourceCopyHeight-helper_skin.FCaptionRect.top);
+ rc := Classes.Rect(helper_skin.FCaptionRect.left,helper_skin.FCaptionRect.top,form.width-helper_skin.FrameTopRigthBitmap.SourceCopyWidth,helper_skin.FrameTopLeftBitmap.SourceCopyHeight-helper_skin.FCaptionRect.top);
 
  SetBkMode(tempBitmap.canvas.Handle, TRANSPARENT);
  tempBitmap.canvas.brush.style := bsclear;
@@ -1315,7 +1315,7 @@ if pos('offbtnclosecopy=',cont)=1 then begin
  delete(cont,1,16);
  cont := trim(cont);
  ExtractRectIntegers(leftI,topI,widthI,HeightI,cont);
- smalltabsOffCloseBtnRect := rect(leftI,topI,widthI,HeightI);
+ smalltabsOffCloseBtnRect := Classes.Rect(leftI,topI,widthI,HeightI);
   ares_frmmain.panel_chat.closeButtonWidth := widthI;
   ares_frmmain.panel_chat.closeButtonHeight := heightI;
   if frm_settings<>nil then begin
@@ -1332,7 +1332,7 @@ if pos('hoverbtnclosecopy=',cont)=1 then begin
  delete(cont,1,18);
  cont := trim(cont);
  ExtractRectIntegers(leftI,topI,widthI,HeightI,cont);
- smalltabsHoverCloseBtnRect := rect(leftI,topI,widthI,HeightI);
+ smalltabsHoverCloseBtnRect := Classes.Rect(leftI,topI,widthI,HeightI);
 end;
 
 end;
@@ -1513,7 +1513,7 @@ delete(coordStr,1,parsePoint);
 coordStr := trim(coordStr);
 
 ExtractRectIntegers(leftI,topI,widthI,HeightI,coordStr);
-FCaptionRect := rect(leftI,topI,widthI,HeightI);
+FCaptionRect := Classes.Rect(leftI,topI,widthI,HeightI);
 end;
 
 
@@ -1526,9 +1526,9 @@ coordStr := trim(coordStr);
 
 ExtractRectIntegers(leftI,topI,widthI,HeightI,coordStr);
 
-//if isPaintRect then FCaptionIconCopyRect := rect(leftI,topI,widthI,HeightI)
+//if isPaintRect then FCaptionIconCopyRect := Classes.Rect(leftI,topI,widthI,HeightI)
 // else
- FCaptionIconRect := rect(leftI,topI,widthI,HeightI);
+ FCaptionIconRect := Classes.Rect(leftI,topI,widthI,HeightI);
 end;
 
 

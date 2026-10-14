@@ -40,7 +40,7 @@ function sourcestate_to_byte(DsData:precord_displayed_downloadsource): Byte;
 function downloadstate_to_byte(state: TDownloadState): Byte;
 function source_startbyte_assign(download: Tdownload; risorsa: Trisorsa_download): Boolean;
 
-function handle_to_download(down_handle: Cardinal): Tdownload;
+function handle_to_download(down_handle: THandle): Tdownload;
 function duplicate_source_nickname(risorsa: Trisorsa_download): Boolean;
 function stats_to_str(download: Tdownload; isFirewalled: Boolean; isnew:boolean): string; overload;
 function stats_to_str(download: Tdownload): string; overload;
@@ -114,7 +114,7 @@ begin
    with download.display_data^ do begin
       lastDHTCheckForSources := 0;
       filename := download.filename;
-      handle_obj := cardinal(download);
+      handle_obj := THandle(download);
 
       if download.FPieceSize>0 then begin
        SetLength(VisualBitfield,(download.size div download.FPieceSize)+1);
@@ -631,7 +631,7 @@ end;
 end;
 
 
-function handle_to_download(down_handle: Cardinal): Tdownload;
+function handle_to_download(down_handle: THandle): Tdownload;
 var
 i: Integer;
 download: Tdownload;
@@ -640,7 +640,7 @@ result := nil;
 
  for i := 0 to lista_download.count-1 do begin
    download := lista_download[i];
-    if cardinal(download)=down_handle then begin
+    if THandle(download)=down_handle then begin
      Result := download;
      break;
     end;

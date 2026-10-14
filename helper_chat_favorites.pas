@@ -22,7 +22,7 @@ unit helper_chat_favorites;
 interface
 
 uses
-registry,classes,ares_types,const_ares,comettrees,controls,windows,sysutils;
+{$IFDEF FPC}LCLType,{$ENDIF} registry,classes,ares_types,const_ares,comettrees,controls,windows,sysutils;
 
 procedure save_favorite_channel(dataf:precord_chat_favorite; oldip: Cardinal=0; oldport:word=0);
 procedure load_favorite_channels;

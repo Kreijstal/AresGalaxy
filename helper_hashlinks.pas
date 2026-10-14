@@ -27,7 +27,7 @@ hashlink handling (Ares-.arlnk and MagnetURI)
 interface
 
 uses
- ares_types,ares_objects,sysutils,tntwindows,zlib,classes2,windows,classes,
+ {$IFDEF FPC}LCLType,{$ENDIF} ares_types_root, ares_types,ares_objects,sysutils,tntwindows,zlib,classes2,windows,classes,
  registry,forms,comettrees,ufrm_settings,helper_registry;
 
 procedure export_hashlink(datao:precord_file_library; addsource:boolean);
@@ -450,7 +450,7 @@ end;
      portw := chars_2_word(copy(str,5,2));
        risorsa := trisorsa_download.create;
         with risorsa do begin
-         handle_download := cardinal(down);
+         handle_download := THandle(down);
          ip := ipc;
          porta := portw;
          ip_interno := 0;

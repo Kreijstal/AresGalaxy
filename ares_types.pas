@@ -421,7 +421,7 @@ type    // from client to upload (client receive it from supernode, then upload 
 type   // thread upload , data structure for listview_upload component
 precord_displayed_upload=^record_displayed_upload;
 record_displayed_upload=record
- handle_obj: Cardinal;
+ handle_obj: THandle;
  isUDP: Boolean;
  nomefile,nickname: string;
  crcnick,crcfilename: Word;

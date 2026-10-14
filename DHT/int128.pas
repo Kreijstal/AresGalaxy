@@ -323,7 +323,7 @@ begin
   Result := (CU_INT128_compareTo(m_data,value)<0);
 end;
 
-function CU_INT128_Majorof(m_data:pCU_INT128; value:pCU_INT128): Boolean; overload;
+function CU_INT128_Majorof(m_data:pCU_INT128; value:pCU_INT128): Boolean;
 begin
   Result := (CU_INT128_compareTo(m_data,value)>0);
 end;

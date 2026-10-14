@@ -110,7 +110,7 @@ twanted_search = class(tobject)
  wantedparam1,wantedparam3,wanted_param3_avarage_min,
  wanted_param3_avarage_max,wanted_size_avarage_min,wanted_size_avarage_max: Cardinal;
  wantedsize: Int64; //DHT 64 bytes  supernode 32
- strict: Boolean;
+ {$IFDEF FPC}&strict{$ELSE}strict{$ENDIF}: Boolean;
 
  keywords_generali,
  keywords_title,

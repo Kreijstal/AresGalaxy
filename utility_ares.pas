@@ -27,9 +27,9 @@ unit Utility_ares;
 interface
 
 uses
-classes,graphics,windows,DSPack,sysutils,const_ares,comettrees,tntwindows,
-CmtVerNfo,const_win_messages,registry,ShlObj,ares_objects,btcore,controls,
-SHDocVw_TLB,MSHTML,activeX,classes2, Variants;
+{$IFDEF FPC}LCLType,{$ENDIF} classes,graphics,windows,DSPack,sysutils,const_ares,comettrees,tntwindows,
+CometVerInfo,const_win_messages,registry,ShlObj,ares_objects,btcore,controls,
+{$IFNDEF FPC}SHDocVw_TLB,MSHTML,{$ENDIF}activeX,classes2, Variants;
 
 
 type
@@ -122,7 +122,7 @@ function GetHWndByPID(const hPID: THandle): THandle;
     begin
         EI.ProcessID := PID;
         EI.HWND := 0;
-        EnumWindows(@EnumWindowsProc, Integer(@EI));
+        EnumWindows(@EnumWindowsProc, LPARAM(@EI));
         Result := EI.HWND;
     end;
 
@@ -436,8 +436,8 @@ oldpencolor := pen.color;
 
   brush.color := fcolor;
   pen.color := fcolor;
-  if not SETTING_3D_PROGBAR then Targetcanvas.framerect(rect(cellrect.left+2,cellrect.Top+1,cellrect.right-2,cellrect.bottom-2));
-  draw_progress_tran(TargetCanvas,Rect(cellrect.left,cellrect.top+8,cellrect.Right,cellrect.bottom),0,data^.downloaded,data^.size,false);
+  if not SETTING_3D_PROGBAR then Targetcanvas.framerect(Classes.Rect(cellrect.left+2,cellrect.Top+1,cellrect.right-2,cellrect.bottom-2));
+  draw_progress_tran(TargetCanvas,Classes.Rect(cellrect.left,cellrect.top+8,cellrect.Right,cellrect.bottom),0,data^.downloaded,data^.size,false);
 
 
 
@@ -486,8 +486,8 @@ oldpencolor := pen.color;
   brush.color := fcolor;
   pen.color := fcolor;
  {
-  if not SETTING_3D_PROGBAR then Targetcanvas.framerect(rect(cellrect.left+2,cellrect.Top+1,cellrect.right-2,cellrect.bottom-2));
-  draw_progress_tran(TargetCanvas,Rect(cellrect.left,cellrect.top+8,cellrect.Right,cellrect.bottom),0,data^.downloaded,data^.size,false);
+  if not SETTING_3D_PROGBAR then Targetcanvas.framerect(Classes.Rect(cellrect.left+2,cellrect.Top+1,cellrect.right-2,cellrect.bottom-2));
+  draw_progress_tran(TargetCanvas,Classes.Rect(cellrect.left,cellrect.top+8,cellrect.Right,cellrect.bottom),0,data^.downloaded,data^.size,false);
  }
 
 
@@ -529,7 +529,7 @@ oldpencolor := pen.color;
 
   brush.color := fcolor;
   pen.color := fcolor;
-  if not SETTING_3D_PROGBAR then Targetcanvas.framerect(rect(cellrect.left+2,cellrect.Top+1,cellrect.right-2,cellrect.bottom-2));
+  if not SETTING_3D_PROGBAR then Targetcanvas.framerect(Classes.Rect(cellrect.left+2,cellrect.Top+1,cellrect.right-2,cellrect.bottom-2));
   draw_progress_tran(TargetCanvas,cellrect,0,fprogress,fsize,false);
 
 
@@ -760,7 +760,7 @@ begin
                    0,
                    nil) <> 0 then begin
     Result := P;
-    LocalFree(Integer(P))
+    LocalFree(HLOCAL(P))
   end else Result := '';
 end;
 

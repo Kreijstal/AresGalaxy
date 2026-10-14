@@ -36,7 +36,7 @@ uses
   Classes, Classes2, SysUtils, DhtConsts,DhtTypes, Windows, DhtUtils,
   DhtZones, WinSock, BlckSock, SynSock, zlib, int128, Math, DhtHashList,
   DhtContact, DhtSearchManager, Activex{coinitialize}, HashList, KeywFunc,
-  Types_Supernode, Class_cmdlist, Ares_types, Ares_objects;
+  Types_Supernode, Class_cmdlist, ares_types_root, Ares_types, Ares_objects;
 
 type
  tthread_dht = class(tthread)

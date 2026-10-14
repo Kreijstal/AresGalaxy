@@ -27,7 +27,7 @@ unit ufrmhint;
 interface
 
 uses
-  Windows, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ExtCtrls, StdCtrls,comettrees,messages,ares_types;
 
 type

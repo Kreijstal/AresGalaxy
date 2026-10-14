@@ -27,7 +27,7 @@ unit helper_stringfinal;
 interface
 
 uses
-ares_types,ares_objects,comettrees;
+ares_types_root, ares_types,ares_objects,comettrees;
 
 procedure reset_pfile_strings(pfile:precord_file_library);
 procedure reset_pfile_trusted_strings(pfile:precord_file_trusted);
@@ -121,7 +121,7 @@ end;
 
 procedure finalize_virtualbrowse_entry(Sender: TBaseCometTree; Node: PCmtVNode);
   var
-  data:ares_types.precord_string;
+  data:ares_types_root.precord_string;
 begin
 data := sender.getdata(node);
 data^.str := '';

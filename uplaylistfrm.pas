@@ -22,7 +22,7 @@ unit uplaylistfrm;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs,ares_types;
 
 type

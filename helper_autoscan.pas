@@ -27,7 +27,7 @@ unit helper_autoscan;
 interface
 
 uses
-classes,classes2,sysutils,windows,ares_types,forms,controls;
+{$IFDEF FPC}LCLType,{$ENDIF} classes,classes2,sysutils,windows,ares_types,forms,controls;
 
  type
   TFileAttr = (ftReadOnly, ftHidden, ftSystem, ftVolumeID, ftDirectory,

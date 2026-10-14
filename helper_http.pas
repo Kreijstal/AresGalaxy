@@ -97,7 +97,7 @@ function FindHTTPValue(list: TMylist; Key: string): string;
 implementation
 
 uses
-  ares_types,vars_global;
+  ares_types_root, ares_types,vars_global;
 
 procedure FreeHTTPHeaderList(list: TMylist);
 var

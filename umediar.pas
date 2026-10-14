@@ -27,9 +27,9 @@ unit umediar;
 interface
 
 uses
- Classes, SysUtils, Windows, Math, OleCtrls, SyncObjs, ComObj, ShlObj,
+ {$IFDEF FPC}LCLType,{$ENDIF} Classes, SysUtils, Windows, Math, {$IFNDEF FPC}OleCtrls,{$ENDIF} SyncObjs, ComObj, ShlObj,
  Graphics, Forms, helper_unicode, helper_diskio,
- helper_strings, utility_ares, ares_types, ares_objects,
+ helper_strings, utility_ares, ares_types_root, ares_types, ares_objects,
  TntSysUtils, DirectDraw, Directshow9, Dspack, tntwindows,classes2;
 
 
@@ -2442,6 +2442,17 @@ procedure StrSwapByteOrder(Str: PWideChar);
 // byte to go from LSB to MSB and vice versa.
 // EAX contains address of string
 
+{$IFDEF FPC}
+begin
+  if Str = nil then
+    Exit;
+  while Str^ <> #0 do
+  begin
+    Str^ := WideChar(Swap(Word(Str^)));
+    Inc(Str);
+  end;
+end;
+{$ELSE}
 asm
          PUSH ESI
          PUSH EDI
@@ -2458,6 +2469,7 @@ asm
 @@2:     POP EDI
          POP ESI
 end;
+{$ENDIF}
 
 procedure tid3v2.SetTagItem(const ID, Data: string; var Tag: ID3v2TagInfo);
 var
@@ -5969,7 +5981,7 @@ end;
 
 function ottieni_data_exe(nome: WideString): string;
 var
-hwndfile: Cardinal;
+hwndfile: THandle;
 ftCreate, ftLocal:FILETIME;
 stCreate:SYSTEMTIME;
 begin
@@ -6002,9 +6014,14 @@ begin
 end;
 
 function get_app_name: WideString;
+var
+ buf: array [0..MAX_PATH*2] of WideChar;
+ len: DWORD;
 begin
- SetLength(result,MAX_PATH-1);
- Result := MyGetModuleFileNameW(0,@result[1],length(result));
+ // GetModuleFileNameW into a local buffer: the old code passed @Result[1] to a
+ // function whose own Result was never set, so it always fell back to ExeName
+ len := GetModuleFileNameW(0, buf, Length(buf));
+ SetString(Result, PWideChar(@buf[0]), len);
 
  if result='' then Result := application.exename; //emergenza?
 end;

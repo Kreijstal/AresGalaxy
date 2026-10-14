@@ -47,7 +47,7 @@ var
 implementation
 
 uses
-umediar,helper_diskio,vars_global,ufrmmain,ares_types,helper_strings,
+umediar,helper_diskio,vars_global,ufrmmain,ares_types_root, ares_types,helper_strings,
  const_ares,helper_player,helper_datetime,helper_gui_misc,helper_urls,
  vars_localiz;
 

@@ -191,7 +191,7 @@ begin
         inc(p);
       end;
   end;
-  l := integer(p) - integer(pointer(result));
+  l := PAnsiChar(p) - PAnsiChar(pointer(result));
   SetLength(Result, l);
 end;
 

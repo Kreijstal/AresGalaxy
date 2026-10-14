@@ -27,7 +27,7 @@ unit helper_manual_share;
 interface
 
 uses
- comettrees,classes,classes2,windows,sysutils,ares_types,
+ {$IFDEF FPC}LCLType,{$ENDIF} comettrees,classes,classes2,windows,sysutils,ares_types,
  forms,controls,ufrm_settings;
 
   const

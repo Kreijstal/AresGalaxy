@@ -27,8 +27,8 @@ unit helper_registry;
 interface
 
 uses
- windows,classes2,classes,registry,const_ares,helper_strings,
- helper_unicode,sysutils,utility_ares,vars_global,forms,ares_types,
+ {$IFDEF FPC}LCLType,{$ENDIF} windows,classes2,classes,registry,const_ares,helper_strings,
+ helper_unicode,sysutils,utility_ares,vars_global,forms,ares_types_root, ares_types,
  helper_gui_misc,activex,blcksock,dht_int160;
 
 function reg_bannato(const ip: string): Boolean;

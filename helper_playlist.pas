@@ -27,7 +27,7 @@ unit helper_playlist;
 interface
 
 uses
-classes,classes2,sysutils,ares_types,helper_player,windows,DSPack,forms,controls;
+{$IFDEF FPC}LCLType,{$ENDIF} classes,classes2,sysutils,ares_types,helper_player,windows,DSPack,forms,controls;
 
 procedure playlist_addfolder(folder: WideString);
 procedure playlist_addfile(filename: string; duration: Integer; silent: Boolean; strdisplay: string);

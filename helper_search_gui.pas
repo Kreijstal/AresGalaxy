@@ -27,7 +27,7 @@ unit helper_search_gui;
 interface
 
 uses
-comettrees,controls,classes,registry,graphics,windows,ares_types,sysutils,
+{$IFDEF FPC}LCLType, VCLCompat,{$ENDIF} comettrees,controls,classes,registry,graphics,windows,ares_types,sysutils,
 ComObj, ActiveX,classes2,TntComCtrls,TntExtCtrls,TntStdCtrls,forms,extctrls,
 cometPageView;
 
@@ -1500,7 +1500,7 @@ with result^ do begin
   with listview do begin
    parent := containerPanel;
    Align := alclient;
-   Tag := longint(result); //per velocizzare ritrovamento stato header in get node
+   Tag := {$IFDEF FPC}PtrInt{$ELSE}Longint{$ENDIF}(result); //per velocizzare ritrovamento stato header in get node
    PopupMenu := ares_frmmain.popup_search;
    bevelEdges := [];
     ongetsize := ufrmmain.ares_frmmain.listview_srcGetSize;

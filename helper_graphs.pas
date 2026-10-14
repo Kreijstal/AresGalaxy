@@ -259,7 +259,7 @@ offsetx := 5;
 
 repeat
 if posxgrafico+offsetx+1>awidth-5 then break;
-aCanvas.fillrect(rect( posxgrafico+offsetx, posygraph +1, posxgrafico+1+offsetx, posygraph +39));
+aCanvas.fillrect(Classes.Rect( posxgrafico+offsetx, posygraph +1, posxgrafico+1+offsetx, posygraph +39));
 inc(offsetx,14);
 until (not true);
 
@@ -286,7 +286,7 @@ if divisore<10 then incremento := 14 else
 offsety := 39-incremento; //saltiamo prima riga
 repeat
 if offsety<1 then break;
- acanvas.fillrect(rect(5,posygraph +offsety,awidth-5,posygraph +offsety+1));
+ acanvas.fillrect(Classes.Rect(5,posygraph +offsety,awidth-5,posygraph +offsety+1));
 dec(offsety,incremento);
 until (not true);
 except

@@ -27,7 +27,7 @@ unit helper_sockets;
 interface
 
 uses
-classes,blcksock,ares_types,windows,sysutils,winsock,vars_global;
+classes,blcksock,ares_types_root, ares_types,windows,sysutils,winsock,vars_global;
 
 const
 SOCKET_ERROR			= -1;

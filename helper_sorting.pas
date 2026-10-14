@@ -28,7 +28,7 @@ unit helper_sorting;
 interface
 
 uses
-ares_types,sysutils,thread_download,classes,classes2,ares_objects;
+ares_types_root, ares_types,sysutils,thread_download,classes,classes2,ares_objects;
 
 function ordina_risorse_queued_prima_migliore(item1,item2: Pointer): Integer;
 function ordina_per_size(item1,item2: Pointer): Integer;

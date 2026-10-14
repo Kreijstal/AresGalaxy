@@ -134,7 +134,7 @@ type
     offset: Cardinal;
     wantedLen: Cardinal;
     requestedTick: Cardinal;
-    source: Cardinal;
+    source: THandle;
     requested: Integer;
   end;
 
@@ -215,7 +215,7 @@ type
 type
   precord_Displayed_source=^record_Displayed_source;
   record_Displayed_source=record
-    sourceHandle: Cardinal;
+    sourceHandle: THandle;
     IpS: string;
     port: Word;
     ID: string;
@@ -323,7 +323,7 @@ uses
  ufrmmain, helper_diskio, BittorrentStringfunc, tntwindows, securehash,
  BitTorrentUtils, BitTorrentDlDb, helper_datetime, bittorrentConst,
  helper_sorting, thread_bitTorrent, vars_global, helper_unicode, helper_ipfunc,
- helper_strings, ares_types, const_ares, helper_mimetypes;
+ helper_strings, ares_types_root, ares_types, const_ares, helper_mimetypes;
 
 procedure AddBannedIp(transfer: TBittorrentTransfer; ip: Cardinal);
 var
@@ -1500,7 +1500,7 @@ end;
 
 procedure tBittorrentTransfer.AddVisualGlobSource; //sync
 var
- dataNode:ares_types.precord_data_node;
+ dataNode:ares_types_root.precord_data_node;
  node:PCmtvnode;
  data:btcore.precorD_displayed_source;
 begin
@@ -1525,7 +1525,7 @@ begin
        thread_bittorrent.Globsource.dataDisplay^.ipS := thread_bittorrent.GlobSource.ipS;
        thread_bittorrent.Globsource.dataDisplay^.status := thread_bittorrent.Globsource.status;
        thread_bittorrent.Globsource.dataDisplay^.ID := thread_bittorrent.Globsource.ID;
-       thread_bittorrent.Globsource.dataDisplay^.sourceHandle := integer(thread_bittorrent.Globsource);
+       thread_bittorrent.Globsource.dataDisplay^.sourceHandle := THandle(thread_bittorrent.Globsource);
        thread_bittorrent.Globsource.dataDisplay^.VisualBitField := TBitTorrentBitField.create(length(FPieces));
        thread_bittorrent.Globsource.dataDisplay^.foundby := thread_bittorrent.Globsource.foundby;
        thread_bittorrent.Globsource.dataDisplay^.choked := True;

@@ -49,6 +49,9 @@ function Flashize_Filename(Filename: WideString): WideString;
 
 implementation
 
+uses
+  umediar; // get_app_name
+
 function Flashize_Filename(Filename: WideString): WideString;
 var
   i: Integer;
@@ -145,7 +148,7 @@ end;
 
 function get_app_path: WideString;
 begin
-  // TODO Result := extract_fpathW(get_app_name);
+  Result := extract_fpathW(get_app_name);
 end;
 
 
@@ -155,7 +158,7 @@ var
   AnObj: IUnknown;
   ShLink: IShellLinkW;
   PFile: IPersistFile;
-  Data: TWin32FindData;
+  Data: TWin32FindDataW;
   Buffer: array [0..255] of widechar;
 begin
   Result := '';
@@ -167,7 +170,7 @@ begin
     PFile.Load(PWChar(FileN), STGM_READ);
 
 
-    ShLink.GetPath(Buffer, Sizeof(Buffer), Data, SLGP_UNCPRIORITY);
+    ShLink.GetPath(Buffer, Length(Buffer), {$IFDEF FPC}@Data{$ELSE}Data{$ENDIF}, SLGP_UNCPRIORITY);
     Result := Buffer;
   except
   end;

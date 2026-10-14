@@ -3,7 +3,7 @@ unit ufrmabout;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, TntStdCtrls;
 
 type

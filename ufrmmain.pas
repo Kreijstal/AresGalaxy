@@ -27,17 +27,17 @@ unit ufrmmain;
 interface
 
 uses
-  Windows, SysUtils, Classes, Graphics, Controls, tntforms,Forms, Dialogs,
-  Menus, ComCtrls, OleCtrls, ExtCtrls, StdCtrls,registry,ImgList,uTrayIcon,
+  {$IFDEF FPC}LCLType, VCLCompat, AresDebug,{$ENDIF} Windows, SysUtils, Classes, Graphics, Controls, tntforms,Forms, Dialogs,
+  Menus, ComCtrls, {$IFNDEF FPC}OleCtrls,{$ENDIF} ExtCtrls, StdCtrls,registry,ImgList,uTrayIcon,
   Buttons,comobj,ActiveX,messages,cometTrees,synsock,Drag_N_Drop, directshow9,
   TntStdCtrls,TntButtons,TntComCtrls,OleServer,TntExtCtrls,
   comettrack,WinSplit,XPbutton,zlib,richedit,
   tntdialogs,tntsysutils,tntwindows, TntMenus,tntsystem, themes,
-  CheckLst, comettopicpnl, CmtHint,math,
+  CheckLst, comettopicpnl, CometHint,math,
   folderBrowse, DSPack ,
   ufrmhint,
   blcksock,
-  ares_types,
+  ares_types_root, ares_types,
   ares_objects,
   classes2,
   class_cmdlist,
@@ -1135,7 +1135,7 @@ begin
    canvas.font.size := font.size;
    canvas.font.style := [fsBold];
 
-   rc := rect(helper_skin.FCaptionRect.left,helper_skin.FCaptionRect.top,width-helper_skin.FrameTopRigthBitmap.SourceCopyWidth,helper_skin.FrameTopLefTBitmap.SourceCopyHeight-helper_skin.FCaptionRect.top);
+   rc := Classes.Rect(helper_skin.FCaptionRect.left,helper_skin.FCaptionRect.top,width-helper_skin.FrameTopRigthBitmap.SourceCopyWidth,helper_skin.FrameTopLefTBitmap.SourceCopyHeight-helper_skin.FCaptionRect.top);
 
    SetBkMode(canvas.Handle, TRANSPARENT);
    canvas.brush.style := bsclear;
@@ -1361,7 +1361,7 @@ if not helper_skin.skinnedFrameLoaded then begin
  exit;
 end;
 
-//pt := Point(Message.XCursor, Message.YCursor);
+//pt := Classes.Point(Message.XCursor, Message.YCursor);
 
   if (Message.HitTest=HTCAPTION) and not IsIconic(Handle) then begin
 
@@ -2058,6 +2058,7 @@ procedure tares_frmmain.appexcept(sender: Tobject; e:exception);
 //freeavailable,
 //totalspace: Int64;
 begin
+{$IFDEF FPC}AresDebugLog('exception', e);{$ENDIF}
 exit;
 {
 if num_eccept>100 then exit;
@@ -2724,6 +2725,11 @@ var
 style: Integer;
 begin
  helper_skin.skinnedFrameLoaded := False;
+ {$IFDEF FPC}
+ // the LCL has no OnCanResize; TntFormCanResize enforced this minimum size
+ Constraints.MinWidth := 300;
+ Constraints.MinHeight := 200;
+ {$ENDIF}
  
  application.OnException := appexcept;
  application.OnRestore := restoreapp;
@@ -3131,7 +3137,7 @@ if (node=sender.HotNode) and (not (vsSelected in node.states)) then Canvas.Brush
   if (node.Index mod 2)=0 then Canvas.brush.color := sender.BGColor else
   canvas.brush.color := (sender as tcomettree).color;
 
- canvas.fillrect(rect(0,0,width,height));
+ canvas.fillrect(Classes.Rect(0,0,width,height));
 
  imglist_stars.GetBitmap(num-1,bitmap_search_stars);
 
@@ -3563,7 +3569,7 @@ begin
 
 vars_global.glob_shared_mem.LockMap;
 
-p := pointer(cardinal(vars_global.glob_shared_mem.PMapData));
+p := vars_global.glob_shared_mem.PMapData;
 copymemory(@buf,p, 1);
 
 if buf=0 then begin
@@ -3576,7 +3582,7 @@ fillchar(copdata[1],512,0);
 copymemory(@copdata[1],p, 512);
 
   buf := 0;
- p := pointer(cardinal(vars_global.glob_shared_mem.PMapData));
+ p := vars_global.glob_shared_mem.PMapData;
  copymemory(p, @buf, 1);
 
 vars_global.glob_shared_mem.unLockMap;
@@ -4633,7 +4639,7 @@ with targetcanvas do begin
         (fprogress=fsize)) then begin
       brush.color := COLOR_UL_COMPLETED;
       pen.color := COLOR_UL_COMPLETED;
-       if not SETTING_3D_PROGBAR then Targetcanvas.framerect(rect(cellrect.left+2,cellrect.Top+1,cellrect.right-2,cellrect.bottom-2));
+       if not SETTING_3D_PROGBAR then Targetcanvas.framerect(Classes.Rect(cellrect.left+2,cellrect.Top+1,cellrect.right-2,cellrect.bottom-2));
        draw_progress_tran(TargetCanvas,cellrect,0,10000,10000,false);
     end else begin
 
@@ -4645,7 +4651,7 @@ with targetcanvas do begin
        pen.color := COLOR_PROGRESS_UP;
       end;
       
-       if not SETTING_3D_PROGBAR then Targetcanvas.framerect(rect(cellrect.left+2,cellrect.Top+1,cellrect.right-2,cellrect.bottom-2));
+       if not SETTING_3D_PROGBAR then Targetcanvas.framerect(Classes.Rect(cellrect.left+2,cellrect.Top+1,cellrect.right-2,cellrect.bottom-2));
        draw_progress_tran(TargetCanvas,cellrect,0,fprogress,fsize,fcompleted);
     end;
 
@@ -6556,7 +6562,7 @@ end;
 
 procedure Tares_frmmain.treeview_lib_virfoldersGetSize(Sender: TBaseCometTree;var Size: Integer);
 begin
-size := sizeof(ares_types.record_string);
+size := sizeof(ares_types_root.record_string);
 end;
 
 procedure Tares_frmmain.treeview_lib_regfoldersFreeNode(Sender: TBaseCometTree;Node: PCmtVNode);
@@ -6583,7 +6589,7 @@ end;
 
 procedure Tares_frmmain.treeview_lib_virfoldersGetText(Sender: TBaseCometTree;Node: PCmtVNode; Column: TColumnIndex; var CellText: WideString);
 var
-  data:ares_types.precord_string;
+  data:ares_types_root.precord_string;
 begin
 Data := sender.getdata(Node);
  if data^.counter=0 then CellText := utf8strtowidestr(data^.str)
@@ -7707,7 +7713,7 @@ end;
 
 procedure Tares_frmmain.treeview_lib_virfoldersCompareNodes(Sender: TBaseCometTree; Node1,Node2: PCmtVNode; Column: TColumnIndex; var Result: Integer);
 var
-data1,data2:ares_types.precord_string;
+data1,data2:ares_types_root.precord_string;
 begin
 data1 := sender.getdata(node1);
 data2 := sender.getdata(node2);
@@ -7781,7 +7787,7 @@ level: Integer;
     nodovideobycategory:PCmtVNode;
 
     pfile:precord_file_library;
-    data:ares_types.precord_string;
+    data:ares_types_root.precord_string;
     match,match1,match2,match3: string;
     i: Integer;
     tipo: Byte;
@@ -7890,7 +7896,7 @@ if column=2 then begin
    if (node.Index mod 2)=0 then Canvas.brush.color := sender.BGColor else
    canvas.brush.color := (sender as tcomettree).color;
 
-  canvas.fillrect(rect(0,0,width,height));
+  canvas.fillrect(Classes.Rect(0,0,width,height));
 
   imglist_stars.GetBitmap(round(num*3),bitmap_stars);
 
@@ -7967,7 +7973,7 @@ end;
 
 procedure Tares_frmmain.treeviewbrowseCompareNodes(Sender: TBaseCometTree; Node1,Node2: PCmtVNode; Column: TColumnIndex; var Result: Integer);
 var
-data1,data2:ares_types.precord_string;
+data1,data2:ares_types_root.precord_string;
 begin
 data1 := sender.getdata(node1);
 data2 := sender.getdata(node2);
@@ -7981,7 +7987,7 @@ end;
 
 procedure Tares_frmmain.treeviewbrowseGetText(Sender: TBaseCometTree;Node: PCmtVNode; Column: TColumnIndex; var CellText: WideString);
 var
-  data:ares_types.precord_string;
+  data:ares_types_root.precord_string;
 begin
 Data := sender.getdata(Node);
  if data^.counter=0 then CellText := utf8strtowidestr(data^.str) else
@@ -7997,7 +8003,7 @@ end;
 
 procedure Tares_frmmain.treeviewbrowseGetSize(Sender: TBaseCometTree;var Size: Integer);
 begin
-size := sizeof(ares_types.record_string);
+size := sizeof(ares_types_root.record_string);
 end;
 
 procedure Tares_frmmain.listview_chat_channelCollapsed(Sender: TBaseCometTree; Node: PCmtVNode);
@@ -8189,8 +8195,8 @@ begin
   with targetcanvas do begin
    if sender=panel_playlist then begin
     brush.Color := cl3ddkshadow;
-    fillrect(rect(arect.left,arect.top,arect.right,arect.top+1));
-    fillrect(rect(arect.Left,arect.top,arect.left+1,arect.bottom));
+    fillrect(Classes.Rect(arect.left,arect.top,arect.right,arect.top+1));
+    fillrect(Classes.Rect(arect.Left,arect.top,arect.left+1,arect.bottom));
    end;
   end;
 // end;
@@ -8400,7 +8406,7 @@ end;
 procedure Tares_frmmain.WMQueryEndSession(var Message: TWMQUERYENDSESSION);
 begin
   ending_session := True;
-  application.onmessage := nil;
+  {$IFNDEF FPC}application.onmessage := nil;{$ENDIF} // LCL TApplication has no OnMessage
    message.Result := 1;
 end;
 
@@ -9330,10 +9336,10 @@ begin
 if helper_skin.TabsSourceBitmap=nil then begin
   if ThemeServices.ThemesEnabled then begin
    Details := ThemeServices.GetElementDetails(ttbToolBarRoot); //trRebarRoot);
-   //paintRect := rect(0,0,tabs_pageview.clientwidth,tabs_pageview.buttonsHeight);
+   //paintRect := Classes.Rect(0,0,tabs_pageview.clientwidth,tabs_pageview.buttonsHeight);
    ThemeServices.DrawElement(aCanvas.Handle, Details, paintRect, @PaintRect); //@paintRect);
   // aCanvas.Brush.color := clBlack;
-  // aCanvas.fillrect(rect(paintRect.left,paintRect.bottom-1,paintRect.right,paintrect.Bottom));
+  // aCanvas.fillrect(Classes.Rect(paintRect.left,paintRect.bottom-1,paintRect.right,paintrect.Bottom));
   end else begin
    aCanvas.pen.color := clBlack;
    aCanvas.brush.Color := clBtnFace;
@@ -9367,7 +9373,7 @@ if helper_skin.smallTabsSourceBitmap=nil then begin
    Details := ThemeServices.GetElementDetails(ttBody);
    ThemeServices.DrawElement(aCanvas.Handle, Details, paintRect, @paintRect);
    aCanvas.Brush.color := clBlack;
-   aCanvas.fillrect(rect(paintRect.left,paintRect.bottom-1,paintRect.right,paintrect.Bottom));
+   aCanvas.fillrect(Classes.Rect(paintRect.left,paintRect.bottom-1,paintRect.right,paintrect.Bottom));
   end else begin
    aCanvas.pen.color := clBlack;
    aCanvas.brush.Color := clBtnFace;
@@ -9416,7 +9422,7 @@ if helper_skin.TabsSourceBitmap=nil then begin
     bitmap.height := tabs_pageview.buttonsheight;
     bitmap.PixelFormat := pf24bit;
     Details := ThemeServices.GetElementDetails(trRebarRoot);}
-    //r := rect(0,0,tabs_pageview.clientWidth,tabs_pageview.buttonsHeight);
+    //r := Classes.Rect(0,0,tabs_pageview.clientWidth,tabs_pageview.buttonsHeight);
 
 
 
@@ -9468,7 +9474,7 @@ if helper_skin.TabsSourceBitmap=nil then begin
     //ThemeServices.DrawElement(aCanvas.Handle, Details, paintRect, @paintRect);
 
     //aCanvas.Brush.color := clBlack;
-    //aCanvas.fillrect(rect(paintRect.left,paintRect.bottom-1,paintRect.right,paintrect.Bottom));
+    //aCanvas.fillrect(Classes.Rect(paintRect.left,paintRect.bottom-1,paintRect.right,paintrect.Bottom));
 
  end else begin
   aCanvas.pen.color := clblack;
@@ -9618,7 +9624,7 @@ if helper_skin.smallTabsSourceBitmap=nil then begin
     //aCanvas.Brush.color := clWhite
     // else
      aCanvas.Brush.color := clBlack;
-    aCanvas.fillrect(rect(paintRect.left,paintRect.bottom,paintRect.right,paintrect.Bottom+1));
+    aCanvas.fillrect(Classes.Rect(paintRect.left,paintRect.bottom,paintRect.right,paintrect.Bottom+1));
     
  end else begin
    aCanvas.pen.color := clblack;
@@ -10029,7 +10035,7 @@ begin
 tbar := sender as tpanel;
 
 acanvas.brush.color := COLORE_PANELS_SEPARATOR; //$00C9B7A9; //A9B7C9;
-rc := rect(0,btns_transfer.Height-1,tbar.clientwidth,btns_transfer.Height);
+rc := Classes.Rect(0,btns_transfer.Height-1,tbar.clientwidth,btns_transfer.Height);
 acanvas.fillrect(rc);
 end;
 
@@ -10472,7 +10478,7 @@ end;
    if sender=listview_chat_channel then begin
     dec(r.top);
     TargetCanvas.brush.color := (sender as tcomettree).color;
-    TargetCanvas.fillrect(rect(r.left,r.Top,r.right,r.top+2));
+    TargetCanvas.fillrect(Classes.Rect(r.left,r.Top,r.right,r.top+2));
     inc(r.top,2);
     exit;
    end;
@@ -10493,7 +10499,7 @@ if (sender<>listview_lib) and
     end;
 
     TargetCanvas.brush.color := (sender as tcomettree).colors.BorderColor;
-    TargetCanvas.fillrect(rect(r.left,r.Top,r.right,r.top+1));
+    TargetCanvas.fillrect(Classes.Rect(r.left,r.Top,r.right,r.top+1));
 end;
 
 end;
@@ -10524,7 +10530,7 @@ var
 begin
 should_Continue := True;
 if sender=panel_playlist then begin
- r := rect(0,0,panel_playlist.width,20);
+ r := Classes.Rect(0,0,panel_playlist.width,20);
  acanvas.brush.color := panel_playlist.color;
  acanvas.pen.Color := cl3ddkshadow;
  acanvas.rectangle(r.left-1,r.top,r.right+1,r.bottom);
@@ -10533,13 +10539,13 @@ if sender=panel_playlist then begin
  Windows.ExtTextOutW(acanvas.Handle, r.left+6, r.top+3, 0, @r, PwideChar(widestr),Length(widestr), nil);
 end else
 if sender=panel_hash then begin
- r := rect(0,0,panel_playlist.width,20);
+ r := Classes.Rect(0,0,panel_playlist.width,20);
  acanvas.brush.color := panel_hash.color;
  acanvas.pen.Color := listview_lib.colors.bordercolor;
  acanvas.rectangle(r.left-1,r.top-1,r.right+1,r.bottom);
 end else begin  // chat browse's panel left
  pnl := sender as tcometTopicPnl;
- r := rect(0,0,pnl.width,26);
+ r := Classes.Rect(0,0,pnl.width,26);
  acanvas.brush.color := pnl.color;
  acanvas.pen.Color := listview_lib.colors.bordercolor;
  acanvas.rectangle(r.left-1,r.top-1,r.right,r.bottom);
@@ -10831,13 +10837,13 @@ end;
 procedure Tares_frmmain.tvchannelsGetSize(Sender: TBaseCometTree;
   var Size: Integer);
 begin
-size := sizeof(ares_types.recordNetStreamChannel);
+size := sizeof(ares_types_root.recordNetStreamChannel);
 end;
 
 procedure Tares_frmmain.tvchannelsGetText(Sender: TBaseCometTree;
   Node: PCmtVNode; Column: TColumnIndex; var CellText: WideString);
 var
- channel:ares_types.precordNetStreamChannel;
+ channel:ares_types_root.precordNetStreamChannel;
 begin
 if tvchannels.GetNodeLevel(node)=0 then exit;
  channel := sender.getData(node);
@@ -10850,7 +10856,7 @@ end;
 procedure Tares_frmmain.tvchannelsFreeNode(Sender: TBaseCometTree;
   Node: PCmtVNode);
 var
- channel:ares_types.precordNetStreamChannel;
+ channel:ares_types_root.precordNetStreamChannel;
 begin
 channel := sender.getData(node);
  channel^.capt := '';
@@ -10866,7 +10872,7 @@ procedure Tares_frmmain.tvchannelsAfterCellPaint(Sender: TBaseCometTree;
   TargetCanvas: TCanvas; Node: PCmtVNode; Column: TColumnIndex;
   CellRect: TRect);
 var
- channel:ares_types.precordNetStreamChannel;
+ channel:ares_types_root.precordNetStreamChannel;
  rect2: TRect;
 begin
 //if column<>0 then exit;
@@ -10891,9 +10897,9 @@ end;
 procedure Tares_frmmain.tvchannelsDblClick(Sender: TObject);
 var
  node:pcmtvnode;
- channel:ares_types.precordNetStreamChannel;
+ channel:ares_types_root.precordNetStreamChannel;
  rootNode:pcmtVnode;
- dataRoot:ares_types.precordNetStreamChannel;
+ dataRoot:ares_types_root.precordNetStreamChannel;
 begin
 
 if not helper_player.player_working then exit;
@@ -10913,7 +10919,7 @@ end;
 procedure Tares_frmmain.tvchannelsCompareNodes(Sender: TBaseCometTree;
   Node1, Node2: PCmtVNode; Column: TColumnIndex; var Result: Integer);
 var
-channel1,channel2:ares_types.precordNetStreamChannel;
+channel1,channel2:ares_types_root.precordNetStreamChannel;
 begin
 //result := 0;
 //if tvchannels.GetNodeLevel(node1)<>2 then exit;

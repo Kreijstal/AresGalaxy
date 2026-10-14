@@ -395,7 +395,7 @@ begin
   Result := (CU_INT160_compareTo(m_data,Value)<0);
 end;
 
-function CU_INT160_Majorof(m_data: PCu_INT160; Value: PCu_INT160): Boolean; overload;
+function CU_INT160_Majorof(m_data: PCu_INT160; Value: PCu_INT160): Boolean;
 begin
   Result := (CU_INT160_compareTo(m_data,Value)>0);
 end;

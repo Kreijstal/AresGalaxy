@@ -55,7 +55,7 @@ function torrentavailibility_to_str(seeds: Integer; leeches:integer): WideString
 implementation
 
 uses
-  helper_diskio, ares_types, helper_unicode,
+  helper_diskio, ares_types_root, ares_types, helper_unicode,
   tntwindows, ufrmmain, vars_global, helper_ICH,
   BitTorrentDlDb,thread_bittorrent,helper_strings,const_ares,
   bittorrentConst,comettrees,helper_urls,helper_base64_32,
@@ -110,7 +110,7 @@ procedure loadmagnetTorrent(ahash: string; const suggestedName: string; suggeste
 var
  BitTorrentTransfer: TBittorrentTransfer;
  node:pcmtvnode;
- dataNode:ares_types.precord_data_node;
+ dataNode:ares_types_root.precord_data_node;
  data:precord_displayed_bittorrentTransfer;
  afile: TBitTorrentFile;
  tracker: TbittorrentTracker;
@@ -172,7 +172,7 @@ begin
 
      bittorrentTransfer.visualNode := node;
      bittorrentTransfer.visualData := data;
-     bittorrentTransfer.visualData^.handle_obj := longint(bittorrentTransfer);
+     bittorrentTransfer.visualData^.handle_obj := THandle(bittorrentTransfer);
      bittorrentTransfer.visualData^.FileName := BitTorrentTransfer.fname;
      bittorrentTransfer.visualData^.Size := 0;
      bittorrentTransfer.visualData^.downloaded := 0;
@@ -282,7 +282,7 @@ begin
 
 
   if tempList.count>0 then begin
-   ufrmmain.ares_frmmain.timer_start_bittorrent.Tag := integer(tempList);
+   ufrmmain.ares_frmmain.timer_start_bittorrent.Tag := {$IFDEF FPC}PtrInt{$ELSE}Integer{$ENDIF}(tempList);
    ufrmmain.ares_frmmain.timer_start_bittorrent.enabled := True;
 
 
@@ -447,7 +447,7 @@ end;
 
 procedure tBittorrentTransferCreator.AddVisualTransferReference;
 var
- dataNode:ares_types.precord_data_node;
+ dataNode:ares_types_root.precord_data_node;
  node:PCMtVNode;
  data:precord_displayed_bittorrentTransfer;
  afile: TBitTorrentFile;
@@ -468,7 +468,7 @@ begin
 
      bittorrentTransfer.visualNode := node;
      bittorrentTransfer.visualData := data;
-     bittorrentTransfer.visualData^.handle_obj := longint(bittorrentTransfer);
+     bittorrentTransfer.visualData^.handle_obj := THandle(bittorrentTransfer);
      bittorrentTransfer.visualData^.FileName := widestrtoutf8str(helper_urls.extract_fnameW(utf8strtowidestr(bittorrentTransfer.fname)));
      bittorrentTransfer.visualData^.Size := bittorrentTransfer.fsize;
      bittorrentTransfer.visualData^.downloaded := bittorrentTransfer.fdownloaded;

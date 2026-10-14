@@ -27,7 +27,7 @@ unit uctrvol;
 interface
 
 uses
-  Windows, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ComCtrls, ExtCtrls, StdCtrls, comettrack,registry,const_ares,
   ares_types, XPbutton, TntStdCtrls,utility_ares,math,vars_localiz,
   mmsystem;
@@ -158,7 +158,7 @@ posy: Integer;
 begin
 if shouldInvalidate then begin
  canvas.brush.color := color;
- canvas.FillRect(rect(18,10,clientwidth-26,clientheight-35));
+ canvas.FillRect(Classes.Rect(18,10,clientwidth-26,clientheight-35));
 end;
 
 // dra white triangle on the left
@@ -187,7 +187,7 @@ canvas.LineTo(clientWidth-28,posy-1);
 canvas.LineTo(clientWidth-28,posy-FThumbHeight);
 
 canvas.brush.color := $00ededed;
-canvas.FillRect(rect(19,posy-1,clientwidth-29,(posy-FThumbHeight)+2));
+canvas.FillRect(Classes.Rect(19,posy-1,clientwidth-29,(posy-FThumbHeight)+2));
 
 canvas.Pen.color := clwhite;
 canvas.moveTo(18,posy-2);

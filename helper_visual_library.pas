@@ -27,7 +27,7 @@ unit helper_visual_library;
 interface
 
 uses
-comettrees,classes2,ares_types,imglist,graphics,windows,classes,controls,sysutils;
+{$IFDEF FPC}LCLType,{$ENDIF} comettrees,classes2,ares_types_root, ares_types,imglist,graphics,windows,classes,controls,sysutils;
 
 function apri_categoria_library(regname1,regname2: string; tree: Tcomettree; listview: Tcomettree; lista_files_utente: TMylist; level: Integer; node:PCmtVNode): Tstato_library_header;
 function trova_nodo_treeview2_folder(listview: Tcomettree; tree: Tcomettree):PCmtVNode;
@@ -373,7 +373,7 @@ end;
 procedure edit_nodevirfolders(before: string; after: string; tree: Tcomettree; nodo:pCmtVnode);
 var
 nd:pCmtVnode;
-data:ares_types.precord_string;
+data:ares_types_root.precord_string;
 need_delete,need_create: Boolean;
 loaft,lobef: string;
 begin
@@ -486,7 +486,7 @@ end;
 procedure decrementa_recent_treeview_library;
 var
 nodo:pCmtVnode;
-data:ares_types.precord_string;
+data:ares_types_root.precord_string;
 begin
 
 with ares_frmmain.treeview_lib_virfolders do begin
@@ -503,7 +503,7 @@ end;
 procedure mainGui_decsharedall;
 var
 nodo,nodoroot:pCmtVnode;
-data:ares_types.precord_string;
+data:ares_types_root.precord_string;
 begin
 with ares_frmmain.treeview_lib_virfolders do begin
 
@@ -528,7 +528,7 @@ node_param1,
 node_param2,
 node_param3,
 node_comp:pCmtVnode;
-dato,dato1:ares_types.precord_string;
+dato,dato1:ares_types_root.precord_string;
 begin
 
 with ares_frmmain do begin
@@ -961,7 +961,7 @@ while (list.count>0) do begin
   records := list[list.count-1];
            list.delete(list.count-1);
    records.str := '';
-  FreeMem(records,sizeof(ares_types.record_string));
+  FreeMem(records,sizeof(ares_types_root.record_string));
 end;
 
 list.Free;
@@ -1005,7 +1005,7 @@ end;
 procedure add_base_virtualnodes(tree: Tcomettree; includerecent:boolean);
 var
 nodo,nodo_child,nodo_child_ordinamento:pCmtVnode;
-data:ares_types.precord_string;
+data:ares_types_root.precord_string;
 begin
 with tree do begin
 beginupdate;
@@ -1948,7 +1948,7 @@ var
 i: Integer;
 ffile:precord_file_library;
 match,match1,match2,match3: string;
-data:ares_types.precord_string;
+data:ares_types_root.precord_string;
 nodeaudio,nodevideo,nodeimage,nodeother,nodeall,nodedocument,nodesoftware,noderoot,
 naudiogbyartist,naudiogbygenre,naudiogbyalbum,noderecent,
 nvideogbycategory,

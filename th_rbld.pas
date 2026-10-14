@@ -28,7 +28,7 @@ unit th_rbld;
 interface
 uses
 classes,registry,windows,sysutils,utility_ares,const_ares,tntwindows,
-ares_types,ares_objects,umediar,comctrls,comettrees,SecureHash,helper_unicode,
+ares_types_root, ares_types,ares_objects,umediar,comctrls,comettrees,SecureHash,helper_unicode,
 vars_localiz,helper_arescol,activeX,directDraw,Directshow9,dspack,ComObj,graphics,
 helper_diskio,helper_urls,helper_strings,helper_mimetypes,vars_global;
 
@@ -674,7 +674,7 @@ var
  nodoroot,nodoall,nodoaudio,nodoimmagini,nodovideo,
  nododocumenti,nodosoftware,nodoother,nodorecent,nodosel,
  nodo1,nodo2,nodo3:pCmtVnode;
- data:ares_types.precord_string;
+ data:ares_types_root.precord_string;
 begin
   //add to form
 vars_global.lista_shared.add(pfilez);
@@ -878,7 +878,7 @@ end;
 procedure tth_rbld.aggiungi_nodo_library(dopo: string; treeview: Tcomettree; nodo:pCmtVnode); //synch
 var
 nd:pCmtVnode;
-data_virtual:ares_types.precord_string;
+data_virtual:ares_types_root.precord_string;
 need_create: Boolean;
 lodopo: string;
 begin

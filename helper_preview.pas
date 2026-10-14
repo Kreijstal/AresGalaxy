@@ -262,7 +262,7 @@ frmpreview.Label1.caption := GetLangStringW(STR_FILE)+': '+
                                          
 frmpreview.canvas.font.Name := frmpreview.Label1.font.Name;
 frmpreview.canvas.font.size := frmpreview.Label1.font.size;
-wid := gettextwidth(frmpreview.Label1.caption,frmpreview.canvas); //type
+wid := utility_ares.gettextwidth(frmpreview.Label1.caption,frmpreview.canvas); //type
 if wid+(frmpreview.Label1.left*2)>=230 then frmpreview.clientwidth := wid+(frmpreview.Label1.left*2);
 
 

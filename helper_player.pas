@@ -27,7 +27,7 @@ unit helper_player;
 interface
 
 uses
- classes,ActiveX,DSPack,directdraw,directshow9,windows,forms,sysutils,tntwindows,
+ {$IFDEF FPC}LCLType, Controls,{$ENDIF} classes,ActiveX,DSPack,directdraw,directshow9,windows,forms,sysutils,tntwindows,
  registry,math,DSUtil,AsyncExTypes,mmsystem,uflvplayer,unetplayer;
 
 const
@@ -991,7 +991,7 @@ if isFullScreen then begin
   FFullScreenWindow.Color := $0;
   FFullScreenWindow.DefaultMonitor := dmDesktop;
   FFullScreenWindow.BorderStyle := bsnone;
-  FFullScreenWindow.BoundsRect := rect(0,0,screen.width,screen.Height);
+  FFullScreenWindow.BoundsRect := Classes.Rect(0,0,screen.width,screen.Height);
   FFullScreenWindow.Show;
   FFullScreenWindow.FormStyle := fsStayOnTop; //fsNormal;
   FFullScreenWindow.onDblclick := ufrmmain.ares_Frmmain.panel_vidDblClick;

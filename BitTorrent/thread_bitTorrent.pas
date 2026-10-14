@@ -239,7 +239,7 @@ implementation
 uses
   ufrmmain,BittorrentStringfunc,bitTorrentConst,vars_global,helper_strings,
   bittorrentUtils,securehash,BitTorrentDlDb,helper_sorting,ares_objects,helper_datetime,
-  const_ares,ares_types,helper_unicode,helper_bighints,const_timeouts,vars_localiz,
+  const_ares,ares_types_root, ares_types,helper_unicode,helper_bighints,const_timeouts,vars_localiz,
   helper_ipfunc,helper_sockets,helper_urls,helper_diskio,helper_registry,
   dht_searchManager,helper_mimetypes,helper_crypt,dhtkeywords;
 
@@ -1636,7 +1636,7 @@ end;
 
 procedure tthread_bitTorrent.AddVisualTransferReference(tran: TBitTorrentTransfer);
 var
- dataNode:ares_types.precord_data_node;
+ dataNode:ares_types_root.precord_data_node;
  node:PCMtVNode;
  data:precord_displayed_bittorrentTransfer;
  afile: TBitTorrentFile;
@@ -1657,7 +1657,7 @@ begin
 
      tran.visualNode := node;
      tran.visualData := data;
-     tran.visualData^.handle_obj := longint(tran);
+     tran.visualData^.handle_obj := THandle(tran);
      tran.visualData^.FileName := widestrtoutf8str(helper_urls.extract_fnameW(utf8strtowidestr(tran.fname)));
      tran.visualData^.Size := tran.fsize;
      tran.visualData^.downloaded := tran.fdownloaded;
@@ -3067,7 +3067,7 @@ end;
 
 procedure tthread_bitTorrent.AddVisualGlobSource; //sync
 var
-dataNode:ares_types.precord_data_node;
+dataNode:ares_types_root.precord_data_node;
 node:PcmtVNode;
 data:btcore.precord_displayed_source;
 begin
@@ -3093,7 +3093,7 @@ begin
        Globsource.dataDisplay^.client := Globsource.client;
        Globsource.dataDisplay^.foundby := GlobSource.foundby;
        Globsource.dataDisplay^.ID := Globsource.ID;
-       Globsource.dataDisplay^.sourceHandle := integer(Globsource);
+       Globsource.dataDisplay^.sourceHandle := THandle(Globsource);
        Globsource.dataDisplay^.VisualBitField := TBitTorrentBitField.create(length(GlobTransfer.FPieces));
        Globsource.dataDisplay^.choked := True;
        Globsource.dataDisplay^.interested := False;
@@ -3635,7 +3635,7 @@ begin
 
 for i := 0 to transfer.outgoingRequests.Count-1 do begin
  request := transfer.outgoingRequests[i];
- if longint(request^.source)<>longint(source) then continue;
+ if request^.source<>THandle(source) then continue;
 
  if cardinal(request^.index)<>pieceindex then continue;
 
@@ -3775,7 +3775,7 @@ while (i<transfer.outgoingRequests.Count) do begin
  end;
 
   // if we sent this to another source send a cancel packet for this piece
-  if longint(request^.source)<>longint(source) then begin
+  if request^.source<>THandle(source) then begin
    tmpSource := FindSourceFromID(transfer,request^.source);
     if tmpSource<>nil then begin
       if Source_PeekRequest_InIncomingBuffer(tmpsource,request) then begin
@@ -4137,7 +4137,7 @@ result := -1;
     found := False;
     for h := 0 to transfer.outGoingRequests.count-1 do begin
      request := transfer.outGoingRequests[h];
-      if longint(request^.source)<>longint(source) then continue;
+      if request^.source<>THandle(source) then continue;
       if request^.index<>piece.findex then continue;
       if request^.offset<>cmpOffset then continue;
       found := True;
@@ -4366,7 +4366,7 @@ end;
   request^.offset := offset;
   request^.wantedLen := wantedLen;
   request^.requestedTick := tick;
-  request^.source := longint(source);
+  request^.source := THandle(source);
   request^.requested := 1;
    transfer.outGoingRequests.add(request);
 
@@ -4387,7 +4387,7 @@ result := nil;
 
  for i := 0 to transfer.fsources.count-1 do begin
   source := transfer.fsources[i];
-  if longint(source)<>longint(ID) then continue;
+  if THandle(source)<>THandle(ID) then continue;
    Result := source;
    break;
  end;
@@ -4473,7 +4473,7 @@ source.outRequests := 0;
  i := 0;
  while (i<transfer.outgoingRequests.count) do begin
   request := transfer.outGoingRequests[i];
-  if longint(source)=longint(request^.source) then begin
+  if THandle(source)=request^.source then begin
     transfer.outGoingRequests.delete(i);
     FreeMem(request,sizeof(record_BitTorrentoutgoing_request));
     continue;

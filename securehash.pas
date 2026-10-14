@@ -218,6 +218,48 @@ type
     B1, B2, B3, B4: Byte;
   end;
 
+{$IFDEF FPC}
+procedure TSecHash2.aac;
+// Portable version of the assembler routine below: one SHA-1 style
+// compression round over M, using the (non standard) constants in K.
+type
+  TCardArray = array [0..79] of Cardinal;
+  PCardArray = ^TCardArray;
+var
+  t: Integer;
+  a, b, c, d, e, f, temp: Cardinal;
+  Wc, Kc, KlC, GrC: PCardArray;
+begin
+  Wc := @W;
+  Kc := @K;
+  KlC := @klVar;
+  GrC := @grVar;
+  klVar := grVar;
+  for t := 0 to 15 do
+    Wc^[t] := SwapEndian(PCardinal(@M[t * 4])^);
+  for t := 16 to 79 do
+    Wc^[t] := RolDWord(Wc^[t - 3] xor Wc^[t - 8] xor Wc^[t - 14] xor Wc^[t - 16], 1);
+  a := KlC^[0]; b := KlC^[1]; c := KlC^[2]; d := KlC^[3]; e := KlC^[4];
+  for t := 0 to 79 do
+  begin
+    case t of
+      0..19: f := (b and c) or ((not b) and d);
+      40..59: f := (b and c) or (b and d) or (c and d);
+    else
+      f := b xor c xor d;
+    end;
+    temp := RolDWord(a, 5) + f + e + Wc^[t] + Kc^[t];
+    e := d;
+    d := c;
+    c := RolDWord(b, 30);
+    b := a;
+    a := temp;
+  end;
+  KlC^[0] := a; KlC^[1] := b; KlC^[2] := c; KlC^[3] := d; KlC^[4] := e;
+  for t := 0 to 4 do
+    GrC^[t] := GrC^[t] + KlC^[t];
+end;
+{$ELSE}
 procedure TSecHash2.aac;assembler;
 asm
    push ebx
@@ -342,6 +384,7 @@ asm
    ret
 @@End:
 end;
+{$ENDIF}
 
 function TSecHash2.Compute(fe: string): string;
 {

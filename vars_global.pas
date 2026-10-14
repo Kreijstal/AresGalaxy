@@ -27,8 +27,8 @@ unit vars_global;
 interface
 
 uses
-  classes2,thread_terminator,DSPack,ufrmhint,classes,windows,graphics,
-  ares_types,comettrees,tntmenus,thread_upload,thread_download,
+  {$IFDEF FPC}LCLType,{$ENDIF} classes2,thread_terminator,DSPack,ufrmhint,classes,windows,graphics,
+  ares_types_root, ares_types,comettrees,tntmenus,thread_upload,thread_download,
   thread_client,thread_supernode,thread_share,int128,ares_objects,
   helper_autoscan,thread_dht,blcksock,synsock,dhtzones,
   dhttypes,thread_bittorrent,tntforms,forms,helper_channellist{,
@@ -170,7 +170,7 @@ var
   queue_length: Byte;
   mypgui: string;
   previous_hint_node:pcmtvnode;
-  handle_obj_GraphHint: Cardinal;
+  handle_obj_GraphHint: THandle;
   graphIsDownload,graphIsUpload: Boolean;
   max_ul_per_ip: Byte;
   shufflying_playlist: Boolean;

@@ -28,8 +28,8 @@ unit thread_share;
 interface
 
 uses
-  Classes,controls,registry,windows,sysutils,CmtVerNfo,umediar,
- ComCtrls,ares_types,ComObj,Activex,OleServer,const_ares,
+  {$IFDEF FPC}LCLType,{$ENDIF} Classes,controls,registry,windows,sysutils,CometVerInfo,umediar,
+ ComCtrls,ares_types_root, ares_types,ComObj,Activex,OleServer,const_ares,
  classes2,graphics,buttons,comettrees,tntwindows,class_cmdlist,
  helper_share_misc,DirectDraw,Directshow9, Dspack;
 
@@ -2986,7 +2986,7 @@ var
   awcName: array [0..MAX_PATH-1] of WideChar;
   cbRead: Longint;
   hres:hresult;
-  libNewPosition: Largeint;
+  libNewPosition: {$IFDEF FPC}LargeUInt{$ELSE}Largeint{$ENDIF}; // FPC IStream.Seek returns an unsigned position
   Size: Cardinal;
 
   Buffer: PChar;

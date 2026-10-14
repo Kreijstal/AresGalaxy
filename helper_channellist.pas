@@ -31,7 +31,7 @@ unit helper_channellist;
 interface
 
 uses
-  Classes,utility_ares,zlib,windows,const_ares,
+  {$IFDEF FPC}LCLType,{$ENDIF} Classes,utility_ares,zlib,windows,const_ares,
   blcksock,sysutils,ares_types,comettrees,winsock,
   synsock,classes2,registry,tntwindows,math,cometPageView,
   graphics,controls,extctrls,const_win_messages,forms;
@@ -377,8 +377,8 @@ italic := False;
                                  if underline then include(stile,fsunderline);
                                  if italic then include(stile,fsitalic);
                                   font.Style := stile;
-                                  widthdascrivere := gettextwidth(dascrivere,acanvas);
-                                  fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
+                                  widthdascrivere := utility_ares.gettextwidth(dascrivere,acanvas);
+                                  fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
                                   brush.style := bsclear;
                                   canvas_draw_chat_text(acanvas,
                                                         cellrect.Left+offsetx,
@@ -399,15 +399,15 @@ italic := False;
                          imglist.geTBitmap(imgindex,bmp);
                           with acanvas do begin
                            brush.color := backcolor;
-                           fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+(cellrect.Bottom-cellrect.top),cellrect.Bottom-cellrect.top));
+                           fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+(cellrect.Bottom-cellrect.top),cellrect.Bottom-cellrect.top));
                            brush.style := bsclear;
-                           StretchDraw(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+(cellrect.Bottom-cellrect.top),cellrect.Bottom-cellrect.top),bmp);
+                           StretchDraw(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+(cellrect.Bottom-cellrect.top),cellrect.Bottom-cellrect.top),bmp);
                           end;
                          bmp.Free;
                         end else begin
                          with acanvas do begin
                           brush.color := backcolor;
-                          fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+(cellrect.Bottom-cellrect.top),cellrect.Bottom-cellrect.top));
+                          fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+(cellrect.Bottom-cellrect.top),cellrect.Bottom-cellrect.top));
                           brush.style := bsclear;
                          end;
                          if cellrect.bottom-cellrect.top<20 then imglist.draw(Acanvas,cellrect.left+offsetx,cellrect.top,imgindex)
@@ -433,8 +433,8 @@ italic := False;
                                  if underline then include(stile,fsunderline);
                                  if italic then include(stile,fsitalic);
                                   font.Style := stile;
-                                  widthdascrivere := gettextwidth(dascrivere,acanvas);
-                                  fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
+                                  widthdascrivere := utility_ares.gettextwidth(dascrivere,acanvas);
+                                  fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
                                   brush.style := bsclear;
                                   canvas_draw_chat_text(acanvas,
                                                         cellrect.Left+offsetx,
@@ -464,8 +464,8 @@ italic := False;
                                  if underline then include(stile,fsunderline);
                                  if italic then include(stile,fsitalic);
                                   font.Style := stile;
-                                  widthdascrivere := gettextwidth(dascrivere,acanvas);
-                                  fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
+                                  widthdascrivere := utility_ares.gettextwidth(dascrivere,acanvas);
+                                  fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
                                   brush.style := bsclear;
                                   canvas_draw_chat_text(acanvas,
                                                         cellrect.Left+offsetx,
@@ -495,8 +495,8 @@ italic := False;
                                  if underline then include(stile,fsunderline);
                                  if italic then include(stile,fsitalic);
                                   font.Style := stile;
-                                  widthdascrivere := gettextwidth(dascrivere,acanvas);
-                                  fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
+                                  widthdascrivere := utility_ares.gettextwidth(dascrivere,acanvas);
+                                  fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
                                   brush.style := bsclear;
                                   canvas_draw_chat_text(acanvas,
                                                         cellrect.Left+offsetx,
@@ -526,8 +526,8 @@ italic := False;
                                  if underline then include(stile,fsunderline);
                                  if italic then include(stile,fsitalic);
                                    font.Style := stile;
-                                   widthdascrivere := gettextwidth(dascrivere,acanvas);
-                                   fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
+                                   widthdascrivere := utility_ares.gettextwidth(dascrivere,acanvas);
+                                   fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
                                    brush.style := bsclear;
                                   canvas_draw_chat_text(acanvas,
                                                         cellrect.Left+offsetx,
@@ -557,8 +557,8 @@ italic := False;
                                  if underline then include(stile,fsunderline);
                                  if italic then include(stile,fsitalic);
                                   font.Style := stile;
-                                  widthdascrivere := gettextwidth(dascrivere,acanvas);
-                                   fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
+                                  widthdascrivere := utility_ares.gettextwidth(dascrivere,acanvas);
+                                   fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
                                    brush.style := bsclear;
                                   canvas_draw_chat_text(acanvas,
                                                         cellrect.Left+offsetx,
@@ -588,8 +588,8 @@ italic := False;
                                  if underline then include(stile,fsunderline);
                                  if italic then include(stile,fsitalic);
                                   font.Style := stile;
-                                  widthdascrivere := gettextwidth(dascrivere,acanvas);
-                                   fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
+                                  widthdascrivere := utility_ares.gettextwidth(dascrivere,acanvas);
+                                   fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
                                    brush.style := bsclear;
                                   canvas_draw_chat_text(acanvas,
                                                         cellrect.Left+offsetx,
@@ -619,8 +619,8 @@ italic := False;
                                  if underline then include(stile,fsunderline);
                                  if italic then include(stile,fsitalic);
                                  acanvas.font.Style := stile;
-                                  widthdascrivere := gettextwidth(dascrivere,acanvas);
-                                   fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
+                                  widthdascrivere := utility_ares.gettextwidth(dascrivere,acanvas);
+                                   fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
                                    brush.style := bsclear;
                                   canvas_draw_chat_text(acanvas,
                                                         cellrect.Left+offsetx,
@@ -653,8 +653,8 @@ italic := False;
                                  if underline then include(stile,fsunderline);
                                  if italic then include(stile,fsitalic);
                                   font.Style := stile;
-                                  widthdascrivere := gettextwidth(dascrivere,acanvas);
-                                   fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
+                                  widthdascrivere := utility_ares.gettextwidth(dascrivere,acanvas);
+                                   fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
                                    brush.style := bsclear;
                                   canvas_draw_chat_text(acanvas,
                                                         cellrect.Left+offsetx,
@@ -692,8 +692,8 @@ italic := False;
                                  if underline then include(stile,fsunderline);
                                  if italic then include(stile,fsitalic);
                                  font.Style := stile;
-                                widthdascrivere := gettextwidth(dascrivere,acanvas);
-                                fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
+                                widthdascrivere := utility_ares.gettextwidth(dascrivere,acanvas);
+                                fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
                                 brush.style := bsclear;
                                   canvas_draw_chat_text(acanvas,
                                                         cellrect.Left+offsetx,
@@ -722,8 +722,8 @@ italic := False;
                                  if italic then include(stile,fsitalic);
                                  font.Style := stile;
                                  if dascrivere='' then dascrivere := ' ';
-                                widthdascrivere := gettextwidth(dascrivere,acanvas);
-                                fillrect(rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
+                                widthdascrivere := utility_ares.gettextwidth(dascrivere,acanvas);
+                                fillrect(Classes.Rect(cellrect.left+offsetx,cellrect.top,cellrect.left+offsetx+widthdascrivere,cellrect.Bottom-cellrect.top));
                                 brush.style := bsclear;
                                   canvas_draw_chat_text(acanvas,
                                                         cellrect.Left+offsetx,
@@ -1669,7 +1669,7 @@ cd.dwData := 3232;
 cd.cbData := sizeof(rec);
 cd.lpData := @rec;
 
-sendMessage(hand,WM_COPYDATA,ares_frmmain.Handle, LongInt(@cd));
+sendMessage(hand,WM_COPYDATA,ares_frmmain.Handle, LPARAM(@cd));
 except
 end;
 end;
@@ -2231,10 +2231,10 @@ with ares_frmmain do begin
     Items[2].text := GetLangStringW(STR_AVAILIBILITY);
     Items[3].text := GetLangStringW(STR_TOPIC);
 
-     Items[0].width := gettextwidth( Items[0].text,ares_FrmMain.canvas)+30;
+     Items[0].width := utility_ares.gettextwidth( Items[0].text,ares_FrmMain.canvas)+30;
     if Items[0].width<170 then Items[0].width := 170;
-    Items[1].width := gettextwidth(Items[1].text,ares_FrmMain.canvas)+5;
-    Items[2].width := gettextwidth(Items[2].text,ares_FrmMain.canvas);
+    Items[1].width := utility_ares.gettextwidth(Items[1].text,ares_FrmMain.canvas)+5;
+    Items[2].width := utility_ares.gettextwidth(Items[2].text,ares_FrmMain.canvas);
     Items[3].width := (listview_chat_channel.width-(Items[0].width+Items[1].width+Items[0].width+Items[2].width))-35;
    end;
    endupdate;

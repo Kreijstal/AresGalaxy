@@ -987,133 +987,95 @@ const
 {=============================================================================}
 var
   WSAStartup: function(wVersionRequired: Word; var WSData: TWSAData): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   WSACleanup: function: Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   WSAGetLastError: function: Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   GetServByName: function(name, proto: PChar): PServEnt
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   GetServByPort: function(port: Integer; proto: PChar): PServEnt
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   GetProtoByName: function(name: PChar): PProtoEnt
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   GetProtoByNumber: function(proto: Integer): PProtoEnt
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   GetHostByName: function(name: PChar): PHostEnt
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   GetHostByAddr: function(addr: Pointer; len, Struc: Integer): PHostEnt
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   GetHostName: function(name: PChar; len: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   Shutdown: function(s: TSocket; how: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   SetSockOpt: function(s: TSocket; level, optname: Integer; optval: PChar;
     optlen: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   GetSockOpt: function(s: TSocket; level, optname: Integer; optval: PChar;
     var optlen: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   SendTo: function(s: TSocket; const Buf; len, flags: Integer; addrto: PSockAddr;
     tolen: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   Send: function(s: TSocket; const Buf; len, flags: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   Recv: function(s: TSocket; var Buf; len, flags: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   RecvFrom: function(s: TSocket; var Buf; len, flags: Integer; from: PSockAddr;
     var fromlen: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   ntohs: function(netshort: u_short): u_short
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   ntohl: function(netlong: u_long): u_long
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   Listen: function(s: TSocket; backlog: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   IoctlSocket: function(s: TSocket; cmd: DWORD; var arg: u_long): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   Inet_ntoa: function(inaddr: TInAddr): PChar
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   Inet_addr: function(cp: PChar): u_long
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   htons: function(hostshort: u_short): u_short
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   htonl: function(hostlong: u_long): u_long
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   GetSockName: function(s: TSocket; name: PSockAddr; var namelen: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   GetPeerName: function(s: TSocket; name: PSockAddr; var namelen: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   Connect: function(s: TSocket; name: PSockAddr; namelen: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   CloseSocket: function(s: TSocket): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   Bind: function(s: TSocket; addr: PSockAddr; namelen: Integer): Integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   Accept: function(s: TSocket; addr: PSockAddr; var addrlen: Integer): TSocket
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   Socket: function(af, Struc, Protocol: Integer): TSocket
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   Select: function(nfds: Integer; readfds, writefds, exceptfds: PFDSet;
     timeout: PTimeVal): Longint
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
 
   GetAddrInfo: function(NodeName: PChar; ServName: PChar; Hints: PAddrInfo;
     var Addrinfo: PAddrInfo): integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   FreeAddrInfo: procedure(ai: PAddrInfo)
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
   GetNameInfo: function( addr: PSockAddr; namelen: Integer; host: PChar;
     hostlen: DWORD; serv: PChar; servlen: DWORD; flags: integer): integer
-    {$IFNDEF FPC}{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
-    {$ELSE}= nil;{$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF};{$ENDIF}
+    {$IFDEF LINUX}cdecl{$ELSE}stdcall{$ENDIF} = nil;
 
 {$IFNDEF LINUX}
   __WSAFDIsSet: function (s: TSocket; var FDSet: TFDSet): Bool
-    {$IFNDEF FPC}stdcall = nil;
-    {$ELSE}= nil; stdcall;{$ENDIF}
+    stdcall = nil;
 
   WSAIoctl: function (s: TSocket; dwIoControlCode: DWORD; lpvInBuffer: Pointer;
     cbInBuffer: DWORD; lpvOutBuffer: Pointer; cbOutBuffer: DWORD;
     lpcbBytesReturned: PDWORD; lpOverlapped: Pointer;
     lpCompletionRoutine: pointer): u_int
-    {$IFNDEF FPC}stdcall = nil;
-    {$ELSE}= nil; stdcall;{$ENDIF}
+    stdcall = nil;
 {$ENDIF}
 
 {$IFDEF LINUX}

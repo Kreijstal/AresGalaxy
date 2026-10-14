@@ -28,7 +28,7 @@ interface
 
 uses
  ares_objects,sysutils,comettrees,classes2,graphics,classes,windows,
- ares_types;
+ ares_types_root, ares_types;
 
 function availibility_to_point(aval:word): Byte;
 function availibility_to_str(aval:word): WideString;
@@ -452,27 +452,27 @@ nomefile := utf8strtowidestr(data_search^.filenameS);
       vars_global.formhint.canvas.Font.style := [];
       totx := 0;
       for i := 0 to lista.count -1 do begin
-       locx := gettextwidth(utf8strtowidestr(lista.strings[i]),vars_global.formhint.canvas);
+       locx := utility_ares.gettextwidth(utf8strtowidestr(lista.strings[i]),vars_global.formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
       end;
 
-        locx := gettextwidth(stype,vars_global.formhint.canvas); //type
+        locx := utility_ares.gettextwidth(stype,vars_global.formhint.canvas); //type
         locx := 51+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(size,vars_global.formhint.canvas);   //size
+        locx := utility_ares.gettextwidth(size,vars_global.formhint.canvas);   //size
         locx := 51+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(num_seen,vars_global.formhint.canvas);    //size
+        locx := utility_ares.gettextwidth(num_seen,vars_global.formhint.canvas);    //size
         locx := 5+locx;
         if locx>totx then totx := locx;
 
 
 
       if (Win32Platform=VER_PLATFORM_WIN32_NT) then vars_global.formhint.canvas.Font.style := [fsbold];  //titolo bold
-       locx := gettextwidth(nomefile,vars_global.formhint.canvas);
+       locx := utility_ares.gettextwidth(nomefile,vars_global.formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
 
@@ -589,22 +589,22 @@ if ((data_library^.imageindex=0) or (widestrtoutf8str(ares_frmmain.listview_lib.
        path2 := utf8strtowidestr(data_library^.year);
 
 
-        locx := gettextwidth(path,formhint.canvas);
+        locx := utility_ares.gettextwidth(path,formhint.canvas);
         locx := 71+locx;
         if locx>totx then totx := locx;
 
         if (Win32Platform=VER_PLATFORM_WIN32_NT) then formhint.canvas.Font.style := [fsbold];
-        locx := gettextwidth(location,formhint.canvas);
+        locx := utility_ares.gettextwidth(location,formhint.canvas);
         locx := 71+locx;
         if locx>totx then totx := locx;
 
          if (Win32Platform=VER_PLATFORM_WIN32_NT) then formhint.canvas.Font.style := [];
-        locx := gettextwidth(path2,formhint.canvas);
+        locx := utility_ares.gettextwidth(path2,formhint.canvas);
         locx := 71+locx;
         if locx>totx then totx := locx;
 
         if (Win32Platform=VER_PLATFORM_WIN32_NT) then formhint.canvas.Font.style := [fsbold];
-        locx := gettextwidth(location2,formhint.canvas);
+        locx := utility_ares.gettextwidth(location2,formhint.canvas);
         locx := 71+locx;
         if locx>totx then totx := locx;
 
@@ -802,26 +802,26 @@ end;
 
       totx := 0;
       for i := 0 to lista.count -1 do begin
-       locx := gettextwidth(utf8strtowidestr(lista.strings[i]),formhint.canvas);
+       locx := utility_ares.gettextwidth(utf8strtowidestr(lista.strings[i]),formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
       end;
 
-        locx := gettextwidth(stype,formhint.canvas); //type
+        locx := utility_ares.gettextwidth(stype,formhint.canvas); //type
         locx := 71+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(size,formhint.canvas);     //size
+        locx := utility_ares.gettextwidth(size,formhint.canvas);     //size
         locx := 71+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(location,formhint.canvas);    //size
+        locx := utility_ares.gettextwidth(location,formhint.canvas);    //size
         locx := 71+locx;
         if locx>totx then totx := locx;
 
 
        if (Win32Platform=VER_PLATFORM_WIN32_NT) then formhint.canvas.Font.style := [fsbold];  //titolo bold
-       locx := gettextwidth(nomefile,formhint.canvas);
+       locx := utility_ares.gettextwidth(nomefile,formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
 
@@ -961,21 +961,21 @@ end else lista.add(GetLangStringA(STR_USER)+': '+right_strip_at_agent(data_queue
       formhint.canvas.Font.style := [];
       totx := 0;
       for i := 0 to lista.count -1 do begin
-       locx := gettextwidth(utf8strtowidestr(lista.strings[i]),formhint.canvas);
+       locx := utility_ares.gettextwidth(utf8strtowidestr(lista.strings[i]),formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
       end;
 
-        locx := gettextwidth(stype,formhint.canvas); //type
+        locx := utility_ares.gettextwidth(stype,formhint.canvas); //type
         locx := 56+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(size,formhint.canvas);   //upload_size
+        locx := utility_ares.gettextwidth(size,formhint.canvas);   //upload_size
         locx := 56+locx;
         if locx>totx then totx := locx;
 
        if (Win32Platform=VER_PLATFORM_WIN32_NT) then formhint.canvas.Font.style := [fsbold];  //titolo bold
-       locx := gettextwidth(nomefile,formhint.canvas);
+       locx := utility_ares.gettextwidth(nomefile,formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
 
@@ -1057,7 +1057,7 @@ end else lista.add(GetLangStringA(STR_USER)+': '+right_strip_at_agent(data_queue
       if ((data_queued^.polltime div 1000)+data_queued^.pollmax) - (tempo div 1000)>0 then begin
         formhint.canvas.brush.color := COLOR_PROGRESS_UP;
         formhint.canvas.pen.color := COLOR_PROGRESS_UP;
-       hint_chunk_draw(rect(5,i+7,formhint.width-5,i+27),0,((data_queued^.polltime div 1000)+data_queued^.pollmax) - (tempo div 1000),data_queued^.pollmax,false);
+       hint_chunk_draw(Classes.Rect(5,i+7,formhint.width-5,i+27),0,((data_queued^.polltime div 1000)+data_queued^.pollmax) - (tempo div 1000),data_queued^.pollmax,false);
       end;
 
            formhint.canvas.Unlock;
@@ -1256,42 +1256,42 @@ end;
       formhint.canvas.Font.style := [];
       totx := 0;
       for i := 0 to lista.count -1 do begin
-       locx := gettextwidth(utf8strtowidestr(lista.strings[i]),formhint.canvas);
+       locx := utility_ares.gettextwidth(utf8strtowidestr(lista.strings[i]),formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
       end;
 
-        locx := gettextwidth(stype,formhint.canvas); //type
+        locx := utility_ares.gettextwidth(stype,formhint.canvas); //type
         locx := 56+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(upload_size,formhint.canvas);    //upload_size
+        locx := utility_ares.gettextwidth(upload_size,formhint.canvas);    //upload_size
         locx := 56+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(size,formhint.canvas);    //real size
+        locx := utility_ares.gettextwidth(size,formhint.canvas);    //real size
         locx := 56+locx;
         if locx>totx then totx := locx;
 
 
-        locx := gettextwidth(status,formhint.canvas);    //status
+        locx := utility_ares.gettextwidth(status,formhint.canvas);    //status
         locx := 5+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(remaining,formhint.canvas);    //remaining
+        locx := utility_ares.gettextwidth(remaining,formhint.canvas);    //remaining
         locx := 5+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(velocita,formhint.canvas);    //velocita
+        locx := utility_ares.gettextwidth(velocita,formhint.canvas);    //velocita
         locx := 5+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(downloaded,formhint.canvas);    //bandwidths
+        locx := utility_ares.gettextwidth(downloaded,formhint.canvas);    //bandwidths
         locx := 5+locx;
         if locx>totx then totx := locx;
 
        if (Win32Platform=VER_PLATFORM_WIN32_NT) then formhint.canvas.Font.style := [fsbold];  //titolo bold
-       locx := gettextwidth(nomefile,formhint.canvas);
+       locx := utility_ares.gettextwidth(nomefile,formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
 
@@ -1304,7 +1304,7 @@ end;
 
      
      formhint.canvas.brush.color := clgray;
-     formhint.canvas.framerect(rect(0,0,formhint.width,formhint.height));
+     formhint.canvas.framerect(Classes.Rect(0,0,formhint.width,formhint.height));
      formhint.canvas.pen.color := vars_global.COLORE_HINT_BG;
      formhint.canvas.brush.color := vars_global.COLORE_HINT_BG;
      if data_upload^.completed then begin
@@ -1410,24 +1410,24 @@ end;
                           formhint.canvas.brush.color := COLOR_PROGRESS_UP; //     $00BA3232; //$000030ff;
                           formhint.canvas.pen.color := COLOR_PROGRESS_UP;
                        end;
-                  hint_chunk_draw(rect(3,i+5,formhint.width-2,i+29),0,data_upload^.progress,data_upload^.size,false);
+                  hint_chunk_draw(Classes.Rect(3,i+5,formhint.width-2,i+29),0,data_upload^.progress,data_upload^.size,false);
 
                formhint.canvas.brush.color := COLOR_MISSING_CHUNK; //     draw empty little bar
                formhint.canvas.pen.color := COLOR_MISSING_CHUNK;
-               hint_chunk_draw(rect(3,i+17,formhint.width-2,i+29),0,100,100,false);
+               hint_chunk_draw(Classes.Rect(3,i+17,formhint.width-2,i+29),0,100,100,false);
 
                formhint.canvas.brush.color := COLOR_PARTIAL_CHUNK; //     $00BA3232; //$000030ff;
                formhint.canvas.pen.color := COLOR_PARTIAL_CHUNK;
-               hint_chunk_draw(rect(3,i+17,formhint.width-2,i+29),data_upload^.start_point,data_upload^.start_point+data_upload^.size,data_upload^.filesize_reale,false);
+               hint_chunk_draw(Classes.Rect(3,i+17,formhint.width-2,i+29),data_upload^.start_point,data_upload^.start_point+data_upload^.size,data_upload^.filesize_reale,false);
 
                 //draw position over chunk
                formhint.canvas.brush.color := COLORE_ULSOURCE_CHUNK; //     $00BA3232; //$000030ff;
                formhint.canvas.pen.color := COLORE_ULSOURCE_CHUNK;
-               hint_chunk_draw(rect(3,i+17,formhint.width-2,i+29),data_upload^.start_point,data_upload^.start_point+data_upload^.progress,data_upload^.filesize_reale,false);
+               hint_chunk_draw(Classes.Rect(3,i+17,formhint.width-2,i+29),data_upload^.start_point,data_upload^.start_point+data_upload^.progress,data_upload^.filesize_reale,false);
 
                formhint.canvas.brush.color := cl3dlight; //     riga separatore chunks
                formhint.canvas.pen.color := cl3dlight;
-               formhint.canvas.fillrect(rect(6,i+19,formhint.width-6,i+20));
+               formhint.canvas.fillrect(Classes.Rect(6,i+19,formhint.width-6,i+20));
 
                 formhint.posygraph := -1; // nasconde il grafico
                 formhint.Canvas.Unlock;
@@ -1439,24 +1439,24 @@ end;
 
         formhint.canvas.brush.color := COLOR_PROGRESS_UP; //     $00BA3232; //$000030ff;
         formhint.canvas.pen.color := COLOR_PROGRESS_UP;
-        hint_chunk_draw(rect(3,i+5,formhint.width-2,i+29),0,data_upload^.progress{+data_upload^.continued_from},data_upload^.size{+data_upload^.continued_from},false);
+        hint_chunk_draw(Classes.Rect(3,i+5,formhint.width-2,i+29),0,data_upload^.progress{+data_upload^.continued_from},data_upload^.size{+data_upload^.continued_from},false);
 
 
          formhint.canvas.brush.color := COLOR_MISSING_CHUNK; //     draw empty little bar
          formhint.canvas.pen.color := COLOR_MISSING_CHUNK;
-         hint_chunk_draw(rect(3,i+17,formhint.width-2,i+29),0,100,100,false);
+         hint_chunk_draw(Classes.Rect(3,i+17,formhint.width-2,i+29),0,100,100,false);
 
 
 
      //draw chunk requested over overal file
      formhint.canvas.brush.color := COLOR_PARTIAL_CHUNK; //     $00BA3232; //$000030ff;
      formhint.canvas.pen.color := COLOR_PARTIAL_CHUNK;
-     hint_chunk_draw(rect(3,i+17,formhint.width-2,i+29),data_upload^.start_point,data_upload^.start_point+data_upload^.size,data_upload^.filesize_reale,false);
+     hint_chunk_draw(Classes.Rect(3,i+17,formhint.width-2,i+29),data_upload^.start_point,data_upload^.start_point+data_upload^.size,data_upload^.filesize_reale,false);
 
      //draw position over chunk
      formhint.canvas.brush.color := COLORE_ULSOURCE_CHUNK; //     $00BA3232; //$000030ff;
      formhint.canvas.pen.color := COLORE_ULSOURCE_CHUNK;
-     hint_chunk_draw(rect(3,i+17,formhint.width-2,i+29),data_upload^.start_point,data_upload^.start_point+data_upload^.progress,data_upload^.filesize_reale,false);
+     hint_chunk_draw(Classes.Rect(3,i+17,formhint.width-2,i+29),data_upload^.start_point,data_upload^.start_point+data_upload^.progress,data_upload^.filesize_reale,false);
 
 
           if data_upload^.upload<>nil then formhint.posygraph := i+29;
@@ -1733,40 +1733,40 @@ if data_upload^.size=0 then downloaded := GetLangStringW(STR_VOLUME_TRANSMITTED)
       formhint.canvas.Font.style := [];
       totx := 0;
       for i := 0 to lista.count -1 do begin
-       locx := gettextwidth(utf8strtowidestr(lista.strings[i]),formhint.canvas);
+       locx := utility_ares.gettextwidth(utf8strtowidestr(lista.strings[i]),formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
       end;
 
 
 
-        locx := gettextwidth(stype,formhint.canvas); //type
+        locx := utility_ares.gettextwidth(stype,formhint.canvas); //type
         locx := 51+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(size,formhint.canvas);    //size
+        locx := utility_ares.gettextwidth(size,formhint.canvas);    //size
         locx := 51+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(status,formhint.canvas);    //status
+        locx := utility_ares.gettextwidth(status,formhint.canvas);    //status
         locx := 5+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(remaining,formhint.canvas);      //remaining
+        locx := utility_ares.gettextwidth(remaining,formhint.canvas);      //remaining
         locx := 5+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(velocita,formhint.canvas);      //velocita
+        locx := utility_ares.gettextwidth(velocita,formhint.canvas);      //velocita
         locx := 5+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(downloaded,formhint.canvas);    //bandwidths
+        locx := utility_ares.gettextwidth(downloaded,formhint.canvas);    //bandwidths
         locx := 5+locx;
         if locx>totx then totx := locx;
 
 
        if (Win32Platform=VER_PLATFORM_WIN32_NT) then formhint.canvas.Font.style := [fsbold];  //titolo bold
-       locx := gettextwidth(nomefile,formhint.canvas);
+       locx := utility_ares.gettextwidth(nomefile,formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
 
@@ -1778,7 +1778,7 @@ if data_upload^.size=0 then downloaded := GetLangStringW(STR_VOLUME_TRANSMITTED)
 
     formhint.canvas.lock;
      formhint.canvas.brush.color := clgray;
-     formhint.canvas.framerect(rect(0,0,formhint.width,formhint.height));
+     formhint.canvas.framerect(Classes.Rect(0,0,formhint.width,formhint.height));
 
      formhint.canvas.pen.color := vars_global.COLORE_HINT_BG; //tooltip
      formhint.canvas.brush.color := vars_global.COLORE_HINT_BG;
@@ -1872,29 +1872,29 @@ if data_upload^.size=0 then downloaded := GetLangStringW(STR_VOLUME_TRANSMITTED)
 
      formhint.canvas.brush.color := COLOR_PROGRESS_DOWN; //     $00BA3232; //$000030ff;
      formhint.canvas.pen.color := COLOR_PROGRESS_DOWN;
-     hint_chunk_draw(rect(3,i+4,formhint.width-2,i+29),0,data_parent^.progress,data_parent^.size,false);
+     hint_chunk_draw(Classes.Rect(3,i+4,formhint.width-2,i+29),0,data_parent^.progress,data_parent^.size,false);
 
 
      formhint.canvas.pen.style := pssolid;
      formhint.canvas.brush.color := COLOR_MISSING_CHUNK;
      formhint.canvas.pen.color := COLOR_MISSING_CHUNK;
-     formhint.canvas.fillrect(rect(6,i+19,formhint.width-6,i+26));
+     formhint.canvas.fillrect(Classes.Rect(6,i+19,formhint.width-6,i+26));
 
 
                // draw ICH bar
           if length(data_parent^.VisualBitField)>0 then begin
            formhint.canvas.brush.color := COLORE_PHASH_VERIFY; //
            formhint.canvas.pen.color := COLORE_PHASH_VERIFY;
-           Utility_ares.draw_transfer_bitfield(formhint.canvas,8,rect(3,i+20,formhint.width-3,i+30),data_parent);
+           Utility_ares.draw_transfer_bitfield(formhint.canvas,8,Classes.Rect(3,i+20,formhint.width-3,i+30),data_parent);
           end;
           
         { if data_upload^.endp>0 then begin
                 formhint.canvas.brush.color := COLOR_PARTIAL_CHUNK;
                 formhint.canvas.pen.color := COLOR_PARTIAL_CHUNK;
-                 hint_chunk_draw(rect(3,i+16,formhint.width-2,i+29),data_upload^.startp,data_upload^.endp,data_parent^.size,false);
+                 hint_chunk_draw(Classes.Rect(3,i+16,formhint.width-2,i+29),data_upload^.startp,data_upload^.endp,data_parent^.size,false);
                   formhint.canvas.brush.color := COLORE_ULSOURCE_CHUNK;
                   formhint.canvas.pen.color := COLORE_ULSOURCE_CHUNK;
-                   hint_chunk_draw(rect(3,i+16,formhint.width-2,i+29),data_upload^.startp,data_upload^.startp+data_upload^.progress_child,data_parent^.size,false);
+                   hint_chunk_draw(Classes.Rect(3,i+16,formhint.width-2,i+29),data_upload^.startp,data_upload^.startp+data_upload^.progress_child,data_parent^.size,false);
          end;  }
 
 
@@ -1962,40 +1962,40 @@ vars_global.graphIsUpload := False;
           '   UL '+FloatToStrF(ksecUp, ffNumber, 18, 2)+GetLangStringW(STR_KB_SEC);
   end;
 
-      locx := gettextwidth(strUser,formhint.canvas); //user
+      locx := utility_ares.gettextwidth(strUser,formhint.canvas); //user
       locx := 5+locx;
       if locx>totx then totx := locx;
-      locx := gettextwidth(status,formhint.canvas); //status
+      locx := utility_ares.gettextwidth(status,formhint.canvas); //status
       locx := 5+locx;
       if locx>totx then totx := locx;
       toty := 57;
       if dataSource^.status=btSourceConnected then begin
-       locx := gettextwidth(bitstatus,formhint.canvas); //status
+       locx := utility_ares.gettextwidth(bitstatus,formhint.canvas); //status
        locx := 5+locx;
        if locx>totx then totx := locx;
        inc(toty,14); // has graph
       end;
       if ((dataSource^.progress>0) or (dataSource^.status=btSourceConnected)) then begin
-       locx := gettextwidth(progress,formhint.canvas); //status
+       locx := utility_ares.gettextwidth(progress,formhint.canvas); //status
        locx := 5+locx;
        if locx>totx then totx := locx;
        inc(toty,44); // has progress
       end;
       if ((dataSource^.recv>0) or (dataSource^.sent>0)) then begin
-       locx := gettextwidth(transmitted,formhint.canvas); //status
+       locx := utility_ares.gettextwidth(transmitted,formhint.canvas); //status
        locx := 5+locx;
        if locx>totx then totx := locx;
        inc(toty,14);
       end;
       if ((dataSource^.speedUp>0) or (dataSource^.speedDown>0)) and (dataSource.status=btSourceConnected) then begin
-       locx := gettextwidth(speed,formhint.canvas); //status
+       locx := utility_ares.gettextwidth(speed,formhint.canvas); //status
        locx := 5+locx;
        if locx>totx then totx := locx;
        inc(toty,14);
       end;
 
        if (Win32Platform=VER_PLATFORM_WIN32_NT) then formhint.canvas.Font.style := [fsbold];  //titolo bold
-       locx := gettextwidth(fname,formhint.canvas);
+       locx := utility_ares.gettextwidth(fname,formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
 
@@ -2006,7 +2006,7 @@ vars_global.graphIsUpload := False;
 
      formhint.canvas.lock;
      formhint.canvas.brush.color := clgray;
-     formhint.canvas.framerect(rect(0,0,formhint.width,formhint.height));
+     formhint.canvas.framerect(Classes.Rect(0,0,formhint.width,formhint.height));
 
      formhint.canvas.pen.color := vars_global.COLORE_HINT_BG; //tooltip
      formhint.canvas.brush.color := vars_global.COLORE_HINT_BG;
@@ -2080,7 +2080,7 @@ vars_global.graphIsUpload := False;
      if dataSource^.progress=100 then begin
         formhint.canvas.brush.color := COLOR_DL_COMPLETED;
         formhint.canvas.pen.color := COLOR_DL_COMPLETED;
-        hint_chunk_draw(rect(3,rc.top-2,formhint.width-2,rc.top+21),0,1000,1000,false);
+        hint_chunk_draw(Classes.Rect(3,rc.top-2,formhint.width-2,rc.top+21),0,1000,1000,false);
      end else
      if dataSource^.progress>0 then begin
        rc.top := rc.top+2;
@@ -2203,31 +2203,31 @@ end else
       //calculate hint window's dimensions
       totx := 0;
 
-        locx := gettextwidth(stype,formhint.canvas); //type
+        locx := utility_ares.gettextwidth(stype,formhint.canvas); //type
         locx := 51+locx;
         if locx>totx then totx := locx;
-        locx := gettextwidth(size,formhint.canvas);  //size
+        locx := utility_ares.gettextwidth(size,formhint.canvas);  //size
         locx := 51+locx;
         if locx>totx then totx := locx;
-        locx := gettextwidth(status,formhint.canvas);  //status
+        locx := utility_ares.gettextwidth(status,formhint.canvas);  //status
         locx := 5+locx;
         if locx>totx then totx := locx;
-        locx := gettextwidth(tracker,formhint.canvas);  //tracker
+        locx := utility_ares.gettextwidth(tracker,formhint.canvas);  //tracker
         locx := 5+locx;
         if locx>totx then totx := locx;
-        locx := gettextwidth(peers,formhint.canvas);  //peers
+        locx := utility_ares.gettextwidth(peers,formhint.canvas);  //peers
         locx := 5+locx;
         if locx>totx then totx := locx;
-        locx := gettextwidth(speeddn,formhint.canvas);  //speed
+        locx := utility_ares.gettextwidth(speeddn,formhint.canvas);  //speed
         locx := 5+locx;
         if locx>totx then totx := locx;
-        locx := gettextwidth(remaining,formhint.canvas);  //remaining
+        locx := utility_ares.gettextwidth(remaining,formhint.canvas);  //remaining
         locx := 5+locx;
         if locx>totx then totx := locx;
-        locx := gettextwidth(strDownloaded,formhint.canvas);  //downloaded
+        locx := utility_ares.gettextwidth(strDownloaded,formhint.canvas);  //downloaded
         locx := 5+locx;
         if locx>totx then totx := locx;
-        locx := gettextwidth(strShared,formhint.canvas);  //shared
+        locx := utility_ares.gettextwidth(strShared,formhint.canvas);  //shared
         emoticx := locx+7;
         locx := 27+locx;
         if locx>totx then totx := locx;
@@ -2235,7 +2235,7 @@ end else
 
         // fname font is bold
         if (Win32Platform=VER_PLATFORM_WIN32_NT) then formhint.canvas.Font.style := [fsbold];  //titolo bold
-        locx := gettextwidth(fname,formhint.canvas);
+        locx := utility_ares.gettextwidth(fname,formhint.canvas);
         locx := 5+locx;
         if locx>totx then totx := locx;
 
@@ -2248,7 +2248,7 @@ end else
        //start drawing
      formhint.canvas.lock;
      formhint.canvas.brush.color := clgray;
-     formhint.canvas.framerect(rect(0,0,formhint.width,formhint.height));
+     formhint.canvas.framerect(Classes.Rect(0,0,formhint.width,formhint.height));
 
      formhint.canvas.pen.color := vars_global.COLORE_HINT_BG; //tooltip
      formhint.canvas.brush.color := vars_global.COLORE_HINT_BG;
@@ -2350,7 +2350,7 @@ end else
      if dataTransfer^.downloaded=dataTransfer^.size then begin
         formhint.canvas.brush.color := COLOR_DL_COMPLETED;
         formhint.canvas.pen.color := COLOR_DL_COMPLETED;
-        hint_chunk_draw(rect(3,rc.top-2,formhint.width-2,rc.top+21),0,1000,1000,false);
+        hint_chunk_draw(Classes.Rect(3,rc.top-2,formhint.width-2,rc.top+21),0,1000,1000,false);
     end else
     if dataTransfer^.downloaded>0 then begin
        rc.top := rc.top+2;
@@ -2456,28 +2456,28 @@ nickname := GetLangStringW(STR_USER)+': '+utf8strtowidestr(dataSource^.nickname)
       totx := 0;
 
 
-      locx := gettextwidth(downloaded,formhint.canvas); //progress
+      locx := utility_ares.gettextwidth(downloaded,formhint.canvas); //progress
       locx := 5+locx;
       if locx>totx then totx := locx;
 
-      locx := gettextwidth(status,formhint.canvas); //status
+      locx := utility_ares.gettextwidth(status,formhint.canvas); //status
       locx := 5+locx;
       if locx>totx then totx := locx;
 
-      locx := gettextwidth(nickname,formhint.canvas); //nickname
+      locx := utility_ares.gettextwidth(nickname,formhint.canvas); //nickname
       locx := 5+locx;
       if locx>totx then totx := locx;
 
-      locx := gettextwidth(velocita,formhint.canvas); //speed
+      locx := utility_ares.gettextwidth(velocita,formhint.canvas); //speed
       locx := 5+locx;
       if locx>totx then totx := locx;
 
-      locx := gettextwidth(remaining,formhint.canvas); //remaining
+      locx := utility_ares.gettextwidth(remaining,formhint.canvas); //remaining
       locx := 5+locx;
       if locx>totx then totx := locx;
 
        if (Win32Platform=VER_PLATFORM_WIN32_NT) then formhint.canvas.Font.style := [fsbold];  //filename bold
-       locx := gettextwidth(nomefile,formhint.canvas);
+       locx := utility_ares.gettextwidth(nomefile,formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
 
@@ -2491,7 +2491,7 @@ nickname := GetLangStringW(STR_USER)+': '+utf8strtowidestr(dataSource^.nickname)
 
      formhint.canvas.lock;
      formhint.canvas.brush.color := clgray;
-     formhint.canvas.framerect(rect(0,0,formhint.width,formhint.height));
+     formhint.canvas.framerect(Classes.Rect(0,0,formhint.width,formhint.height));
 
      formhint.canvas.pen.color := vars_global.COLORE_HINT_BG; //tooltip
      formhint.canvas.brush.color := vars_global.COLORE_HINT_BG;
@@ -2546,30 +2546,30 @@ nickname := GetLangStringW(STR_USER)+': '+utf8strtowidestr(dataSource^.nickname)
      formhint.canvas.Rectangle(5,101,formhint.Width-5,122);
      formhint.canvas.brush.color := COLORE_DLSOURCE;
      formhint.canvas.pen.color := COLORE_DLSOURCE;
-     hint_chunk_draw(rect(3,99,formhint.width-2,123),0,dataSource^.progress,dataSource^.size,false);
+     hint_chunk_draw(Classes.Rect(3,99,formhint.width-2,123),0,dataSource^.progress,dataSource^.size,false);
 
      
      // draw gray chunk bar
      formhint.canvas.pen.style := pssolid;
      formhint.canvas.brush.color := COLOR_MISSING_CHUNK;
      formhint.canvas.pen.color := COLOR_MISSING_CHUNK;
-     formhint.canvas.fillrect(rect(6,114,formhint.width-6,121));
+     formhint.canvas.fillrect(Classes.Rect(6,114,formhint.width-6,121));
 
 
      // draw our position in file
      formhint.canvas.brush.color := COLOR_PARTIAL_CHUNK;
      formhint.canvas.pen.color := COLOR_PARTIAL_CHUNK;
-     hint_chunk_draw(rect(3,111,formhint.width-2,124),dataSource^.startp,dataSource^.endp,datadownload^.size,false);
+     hint_chunk_draw(Classes.Rect(3,111,formhint.width-2,124),dataSource^.startp,dataSource^.endp,datadownload^.size,false);
      formhint.canvas.brush.color := COLORE_DLSOURCE;
      formhint.canvas.pen.color := COLORE_DLSOURCE;
-     hint_chunk_draw(rect(3,111,formhint.width-2,124),dataSource^.startp,dataSource^.startp+dataSource^.progress,datadownload^.size,false);
+     hint_chunk_draw(Classes.Rect(3,111,formhint.width-2,124),dataSource^.startp,dataSource^.startp+dataSource^.progress,datadownload^.size,false);
 
 
                // draw ICH bar
       if length(datadownload^.VisualBitField)>0 then begin
        formhint.canvas.brush.color := COLORE_PHASH_VERIFY; //
        formhint.canvas.pen.color := COLORE_PHASH_VERIFY;
-       Utility_ares.draw_transfer_bitfield(formhint.canvas,8,rect(3,119,formhint.width-3,125),datadownload);
+       Utility_ares.draw_transfer_bitfield(formhint.canvas,8,Classes.Rect(3,119,formhint.width-3,125),datadownload);
       end;
 
      formhint.posygraph := 124;
@@ -2726,44 +2726,44 @@ fill_download_hint_details(data_download,lista);
       formhint.canvas.Font.style := [];
       totx := 0;
       for i := 0 to lista.count -1 do begin
-       locx := gettextwidth(utf8strtowidestr(lista.strings[i]),formhint.canvas);
+       locx := utility_ares.gettextwidth(utf8strtowidestr(lista.strings[i]),formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
       end;
 
 
 
-        locx := gettextwidth(stype,formhint.canvas); //type
+        locx := utility_ares.gettextwidth(stype,formhint.canvas); //type
         locx := 51+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(size,formhint.canvas);    //size
+        locx := utility_ares.gettextwidth(size,formhint.canvas);    //size
         locx := 51+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(sources,formhint.canvas);   //sources
+        locx := utility_ares.gettextwidth(sources,formhint.canvas);   //sources
         locx := 5+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(status,formhint.canvas);    //status
+        locx := utility_ares.gettextwidth(status,formhint.canvas);    //status
         locx := 5+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(remaining,formhint.canvas);      //remaining
+        locx := utility_ares.gettextwidth(remaining,formhint.canvas);      //remaining
         locx := 5+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(velocita,formhint.canvas);      //velocita
+        locx := utility_ares.gettextwidth(velocita,formhint.canvas);      //velocita
         locx := 5+locx;
         if locx>totx then totx := locx;
 
-        locx := gettextwidth(downloaded,formhint.canvas);    //bandwidths
+        locx := utility_ares.gettextwidth(downloaded,formhint.canvas);    //bandwidths
         locx := 5+locx;
         if locx>totx then totx := locx;
 
 
        if (Win32Platform=VER_PLATFORM_WIN32_NT) then formhint.canvas.Font.style := [fsbold];  //titolo bold
-       locx := gettextwidth(nomefile,formhint.canvas);
+       locx := utility_ares.gettextwidth(nomefile,formhint.canvas);
        locx := 5+locx;
        if locx>totx then totx := locx;
 
@@ -2779,7 +2779,7 @@ fill_download_hint_details(data_download,lista);
 
     formhint.canvas.lock;
      formhint.canvas.brush.color := clgray;
-     formhint.canvas.framerect(rect(0,0,formhint.width,formhint.height));
+     formhint.canvas.framerect(Classes.Rect(0,0,formhint.width,formhint.height));
 
      formhint.canvas.pen.color := vars_global.COLORE_HINT_BG; //tooltip
      formhint.canvas.brush.color := vars_global.COLORE_HINT_BG;
@@ -2880,18 +2880,18 @@ fill_download_hint_details(data_download,lista);
      if data_download^.state=dlCompleted then begin
         formhint.canvas.brush.color := COLOR_DL_COMPLETED;
         formhint.canvas.pen.color := COLOR_DL_COMPLETED;
-        hint_chunk_draw(rect(3,i+4,formhint.width-2,i+29),0,1000,1000,false);
+        hint_chunk_draw(Classes.Rect(3,i+4,formhint.width-2,i+29),0,1000,1000,false);
     end else begin
         formhint.canvas.brush.color := COLOR_PROGRESS_DOWN; //     $00BA3232; //$000030ff;
         formhint.canvas.pen.color := COLOR_PROGRESS_DOWN;
-        hint_chunk_draw(rect(3,i+4,formhint.width-2,i+29),0,data_download^.progress,data_download^.size,false);
+        hint_chunk_draw(Classes.Rect(3,i+4,formhint.width-2,i+29),0,data_download^.progress,data_download^.size,false);
 
 
 
      formhint.canvas.pen.style := pssolid;
      formhint.canvas.brush.color := COLOR_MISSING_CHUNK;
      formhint.canvas.pen.color := COLOR_MISSING_CHUNK; //cl3dlight;
-     formhint.canvas.fillrect(rect(6,i+19,formhint.width-6,i+26));
+     formhint.canvas.fillrect(Classes.Rect(6,i+19,formhint.width-6,i+26));
     end;
 
 
@@ -2910,10 +2910,10 @@ if data_download^.state<>dlCompleted then begin
                 if data_child^.endp>0 then begin
                  formhint.canvas.brush.color := COLOR_PARTIAL_CHUNK; //     $00BA3232; //$000030ff;
                  formhint.canvas.pen.color := COLOR_PARTIAL_CHUNK;
-                  hint_chunk_draw(rect(3,i+16,formhint.width-2,i+29),data_child^.startp,data_child^.endp,data_download^.size,false);
+                  hint_chunk_draw(Classes.Rect(3,i+16,formhint.width-2,i+29),data_child^.startp,data_child^.endp,data_download^.size,false);
                    formhint.canvas.brush.color := COLORE_DLSOURCE; //     $00BA3232; //$000030ff;
                    formhint.canvas.pen.color := COLORE_DLSOURCE;
-                    hint_chunk_draw(rect(3,i+16,formhint.width-2,i+29),data_child^.startp,data_child^.startp+data_child^.progress,data_download^.size,false);
+                    hint_chunk_draw(Classes.Rect(3,i+16,formhint.width-2,i+29),data_child^.startp,data_child^.startp+data_child^.progress,data_download^.size,false);
                  end;
                 end;
             node_child := ares_frmmain.treeview_download.getnextsibling(node_child);
@@ -2927,7 +2927,7 @@ end; //if not completed
           if length(data_download^.VisualBitField)>0 then begin
            formhint.canvas.brush.color := COLORE_PHASH_VERIFY; //
            formhint.canvas.pen.color := COLORE_PHASH_VERIFY;
-           Utility_ares.draw_transfer_bitfield(formhint.canvas,8,rect(3,i+20,formhint.width-3,i+30),data_download);
+           Utility_ares.draw_transfer_bitfield(formhint.canvas,8,Classes.Rect(3,i+20,formhint.width-3,i+30),data_download);
           end;
 
                    

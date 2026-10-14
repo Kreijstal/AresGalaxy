@@ -61,7 +61,7 @@ if selected_node.childcount>0 then begin
      datachild := listview.getdata(node);
 
        risorsa := trisorsa_download.create;
-       risorsa.handle_download := cardinal(download);
+       risorsa.handle_download := THandle(download);
        risorsa.download := download;
 
         with risorsa do begin
@@ -85,7 +85,7 @@ end;
 
 
       risorsa := trisorsa_download.create;
-       risorsa.handle_download := cardinal(download);
+       risorsa.handle_download := THandle(download);
        risorsa.download := download;
         with risorsa do begin
           InsertServer(datao^.ip_server,datao^.port_server);
@@ -141,7 +141,7 @@ addedcount := 0;
       if download.state=dlPaused then risorsa.state := srs_paused;
 
 
-     risorsa.handle_download := cardinal(download);
+     risorsa.handle_download := THandle(download);
      risorsa.nickname := copy(STR_ANON,1,length(STR_ANON))+inttohex(random(255),2)+inttohex(random(255),2)+copy(STR_UNKNOWNCLIENT,1,length(STR_UNKNOWNCLIENT));
      risorsa.ip := ip;
      risorsa.porta := port;
@@ -295,7 +295,7 @@ try
   risorsaz := trisorsa_download.create;
 
    if download.state=dlPaused then risorsaz.state := srs_paused;
-  risorsaz.handle_download := cardinal(download);
+  risorsaz.handle_download := THandle(download);
   risorsaz.nickname := 'mesh'+lowercase(inttohex(random(255),2)+inttohex(random(255),2))+STR_UNKNOWNCLIENT;
   risorsaz.ip := ip_user;
   risorsaz.porta := port_user;
@@ -394,7 +394,7 @@ end;
  if add then begin   // ce ne freghiamo e prolunghiamo vita a systemtime della risorsa?? o parsiamo systemtime...mmh
     risorsaz := trisorsa_download.create;
      if download.state=dlPaused then risorsaz.state := srs_paused;
-    risorsaz.handle_download := cardinal(download);
+    risorsaz.handle_download := THandle(download);
     risorsaz.nickname := ipdotstring_to_anonnick(ipint_to_dotstring(ip))+STR_UNKNOWNCLIENT;
     risorsaz.ip := ip;
     risorsaz.porta := port;

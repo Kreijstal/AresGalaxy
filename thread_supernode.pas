@@ -5372,7 +5372,7 @@ end;
 
 procedure tthread_supernode.accept;
 var
-h: TSocket;
+h: {$IFDEF FPC}HSocket{$ELSE}TSocket{$ENDIF}; // FPC WinSock.TSocket is pointer sized, blcksock uses 32 bit handles
 usr:precord_socket_user;
 ipi: Cardinal;
 sin:synsock.TSockAddrIn;

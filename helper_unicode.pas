@@ -180,7 +180,7 @@ begin { WideCharBufToUTF8Buf }
       AddByte($80 OR (wc AND $3F));
     end;
   end; //for
-  Result := integer(pch)-integer(@utf8Buf);
+  Result := PAnsiChar(pch)-PAnsiChar(@utf8Buf);
 end; { WideCharBufToUTF8Buf }
 
 function utf8strtowidestr(const strin: string): WideString;
@@ -240,7 +240,7 @@ begin
       Dec(leftUTF8,3);
     end;
   end; //while
-  Result := integer(pwc)-integer(@unicodeBuf);
+  Result := PAnsiChar(pwc)-PAnsiChar(@unicodeBuf);
 end; { UTF8BufToWideCharBuf }
 
 

@@ -61,7 +61,7 @@ type
   ip_global: Cardinal;
   port_global: Word;
 
-  m_graphObject: Cardinal;
+  m_graphObject: THandle;
   FirstGraphSample:precord_graph_sample;
   LastGraphSample:precord_graph_sample;
   NumGraphStats: Word;
@@ -653,7 +653,7 @@ if tempo-risorsa.lastUDPOut<risorsa.nextUDPOutInterval then exit;
  buffer[0] := CMD_UDPTRANSFER_PUSH;
  move(risorsa.ip,buffer[1],4);
  move(download.hash_sha1[1],buffer[5],20);
- num32 := cardinal(risorsa);
+ num32 := THandle(risorsa);
  move(num32,buffer[25],4);
 
  // send packet to source's supernode
@@ -768,7 +768,7 @@ download := risorsa.download;
  // download's hash and self handle
  buffer[0] := CMD_UDPTRANSFER_FILEREQ;
  move(download.hash_sha1[1],buffer[1],20);
- num32 := cardinal(risorsa);
+ num32 := THandle(risorsa);
  move(num32,buffer[21],4);
 
  FillChar(Sin, Sizeof(Sin), 0);
@@ -841,7 +841,7 @@ if not TCPSocket_canRead(risorsa.UDP_socket,0,er) then exit;
  end;
 
  move(buffer[21],num32,4);
- if num32<>cardinal(risorsa) then begin
+ if num32<>THandle(risorsa) then begin
   SourceDoIdle(risorsa,false);
   exit;
  end;
@@ -914,7 +914,7 @@ if tempo-risorsa.lastUDPOut<risorsa.nextUDPOutInterval then exit;
  // download's hash and self handle + wanted progress and max len
  buffer[0] := CMD_UDPTRANSFER_PIECEREQ;
  move(download.hash_sha1[1],buffer[1],20);
-  num32 := cardinal(risorsa);
+  num32 := THandle(risorsa);
  move(num32,buffer[21],4);
  num64 := risorsa.progress_su_disco+risorsa.start_byte;
   move(num64,buffer[25],8);
@@ -1026,7 +1026,7 @@ if not TCPSocket_canRead(risorsa.UDP_socket,0,er) then exit;
 
 
  move(buffer[21],num32,4);
- if num32<>cardinal(risorsa) then begin  // not related to this source?
+ if num32<>THandle(risorsa) then begin  // not related to this source?
   SourceDoIdle(risorsa,false);
   exit;
  end;
@@ -1259,8 +1259,8 @@ if not TCPSocket_canRead(risorsa.UDP_socket,0,er) then exit;
        inc(risorsa.progress,lenData);
         inc(download.progress,lenData);
 
-        if ((cardinal(download)=m_graphObject) or
-            (cardinal(risorsa)=m_graphObject)) then GraphAddSample(lenData);
+        if ((THandle(download)=m_graphObject) or
+            (THandle(risorsa)=m_graphObject)) then GraphAddSample(lenData);
 
        if risorsa.size_to_receive<=0 then begin
          dec_download_num(risorsa.download);
@@ -1321,7 +1321,7 @@ if not TCPSocket_canRead(risorsa.UDP_socket,0,er) then exit;
  end;
 
  move(buffer[21],num32,4);
- if num32<>cardinal(risorsa) then begin
+ if num32<>THandle(risorsa) then begin
   SourceDoIdle(risorsa,false);
   exit;
  end;
@@ -1422,7 +1422,7 @@ if tempo-risorsa.lastUDPOut<risorsa.nextUDPOutInterval then exit;
 
  buffer[0] := CMD_UDPTRANSFER_ICHPIECEREQ;
  move(download.hash_sha1[1],buffer[1],20);
- num32 := cardinal(risorsa);
+ num32 := THandle(risorsa);
  move(num32,buffer[21],4);
  num32 := download.phash_stream.size;
  move(num32,buffer[25],4);
@@ -1733,7 +1733,7 @@ for i := 0 to lista_download.count-1 do begin
    risorsa := download.lista_risorse[h];
                                                            
      if ((vsExpanded in download.display_node.States) or
-         (cardinal(download)=vars_global.handle_obj_GraphHint)) then begin
+         (THandle(download)=vars_global.handle_obj_GraphHint)) then begin
       // if risorsa.state=srs_paused then include(risorsa.display_node.states,vsHidden)
       //  else Exclude(risorsa.display_node.states,vsHidden);
        risorsa.display_data^.state := risorsa.state;
@@ -1768,7 +1768,7 @@ for i := 0 to lista_download.count-1 do begin
        end;
 
        if (vsExpanded in download.display_node.States) then
-        if cardinal(risorsa)=vars_global.handle_obj_GraphHint then
+        if THandle(risorsa)=vars_global.handle_obj_GraphHint then
          update_hint(risorsa.display_node);
   end;
   {
@@ -1797,7 +1797,7 @@ for i := 0 to lista_download.count-1 do begin
    if download.speed>0 then inc(loc_speed_down,download.speed);
   end;
 
-  if cardinal(download)=vars_global.handle_obj_GraphHint then update_hint(download.display_node);
+  if THandle(download)=vars_global.handle_obj_GraphHint then update_hint(download.display_node);
 
  if ares_frmmain.tabs_pageview.activepage=IDTAB_TRANSFER then ares_frmmain.treeview_download.Sort(download.display_node,3,sdAscending);
 end;
@@ -2024,7 +2024,7 @@ begin
 
      for i := 0 to down_general.lista_risorse.count-1 do begin
       risorsa := down_general.lista_risorse[i];
-      if cardinal(risorsa)=m_graphObject then begin
+      if THandle(risorsa)=m_graphObject then begin
          update_hint(risorsa.display_node);
          exit;
       end;
@@ -3996,8 +3996,8 @@ end;
 
                 inc(download.progress,to_write);
 
-                if ((cardinal(download)=m_graphObject) or
-                    (cardinal(risorsa)=m_graphObject)) then GraphAddsample(to_write);
+                if ((THandle(download)=m_graphObject) or
+                    (THandle(risorsa)=m_graphObject)) then GraphAddsample(to_write);
 
          end; //while
 
@@ -4357,8 +4357,8 @@ while (true) do begin
         download := risorsa.download;
         inc(download.progress,len);
 
-        if ((cardinal(download)=m_graphObject) or
-            (cardinal(risorsa)=m_graphObject)) then GraphAddSample(len);
+        if ((THandle(download)=m_graphObject) or
+            (THandle(risorsa)=m_graphObject)) then GraphAddSample(len);
 
        if risorsa.size_to_receive<=0 then begin
         SourcesOnDuty.delete(indexInList);
@@ -4462,7 +4462,7 @@ try
       with risorsa do begin
          tick_attivazione := gettickcount;
          out_buf := '';
-         if UDP_Socket<>INVALID_SOCKET then TCPSocket_Free(UDP_Socket);
+         if UDP_Socket<>HSocket(INVALID_SOCKET) then TCPSocket_Free(UDP_Socket);
          UDP_Socket := INVALID_SOCKET;
          
          if destroy_socket then
@@ -4544,7 +4544,7 @@ try
 rebuilder := tth_rbld.create(true);
 with rebuilder do begin
  nomefile := download.filename;
- handle_download := cardinal(download);
+ handle_download := THandle(download);
  size := download.size;
  title := download.title;
  artist := download.artist;

@@ -28,8 +28,8 @@ unit thread_upload;
 interface
 
 uses
-  Classes,windows,sysutils,blcksock,synsock,utility_ares,
-  ares_types,comettrees,registry,graphics,class_cmdlist,
+  {$IFDEF FPC}LCLType,{$ENDIF} Classes,windows,sysutils,blcksock,synsock,utility_ares,
+  ares_types_root, ares_types,comettrees,registry,graphics,class_cmdlist,
   controls,const_ares,forms,comctrls,classes2,
   winsock,ares_objects,tntwindows,helper_graphs;
 
@@ -129,7 +129,7 @@ type
 
   velocita_max_ufrmmain: Cardinal;
 
-  m_graphObject: Cardinal;
+  m_graphObject: THandle;
   FirstGraphSample:precord_graph_sample;
   LastGraphSample:precord_graph_sample;
   NumGraphStats: Word;
@@ -1663,7 +1663,7 @@ procedure tthread_upload.BindUdpSocket;
 var
 sin: TVarSin;
 begin
-if UDP_Socket<>INVALID_SOCKET then exit;
+if UDP_Socket<>HSocket(INVALID_SOCKET) then exit;
 
  FillChar(Sin, Sizeof(Sin), 0);
  Sin.sin_family := AF_INET;
@@ -1847,7 +1847,7 @@ end;
 
 procedure tthread_upload.accept_accept; //
 var
-h: TSocket;
+h: {$IFDEF FPC}HSocket{$ELSE}TSocket{$ENDIF}; // FPC WinSock.TSocket is pointer sized, blcksock uses 32 bit handles
 sin:synsock.TSockAddrIn;
 ips: string;
 socket: Ttcpblocksocket;
@@ -1858,7 +1858,7 @@ try
 
       h := accept_server.Accept;
       if h=SOCKET_ERROR then exit;
-      if h=INVALID_SOCKET then exit;
+      if h=HSocket(INVALID_SOCKET) then exit;
 
       sin := TCPSocket_GetRemoteSin(h);
 
@@ -2400,7 +2400,7 @@ begin
             xqueued_controlla_timeouts;
             if not terminated then sleep(2);
 
-            if UDP_Socket<>INVALID_SOCKET then checkUDPPings;
+            if UDP_Socket<>HSocket(INVALID_SOCKET) then checkUDPPings;
 
                CheckPushedRequests;
                CheckIdleUploads;
@@ -2481,7 +2481,7 @@ last_15_sec := tempo;
 UploadsCheckTimeout;
 
 
-if UDP_Socket<>INVALID_SOCKET then mysupernodes.mySupernodes_ping(tempo,UDP_Socket);
+if UDP_Socket<>HSocket(INVALID_SOCKET) then mysupernodes.mySupernodes_ping(tempo,UDP_Socket);
 end;
 
 procedure tthread_upload.Execute;
@@ -2512,7 +2512,7 @@ while (not terminated) do begin
 
       accept_accept;
 
-      if UDP_Socket<>INVALID_SOCKET then receive_udp;
+      if UDP_Socket<>HSocket(INVALID_SOCKET) then receive_udp;
 
       if lista_upload.count>0 then FlushFiles;
 
@@ -2917,7 +2917,7 @@ move(checksum[1],UDP_Buffer[checkSumStartPoint],20);
   inc(bsentp,len_redW);
   inc(bsentpmega,len_redW);
   inc(upload.bsent,len_redW);
-  if cardinal(upload)=m_graphObject then GraphAddSample(len_red);
+  if THandle(upload)=m_graphObject then GraphAddSample(len_red);
   
 end else begin
  len_redw := 0;
@@ -3116,7 +3116,7 @@ end;
 procedure tthread_upload.check_firewalled_status;
 begin
 if vars_global.im_firewalled then
- if UDP_Socket=INVALID_SOCKET then BindUdpSocket;
+ if UDP_Socket=HSocket(INVALID_SOCKET) then BindUdpSocket;
 end;
 
 procedure tthread_upload.check_hour;
@@ -3477,7 +3477,7 @@ uploadl := lista_upload[lista_upload.count-1];
     dataNode := ares_FrmMain.treeview_upload.getdata(node);
     UpData := dataNode^.data;
     with UPData^ do begin
-     handle_obj := cardinal(uploadl);
+     handle_obj := THandle(uploadl);
      upload := uploadl;
      inc(continued_from,progress); //vecchio progress
      size := (uploadl.endpoint-uploadl.startpoint)+1;
@@ -3498,7 +3498,7 @@ uploadl := lista_upload[lista_upload.count-1];
      UpData := AllocMem(sizeof(record_displayed_upload));
      dataNode^.data := UpData;
      with UpData^ do begin
-      handle_obj := cardinal(uploadl);
+      handle_obj := THandle(uploadl);
       upload := uploadl;
       size := (uploadl.endpoint-uploadl.startpoint)+1;
       progress := uploadl.actual-uploadl.startpoint;
@@ -4132,7 +4132,7 @@ for h := 1 to loops do begin
             upload.socket.tag := tempo;
           inc(bsentp,lung);
           inc(bsentpmega,lung);
-         if cardinal(upload)=m_graphObject then GraphAddSample(Lung);
+         if THandle(upload)=m_graphObject then GraphAddSample(Lung);
 
 
 end;

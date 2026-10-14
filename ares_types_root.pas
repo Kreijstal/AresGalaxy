@@ -88,7 +88,7 @@ type
   record_download_hash = record
     hash: string;
     crchash: Word;
-    handle_download: Cardinal;
+    handle_download: THandle;
   end;
 
   //thread_client avoid some dead loop while adding/removing hosts in discovery

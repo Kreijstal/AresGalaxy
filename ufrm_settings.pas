@@ -23,7 +23,7 @@ unit ufrm_settings;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, TntStdCtrls, ExtCtrls, CometTrees, CheckLst, ComCtrls,
   comettopicpnl, cometPageView,const_win_messages,tntwindows, folderBrowse,
   jpeg, Mask, Buttons, TntButtons;
@@ -260,7 +260,7 @@ implementation
 
 uses
   vars_global,vars_localiz,helper_registry,helper_strings,helper_unicode,
-  const_ares,uWhatImListeningTo,registry,helper_combos,helper_diskio,ares_types,
+  const_ares,uWhatImListeningTo,registry,helper_combos,helper_diskio,ares_types_root, ares_types,
   ufrmmain,helper_manual_share,helper_hashlinks,helper_urls,
   utility_ares,helper_skin,helper_gui_misc,helper_autoscan,
   helper_stringfinal,helper_library_db,thread_share,helper_check_proxy,
@@ -358,7 +358,7 @@ if (ext='.jpg') or
  try
 
    jpg.LoadFromStream(streamread);
-   jpg.DIBNeeded;
+   {$IFNDEF FPC}jpg.DIBNeeded;{$ENDIF}
   loadBitmap.assign(jpg);
  except
  end;
@@ -1099,11 +1099,11 @@ checklistbox := control as TCheckListBox;
     FillRect(Rect);
     font.name := ares_frmmain.font.name;
     font.size := ares_frmmain.font.size;
-   if (odSelected in state) then font.color := $00FEFFFF else
+   if ({$IFDEF FPC}LCLType.{$ENDIF}odSelected in state) then font.color := $00FEFFFF else
     font.color := COLORE_LISTVIEWS_FONT;
 
     if Index < checklistbox.Items.Count then begin
-      Flags := checklistbox.DrawTextBiDiModeFlags(DT_SINGLELINE or DT_VCENTER);
+      Flags := {$IFDEF FPC}DT_SINGLELINE or DT_VCENTER{$ELSE}checklistbox.DrawTextBiDiModeFlags(DT_SINGLELINE or DT_VCENTER){$ENDIF};
       if not checklistbox.UseRightToLeftAlignment then Inc(Rect.Left, 2)  else
         Dec(Rect.Right, 2);
         widstr := utf8strtowidestr(hexstr_to_bytestr(checklistbox.Items[Index]));

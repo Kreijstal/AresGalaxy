@@ -75,7 +75,7 @@ type
 
   precord_displayed_bittorrentTransfer = ^record_displayed_bittorrentTransfer;
   record_displayed_bittorrentTransfer = record
-    handle_obj: Cardinal;
+    handle_obj: THandle;
     FileName,path,trackerStr: string;
     Size: Int64;
     downloaded,uploaded: Int64;
@@ -101,7 +101,7 @@ type
 
   precord_displayed_downloadsource=^record_displayed_downloadsource;
   record_displayed_downloadsource = record
-    handle_obj: Cardinal;
+    handle_obj: THandle;
     queued_position: Integer;
     ip: Cardinal;
     ip_alt: Cardinal;
@@ -122,7 +122,7 @@ type
 
   precord_displayed_download=^record_displayed_download;
   record_displayed_download=packed record
-    handle_obj: Cardinal;
+    handle_obj: THandle;
     VisualBitfield: array of Boolean;
     numInDown: Byte;
     FPieceSize: Cardinal;
@@ -299,7 +299,7 @@ type
     failed_ipint,
     has_tried_extIP,
     FailedICHDBRet: Boolean;
-    handle_download: Cardinal;
+    handle_download: THandle;
     started_time: Cardinal;
     nickname: string;
     version: string;
@@ -444,7 +444,7 @@ implementation
 
 uses
   securehash,thread_supernode,helper_diskio,helper_ares_nodes,
-  ares_types,ufrmmain,helper_unicode,
+  ares_types_root, ares_types,ufrmmain,helper_unicode,
   helper_ich,helper_urls,helper_download_misc,helper_strings,
   helper_ipfunc,helper_datetime;
 
@@ -740,7 +740,7 @@ begin
   display_data := dataNode^.data;
 
   with display_data^ do begin
-    handle_obj := Cardinal(self);
+    handle_obj := THandle(self);
     ip := self.ip;
     ip_alt := self.ip_interno;
     port := self.porta;

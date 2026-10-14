@@ -1142,7 +1142,7 @@ end;
 
 function IncPoint(const p: pointer; Value: integer): pointer;
 begin
-  Result := pointer(integer(p) + Value);
+  Result := PAnsiChar(p) + Value;
 end;
 
 function TickDelta(TickOld, TickNew: ULong): ULong;

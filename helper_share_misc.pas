@@ -27,7 +27,7 @@ unit helper_share_misc;
 interface
 
 uses
- classes,ares_types,ares_objects,comettrees,sysutils,
+ classes,ares_types_root, ares_types,ares_objects,comettrees,sysutils,
  classes2,windows;
 
 function is_in_lib_sha1(const hash_sha1: string): Boolean;
