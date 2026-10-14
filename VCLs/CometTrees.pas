@@ -52,12 +52,17 @@ interface
 {$I Compilers.inc}
 {.$define UseFlatScrollbars}
 {.$define ReverseFullExpandHotKey} // Used to define Ctrl+'+' instead of Ctrl+Shift+'+' for full expand (and similar for collapsing).
+{$ifndef FPC}
 {$define ThemeSupport}
+{$endif}
 
 {$HPPEMIT '#include <objidl.h>'}
 
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, ImgList, StdCtrls, Menus
+  {$ifdef FPC}
+  , LCLType, LCLIntf, LMessages, ExtCtrls, VCLCompat
+  {$endif FPC}
   {$ifdef ThemeSupport}
   , Themes, UxTheme
   {$endif ThemeSupport}
@@ -129,7 +134,8 @@ var // Clipboard format IDs used in OLE drag'n drop and clipboard transfers.
 
   MMXAvailable: Boolean; // necessary to know because the blend code uses MMX instructions
 
-{$MinEnumSize 1, make enumerations as small as possible}
+{$MinEnumSize 1} // make enumerations as small as possible
+{$ifdef FPC}{$PACKSET 1}{$endif}
 
 type
   // The exception used by the trees.
@@ -379,7 +385,7 @@ type
   TVTMiscOptions = set of TVTMiscOption;
 
 const
-  DefaultPaintOptions = [toShowButtons, toShowButtons, toShowDropmark, toShowTreeLines, toShowRoot, toThemeAware, toUseBlendedImages];
+  DefaultPaintOptions = [toShowButtons, toShowDropmark, toShowTreeLines, toShowRoot, toThemeAware, toUseBlendedImages];
   DefaultAnimationOptions = [];
   DefaultAutoOptions = [toAutoDropExpand, toAutoTristateTracking, toAutoScrollOnExpand, toAutoDeleteMovedNodes];
   DefaultSelectionOptions = [];
@@ -1176,6 +1182,16 @@ type
   // ----- TBaseCometTree
   TBaseCometTree = class(TCustomControl)
   private
+    {$ifdef FPC}
+    // VCL TWinControl bevel properties; the tree paints its non-client bevel itself.
+    FBevelKind: TBevelKind;
+    FBevelEdges: TBevelEdges;
+    FBevelInner: TBevelCut;
+    FBevelOuter: TBevelCut;
+    FBevelWidth: TBevelWidth;
+    FCtl3D: Boolean;
+    FParentCtl3D: Boolean;
+    {$endif FPC}
     //aggiunta_globale: Cardinal;
     FBorderStyle: TBorderStyle;
     FHeader: TCmtHdr;
@@ -1520,6 +1536,16 @@ type
     procedure WMTimer(var Message: TWMTimer); message WM_TIMER;
     procedure WMVScroll(var Message: TWMVScroll); message WM_VSCROLL;
   protected
+    {$ifdef FPC}
+    procedure RecreateWnd;
+    property BevelKind: TBevelKind read FBevelKind write FBevelKind default bkNone;
+    property BevelEdges: TBevelEdges read FBevelEdges write FBevelEdges default [beLeft, beTop, beRight, beBottom];
+    property BevelInner: TBevelCut read FBevelInner write FBevelInner default bvRaised;
+    property BevelOuter: TBevelCut read FBevelOuter write FBevelOuter default bvLowered;
+    property BevelWidth: TBevelWidth read FBevelWidth write FBevelWidth default 1;
+    property Ctl3D: Boolean read FCtl3D write FCtl3D default True;
+    property ParentCtl3D: Boolean read FParentCtl3D write FParentCtl3D default True;
+    {$endif FPC}
     procedure AddToSelection(Node: PCmtVNode); overload;
     procedure AddToSelection(const NewItems: TNodeArray; NewLength: Integer; ForceInsert: Boolean = False); overload;
     procedure AdjustPaintCellRect(var PaintInfo: TVTPaintInfo; var NextNonEmpty: TColumnIndex); virtual;
@@ -1804,7 +1830,7 @@ type
     procedure FlushClipboard;
     procedure FullCollapse(Node: PCmtVNode = nil);  virtual;
     procedure FullExpand(Node: PCmtVNode = nil); virtual;
-    function GetControlsAlignment: TAlignment; override;
+    function GetControlsAlignment: TAlignment; {$ifdef FPC}virtual{$else}override{$endif};
     function GetDisplayRect(Node: PCmtVNode; Column: TColumnIndex; TextOnly: Boolean; Unclipped: Boolean = False): TRect;
     function GetFirst: PCmtVNode;
     function GetFirstChild(Node: PCmtVNode): PCmtVNode;
@@ -2347,8 +2373,12 @@ implementation
 {$R CometTrees.res}
 
 uses
+  {$ifdef FPC}
+  LCLStrConsts, Math,
+  {$else}
   Consts, Math,
   AxCtrls,   // TOLEStream
+  {$endif}
   CommCtrl,  // image list stuff
   {$ifdef UseFlatScrollbars}
     FlatSB,    // wrapper for systems without flat SB support
@@ -2532,9 +2562,9 @@ begin
     J := R;
     P := Thearray [(L + R) shr 1];
     repeat
-      while Cardinal(Thearray [I]) < Cardinal(P) do
+      while PAnsiChar(Thearray [I]) < PAnsiChar(P) do
         Inc(I);
-      while Cardinal(Thearray [J]) > Cardinal(P) do
+      while PAnsiChar(Thearray [J]) > PAnsiChar(P) do
         Dec(J);
       if I <= J then
       begin
@@ -2860,6 +2890,24 @@ procedure AlphaBlendLineConstant(Source, Destination: Pointer; Count: Integer; C
 // ECX contains Count
 // ConstantAlpha and Bias are on the stack
 
+{$ifdef FPC}
+var
+  S, D: PByte;
+  I, C, V: Integer;
+begin
+  S := Source;
+  D := Destination;
+  for I := 1 to Count * 4 do
+  begin
+    V := (ConstantAlpha * (S^ - D^)) div 256 + D^ + Bias;
+    if V < 0 then V := 0 else if V > 255 then V := 255;
+    D^ := V;
+    Inc(S);
+    Inc(D);
+  end;
+  C := 0; if C <> 0 then ;
+end;
+{$else}
 asm
         PUSH    ESI                    // save used registers
         PUSH    EDI
@@ -2918,6 +2966,7 @@ asm
         POP     EDI
         POP     ESI
 end;
+{$endif FPC}
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -2932,6 +2981,27 @@ procedure AlphaBlendLinePerPixel(Source, Destination: Pointer; Count, Bias: Inte
 // ECX contains Count
 // Bias is on the stack
 
+{$ifdef FPC}
+var
+  S, D: PByte;
+  I, J, A, V: Integer;
+begin
+  S := Source;
+  D := Destination;
+  for I := 1 to Count do
+  begin
+    A := PByte(PAnsiChar(S) + 3)^;
+    for J := 0 to 3 do
+    begin
+      V := (A * (S^ - D^)) div 256 + D^ + Bias;
+      if V < 0 then V := 0 else if V > 255 then V := 255;
+      D^ := V;
+      Inc(S);
+      Inc(D);
+    end;
+  end;
+end;
+{$else}
 asm
         PUSH    ESI                    // save used registers
         PUSH    EDI
@@ -2989,6 +3059,7 @@ asm
         POP     EDI
         POP     ESI
 end;
+{$endif FPC}
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -3004,6 +3075,27 @@ procedure AlphaBlendLineMaster(Source, Destination: Pointer; Count: Integer; Con
 // ECX contains Count
 // ConstantAlpha and Bias are on the stack
 
+{$ifdef FPC}
+var
+  S, D: PByte;
+  I, J, A, V: Integer;
+begin
+  S := Source;
+  D := Destination;
+  for I := 1 to Count do
+  begin
+    A := (PByte(PAnsiChar(S) + 3)^ * ConstantAlpha) div 256;
+    for J := 0 to 3 do
+    begin
+      V := (A * (S^ - D^)) div 256 + D^ + Bias;
+      if V < 0 then V := 0 else if V > 255 then V := 255;
+      D^ := V;
+      Inc(S);
+      Inc(D);
+    end;
+  end;
+end;
+{$else}
 asm
         PUSH    ESI                    // save used registers
         PUSH    EDI
@@ -3070,6 +3162,7 @@ asm
         POP     EDI
         POP     ESI
 end;
+{$endif FPC}
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -3084,6 +3177,28 @@ procedure AlphaBlendLineMasterAndColor(Destination: Pointer; Count: Integer; Con
 // ECX contains ConstantAlpha
 // Color is passed on the stack
 
+{$ifdef FPC}
+var
+  D: PByte;
+  I, J, V: Integer;
+  F1: array[0..3] of Integer;
+begin
+  // target = (alpha * color + (256 - alpha) * target) / 256, pixels are BGRA, Color is a COLORREF ($00bbggrr).
+  F1[0] := ConstantAlpha * ((Color shr 16) and $FF);
+  F1[1] := ConstantAlpha * ((Color shr 8) and $FF);
+  F1[2] := ConstantAlpha * (Color and $FF);
+  F1[3] := 0;
+  D := Destination;
+  for I := 1 to Count do
+    for J := 0 to 3 do
+    begin
+      V := (F1[J] + (256 - ConstantAlpha) * D^) shr 8;
+      if V > 255 then V := 255;
+      D^ := V;
+      Inc(D);
+    end;
+end;
+{$else}
 asm
         // The used formula is: target = (alpha * color + (256 - alpha) * target) / 256.
         // alpha * color (factor 1) and 256 - alpha (factor 2) are constant values which can be calculated in advance.
@@ -3126,6 +3241,7 @@ asm
         DEC     EDX
         JNZ     @1
 end;
+{$endif FPC}
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -3133,9 +3249,14 @@ procedure EMMS;
 
 // Reset MMX state to use the FPU for other tasks again.
 
+{$ifdef FPC}
+begin
+end;
+{$else}
 asm
         DB      $0F, $77               /// EMMS
 end;
+{$endif FPC}
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -3178,7 +3299,7 @@ begin
   if Height > 0 then  // bottom-up DIB
     Row := Height - Row - 1;
   // Return DWORD aligned address of the requested scanline.
-  Integer(Result) := Integer(Bits) + Row * ((Width * 32 + 31) and not 31) div 8;
+  Result := PAnsiChar(Bits) + Row * ((Width * 32 + 31) and not 31) div 8;
 end;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -3329,10 +3450,15 @@ begin
     // Since we want the image list appearing in the correct system colors, we have to remap its colors.
     Images := TBitmap.Create;
     OneImage := TBitmap.Create;
+    {$ifdef FPC}
+    // LCL: load the bitmap resource directly (no gray -> system color remapping).
+    Images.LoadFromResourceName(HInstance, ImageName);
+    {$else}
     if ColorRemapping then
       Images.Handle := CreateMappedRes(FindClassHInstance(TBaseCometTree), PChar(ImageName), Grays, SysGrays)
     else
       Images.Handle := LoadBitmap(FindClassHInstance(TBaseCometTree), PChar(ImageName));
+    {$endif}
 
     try
       Assert(Images.Height > 0, ''); //'Internal image "' + ImageName + '" is missing or corrupt.');
@@ -3367,6 +3493,12 @@ function HasMMX: Boolean;
 
 // Helper method to determine whether the current processor supports MMX.
 
+{$ifdef FPC}
+begin
+  // The blend helpers above have portable Pascal implementations under FPC.
+  Result := True;
+end;
+{$else}
 asm
         PUSH    EBX
         XOR     EAX, EAX     // Result := False
@@ -3395,6 +3527,7 @@ asm
 @1:
         POP     EBX
 end;
+{$endif FPC}
  
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -3463,8 +3596,10 @@ begin
 
 
   UtilityImages := TImageList.CreateSize(16, 16);
+  {$ifndef FPC}
   with UtilityImages do
     Handle := ImageList_Create(16, 16, Flags, 0, AllocBy);
+  {$endif}
   ConvertImageList(UtilityImages, 'COM_UTILITIES');
 
 
@@ -3992,7 +4127,7 @@ procedure TVirtualTreeColumn.SetOptions(Value: TVTColumnOptions);
 var
   ToBeSet,
   ToBeCleared: TVTColumnOptions;
-  VisibleChanged,
+  ColVisibleChanged,
   ColorChanged: Boolean;
 
 begin
@@ -4003,7 +4138,7 @@ begin
 
     FOptions := Value;
 
-    VisibleChanged := coVisible in (ToBeSet + ToBeCleared);
+    ColVisibleChanged := coVisible in (ToBeSet + ToBeCleared);
     ColorChanged := coParentColor in ToBeSet;
 
     if coParentBidiMode in ToBeSet then
@@ -4014,10 +4149,10 @@ begin
     Changed(False);
     // Need to repaint and adjust the owner tree too.
     with Owner, Header.Treeview do
-      if not (csLoading in ComponentState) and (VisibleChanged or ColorChanged) and (UpdateCount = 0) then
+      if not (csLoading in ComponentState) and (ColVisibleChanged or ColorChanged) and (Self.Owner.UpdateCount = 0) then
       begin
         Invalidate;
-        if VisibleChanged then
+        if ColVisibleChanged then
           UpdateHorizontalScrollBar(False);
       end;
   end;
@@ -4603,7 +4738,7 @@ procedure TVirtualTreeColumn.LoadFromStream(const Stream: TStream; Version: Inte
     begin
       // In version 2 coParentColor has been added. This needs an option shift for older stream formats.
       // The first (lower) 4 options remain as they are.
-      Result := TVTColumnOptions(Byte(Value) and $F);
+      Result := TVTColumnOptions(Byte(Byte(Value) and $F));
       Value := (Value and not $F) shl 1;
       Result := Result + TVTColumnOptions(Byte(Value));
     end;
@@ -4977,12 +5112,12 @@ begin
     if OldPosition < Position then
     begin
       // column will be moved up so move down other entries
-      Move(FPositionToIndex[OldPosition + 1], FPositionToIndex[OldPosition], (Position - OldPosition) * SizeOf(Cardinal));
+      System.Move(FPositionToIndex[OldPosition + 1], FPositionToIndex[OldPosition], (Position - OldPosition) * SizeOf(Cardinal));
     end
     else
     begin
       // column will be moved down so move up other entries
-      Move(FPositionToIndex[Position], FPositionToIndex[Position + 1], (OldPosition - Position) * SizeOf(Cardinal));
+      System.Move(FPositionToIndex[Position], FPositionToIndex[Position + 1], (OldPosition - Position) * SizeOf(Cardinal));
     end;
     FPositionToIndex[Position] := Column.Index;
   end;
@@ -7183,6 +7318,14 @@ begin
 
   ControlStyle := ControlStyle - [csSetCaption] + [csCaptureMouse, csOpaque, csReplicatable, csDisplayDragImage,
     csReflector];
+  {$ifdef FPC}
+  FBevelEdges := [beLeft, beTop, beRight, beBottom];
+  FBevelInner := bvRaised;
+  FBevelOuter := bvLowered;
+  FBevelWidth := 1;
+  FCtl3D := True;
+  FParentCtl3D := True;
+  {$endif FPC}
   FTotalInternalDataSize := 0;
   FNodeDataSize := -1;
   Width := 200;
@@ -7280,7 +7423,7 @@ begin
 
   // The window handle must be destroyed before the header is freed because it is needed in WM_NCDESTROY.
   if HandleAllocated then
-    DestroyWindowHandle;
+    {$ifdef FPC}DestroyHandle{$else}DestroyWindowHandle{$endif};
   FHeader.Free;
 
   FreeMem(FRoot);
@@ -8822,7 +8965,16 @@ end;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-function TBaseCometTree.PackArray(TheArray: TNodeArray; Count: Integer): Integer; assembler;
+{$ifdef FPC}
+procedure TBaseCometTree.RecreateWnd;
+begin
+  RecreateWndCompat(Self);
+end;
+
+{$endif FPC}
+//----------------------------------------------------------------------------------------------------------------------
+
+function TBaseCometTree.PackArray(TheArray: TNodeArray; Count: Integer): Integer; {$ifndef FPC}assembler;{$endif}
 
 // Removes all entries from the selection array which are no longer in use. The selection array must be sorted for this
 // algo to work. Values which must be removed are marked with bit 0 (LSB) set. This little trick works because memory
@@ -8834,6 +8986,33 @@ function TBaseCometTree.PackArray(TheArray: TNodeArray; Count: Integer): Integer
 // The returned value is the number of remaining entries in the array, so the caller can reallocate (shorten)
 // the selection array if needed or -1 if nothing needs to be changed.
 
+{$ifdef FPC}
+var
+  Src, Dst: Integer;
+begin
+  // Entries marked for removal have bit 0 of the pointer set (see above).
+  Result := -1;
+  if Count = 0 then
+    Exit;
+  Src := 0;
+  while (Src < Count) and ((PtrUInt(TheArray[Src]) and 1) = 0) do
+    Inc(Src);
+  Result := Src;
+  if Src = Count then
+    Exit;
+  Dst := Src;
+  while Src < Count do
+  begin
+    if (PtrUInt(TheArray[Src]) and 1) = 0 then
+    begin
+      TheArray[Dst] := TheArray[Src];
+      Inc(Dst);
+    end;
+    Inc(Src);
+  end;
+  Result := Dst;
+end;
+{$else}
 asm
         PUSH    EBX
         PUSH    EDI
@@ -8875,6 +9054,7 @@ asm
         POP     EDI
         POP     EBX
 end;
+{$endif FPC}
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -8896,7 +9076,7 @@ var
 begin
   if NeedButtons then
   begin
-    with FMinusBM, Canvas do
+    with Canvas, FMinusBM do
     begin
       // box is always of odd size
       Width := 9;
@@ -8933,7 +9113,7 @@ begin
       end;
     end;
 
-    with FPlusBM, Canvas do
+    with Canvas, FPlusBM do
     begin                                 
       Width := 9;
       Height := Width;
@@ -9174,7 +9354,7 @@ begin
     begin
       // Sets are stored with their members as simple strings. Read them one by one and map them to the new option
       // in the correct sub-option set.
-      EnumName := Reader.ReadStr;
+      EnumName := {$ifdef FPC}Reader.Driver.ReadStr{$else}Reader.ReadStr{$endif};
       if EnumName = '' then
         Break;
       OldOption := TOldVTOption(GetEnumValue(TypeInfo(TOldVTOption), EnumName));
@@ -10966,7 +11146,7 @@ begin
         GetKeyboardState(KeyState);
         // Avoid conversion to control characters. We have captured the control key state already in Shift.
         KeyState[VK_CONTROL] := 0;
-        if ToASCII(Message.CharCode, (Message.KeyData shr 16) and 7, KeyState, Buffer, 0) > 0 then
+        if ToASCII(Message.CharCode, (Message.KeyData shr 16) and 7, KeyState, {$ifdef FPC}@Buffer{$else}Buffer{$endif}, 0) > 0 then
         begin
           case Buffer[0] of
             '*':
@@ -11181,7 +11361,7 @@ begin
   if Assigned(Form) and (Form.ActiveControl = Self) then
   begin
     Cardinal(Pos) := GetMessagePos;
-    Control := FindVCLWindow(SmallPointToPoint(Pos));
+    Control := {$ifdef FPC}FindLCLWindow{$else}FindVCLWindow{$endif}(SmallPointToPoint(Pos));
     // Every control derived from TOleControl has potentially the focus problem. In order to avoid including
     // the OleCtrls unit (which will, among others, include Variants), which would allow to test for the TOleControl
     // class, the IOleClientSite interface is used for the test, which is supported by TOleControl and a good indicator.
@@ -12251,7 +12431,12 @@ end;
 procedure TBaseCometTree.CreateParams(var Params: TCreateParams);
 
 const
+  {$ifdef FPC}
+  ScrollBar: array [TScrollStyle] of Cardinal = (0, WS_HSCROLL, WS_VSCROLL, WS_HSCROLL or WS_VSCROLL,
+    WS_HSCROLL, WS_VSCROLL, WS_HSCROLL or WS_VSCROLL);
+  {$else}
   ScrollBar: array [TScrollStyle] of Cardinal = (0, WS_HSCROLL, WS_VSCROLL, WS_HSCROLL or WS_VSCROLL);
+  {$endif}
 
 begin
   inherited CreateParams(Params);
@@ -14131,7 +14316,10 @@ begin
   while L <= H do
   begin
     I := (L + H) shr 1;
-    C := Integer(FSelection[I]) - Integer(P);
+    // compare addresses without truncating them on Win64
+    if PAnsiChar(FSelection[I]) < PAnsiChar(P) then C := -1
+    else if PAnsiChar(FSelection[I]) > PAnsiChar(P) then C := 1
+    else C := 0;
     if C < 0 then
       L := I + 1
     else
@@ -15175,7 +15363,7 @@ begin
       if ([vsSelected, vsDisabled] * NewItems[I].States <> []) or
          (Constrained and (Cardinal(FLastSelectionLevel) <> GetNodeLevel(NewItems[I]))) or
          (SiblingConstrained and (FRangeAnchor.Parent <> NewItems[I].Parent)) then
-        Inc(Cardinal(NewItems[I]))
+        Inc(PAnsiChar(NewItems[I]))
       else
         Include(NewItems[I].States, vsSelected);
   end;
@@ -15205,7 +15393,7 @@ begin
       // array and only the remaining new items must be inserted.
       if CurrentEnd >= 0 then
       begin
-        while (J >= 0) and (Cardinal(NewItems[J]) > Cardinal(FSelection[CurrentEnd])) do
+        while (J >= 0) and (PAnsiChar(NewItems[J]) > PAnsiChar(FSelection[CurrentEnd])) do
         begin
           FSelection[CurrentEnd + J + 1] := NewItems[J];
           Dec(J);
@@ -15548,7 +15736,7 @@ begin
   if FindNodeInSelection(Node, Index, -1, -1) then
   begin
     Exclude(Node.States, vsSelected);
-    Inc(Cardinal(FSelection[Index]));
+    Inc(PAnsiChar(FSelection[Index]));
   end;
 end;
 
@@ -17082,8 +17270,10 @@ begin
      // Self.HintMode := HintMode;
       Self.HotCursor := HotCursor;
       Self.Images := Images;
+      {$ifndef FPC}
       Self.ImeMode := ImeMode;
       Self.ImeName := ImeName;
+      {$endif}
       Self.Indent := Indent;
       Self.Margin := Margin;
       Self.NodeAlignment := NodeAlignment;
@@ -21269,7 +21459,7 @@ begin
 
     FFontChanged := False;
     TripleWidth := FEllipsisWidth;
-    Canvas.TextFlags := 0;
+    {$ifdef FPC}SetCanvasTextFlags(Canvas, 0){$else}Canvas.TextFlags := 0{$endif};
     DoPaintText(Node, Canvas, Column);
     if FFontChanged then begin
       // If the font has been changed then the ellipsis width must be recalculated.
@@ -21300,7 +21490,7 @@ begin
     else
       DrawFormat := DrawFormat or AlignmentToDrawFlag[Alignment];
 
-    if Canvas.TextFlags and ETO_OPAQUE = 0 then
+    if {$ifdef FPC}CanvasTextFlags(Canvas){$else}Canvas.TextFlags{$endif} and ETO_OPAQUE = 0 then
       SetBkMode(Canvas.Handle, TRANSPARENT)
     else
       SetBkMode(Canvas.Handle, OPAQUE);
@@ -21344,7 +21534,7 @@ begin
     end;
 
     DrawFormat := DT_VCENTER or DT_SINGLELINE;
-    Canvas.TextFlags := 0;
+    {$ifdef FPC}SetCanvasTextFlags(Canvas, 0){$else}Canvas.TextFlags := 0{$endif};
     DoPaintText(Node, Canvas, Column);
 
     // Disabled node color overrides all other variants.
@@ -21357,7 +21547,7 @@ begin
     else
       Inc(R.Left, NodeWidth + FTextMargin);
 
-    if Canvas.TextFlags and ETO_OPAQUE = 0 then
+    if {$ifdef FPC}CanvasTextFlags(Canvas){$else}Canvas.TextFlags{$endif} and ETO_OPAQUE = 0 then
       SetBkMode(Canvas.Handle, TRANSPARENT)
     else
       SetBkMode(Canvas.Handle, OPAQUE);
@@ -21792,7 +21982,7 @@ begin
       begin
         // Sets are stored with their members as simple strings. Read them one by one and map them to the new option
         // in the correct sub-option set.
-        EnumName := Reader.ReadStr;
+        EnumName := {$ifdef FPC}Reader.Driver.ReadStr{$else}Reader.ReadStr{$endif};
         if EnumName = '' then
           Break;
         OldOption := TOldVTStringOption(GetEnumValue(TypeInfo(TOldVTStringOption), EnumName));
