@@ -27,7 +27,7 @@ unit mPlayerPanel;
 interface
 
 uses
-  Controls, Windows, SysUtils, Graphics, Classes, ExtCtrls, Messages, Forms;
+  {$IFDEF FPC}LCLType,{$ENDIF} Controls, Windows, SysUtils, Graphics, Classes, ExtCtrls, Messages, Forms;
 
 const
   BTN_ID_PLAY      = 0;
@@ -178,13 +178,13 @@ begin
   FUrl := '';
   FTimeCaption := '';
 
-  FPlayOffCopyRect := Rect(35,3,25,25);
-  FPlayHoverCopyRect := rect(25,35,25,25);
-  FPlayDownCopyRect := rect(25,35,25,25);
+  FPlayOffCopyRect := Classes.Rect(35,3,25,25);
+  FPlayHoverCopyRect := Classes.Rect(25,35,25,25);
+  FPlayDownCopyRect := Classes.Rect(25,35,25,25);
 
-  FPauseOffCopyRect := rect(98,35,25,25);
-  FPauseHoverCopyRect := rect(123,35,25,25);
-  FPauseDownCopyRect := rect(123,35,25,25);
+  FPauseOffCopyRect := Classes.Rect(98,35,25,25);
+  FPauseHoverCopyRect := Classes.Rect(123,35,25,25);
+  FPauseDownCopyRect := Classes.Rect(123,35,25,25);
 
   // FastForward/Rewind timers...if button is still down after a second, seek (by simulating click event every 10 millisecs)
   FSeekTimer := TTimer.create(nil);
@@ -210,7 +210,7 @@ begin
   with btn do
   begin
     FID := MPBtnPlay;
-    FHitRect := rect(35,3,59,27);  //sligthly smaller than Paint rect, points sensible to mouse cursor
+    FHitRect := Classes.Rect(35,3,59,27);  //sligthly smaller than Paint rect, points sensible to mouse cursor
     with FPaintOffset do
     begin
       x := 34;
@@ -229,15 +229,15 @@ begin
   with btn do
   begin
     FID := MPBtnPlaylist;
-    FHitRect := rect(125,3,145,22);  //sligthly smaller than Paint rect, points sensible to mouse cursor
+    FHitRect := Classes.Rect(125,3,145,22);  //sligthly smaller than Paint rect, points sensible to mouse cursor
     with FPaintOffset do
     begin
       x := 125;
       y := 3;   // where we have to paste state bitmaps on destination Canvas (relative to player panel Left)
     end;
-    FOffCopyRect := rect(126,3,22,24);  // where we have to copy state images from on our source bitmap
-    FHoverCopyRect := rect(0,61,22,24);
-    FDownCopyRect := rect(0,61,22,24);
+    FOffCopyRect := Classes.Rect(126,3,22,24);  // where we have to copy state images from on our source bitmap
+    FHoverCopyRect := Classes.Rect(0,61,22,24);
+    FDownCopyRect := Classes.Rect(0,61,22,24);
     FState := MPBtnOff;
   end;
   FButtons[BTN_ID_PLAYLIST] := btn;
@@ -247,15 +247,15 @@ begin
   with btn do
   begin
     FID := MPBtnStop;
-    FHitRect := rect(96,4,119,27);  //sligthly smaller than Paint rect, points sensible to mouse cursor
+    FHitRect := Classes.Rect(96,4,119,27);  //sligthly smaller than Paint rect, points sensible to mouse cursor
     with FPaintOffset do
     begin
       x := 95;
       y := 4;   // where we have to paste state bitmaps on destination Canvas (relative to player panel Left)
     end;
-    FOffCopyRect := rect(96,4,22,22);  // where we have to copy state images from on our source bitmap
-    FHoverCopyRect := rect(75,35,22,22);
-    FDownCopyRect := rect(75,35,22,22);
+    FOffCopyRect := Classes.Rect(96,4,22,22);  // where we have to copy state images from on our source bitmap
+    FHoverCopyRect := Classes.Rect(75,35,22,22);
+    FDownCopyRect := Classes.Rect(75,35,22,22);
     FState := MPBtnOff;
   end;
   FButtons[BTN_ID_STOP] := btn;
@@ -265,37 +265,37 @@ begin
   with btn do
   begin
     FID := MPBtnPrev;
-    FHitRect := rect(4,4,28,27);  //sligthly smaller than Paint rect, points sensible to mouse cursor
+    FHitRect := Classes.Rect(4,4,28,27);  //sligthly smaller than Paint rect, points sensible to mouse cursor
     with FPaintOffset do
     begin
       x := 3;
       y := 3;   // where we have to paste state bitmaps on destination Canvas (relative to player panel Left)
     end;
-    FOffCopyRect := rect(4,3,25,25);  // where we have to copy state images from on our source bitmap
-    FHoverCopyRect := rect(0,35,25,25);
-    FDownCopyRect := rect(0,35,25,25);
+    FOffCopyRect := Classes.Rect(4,3,25,25);  // where we have to copy state images from on our source bitmap
+    FHoverCopyRect := Classes.Rect(0,35,25,25);
+    FDownCopyRect := Classes.Rect(0,35,25,25);
     FState := MPBtnOff;
   end;
   FButtons[BTN_ID_PREV] := btn;
 
   // rects of the media seek equivalents (these images get displayed when theres seeking in progress
-  FRewindDownCopyRect := rect(148,35,25,25);
-  FFastForwardDownCopyRect := rect(173,35,25,25);
+  FRewindDownCopyRect := Classes.Rect(148,35,25,25);
+  FFastForwardDownCopyRect := Classes.Rect(173,35,25,25);
 
   // next button
   btn := TMPlayerButton.create;
   with btn do
   begin
     FID := MPBtnNext;
-    FHitRect := rect(67,4,92,27);  //sligthly smaller than Paint rect, points sensible to mouse cursor
+    FHitRect := Classes.Rect(67,4,92,27);  //sligthly smaller than Paint rect, points sensible to mouse cursor
     with FPaintOffset do
     begin
       x := 66;
       y := 3;   // where we have to paste state bitmaps on destination Canvas (relative to player panel Left)
     end;
-    FOffCopyRect := Rect(67,3,25,25);  // where we have to copy state images from on our source bitmap
-    FHoverCopyRect := Rect(50,35,25,25);
-    FDownCopyRect := Rect(50,35,25,25);
+    FOffCopyRect := Classes.Rect(67,3,25,25);  // where we have to copy state images from on our source bitmap
+    FHoverCopyRect := Classes.Rect(50,35,25,25);
+    FDownCopyRect := Classes.Rect(50,35,25,25);
     FState := MPBtnOff;
   end;
   FButtons[BTN_ID_NEXT] := btn;
@@ -306,15 +306,15 @@ begin
   with btn do
   begin
     FID := MPBtnVol;
-    FHitRect := rect(150,3,172,22);  //sligthly smaller than Paint rect, points sensible to mouse cursor
+    FHitRect := Classes.Rect(150,3,172,22);  //sligthly smaller than Paint rect, points sensible to mouse cursor
     with FPaintOffset do
     begin
       x := 148;
       y := 2;   // where we have to paste state bitmaps on destination Canvas (relative to player panel Left)
     end;
-    FOffCopyRect := Rect(149,2,20,24);  // where we have to copy state images from on our source bitmap
-    FHoverCopyRect := Rect(22,61,20,24);
-    FDownCopyRect := Rect(22,61,20,24);
+    FOffCopyRect := Classes.Rect(149,2,20,24);  // where we have to copy state images from on our source bitmap
+    FHoverCopyRect := Classes.Rect(22,61,20,24);
+    FDownCopyRect := Classes.Rect(22,61,20,24);
     FState := MPBtnOff;
   end;
  FButtons[BTN_ID_VOLUME] := btn;
@@ -324,15 +324,15 @@ begin
   with btn do
   begin
     FID := MPBtnRadio;
-    FHitRect := rect(170,7,184,23);  //sligthly smaller than Paint rect, points sensible to mouse cursor
+    FHitRect := Classes.Rect(170,7,184,23);  //sligthly smaller than Paint rect, points sensible to mouse cursor
     with FPaintOffset do
     begin
       x := 168;
       y := 2;   // where we have to paste state bitmaps on destination Canvas (relative to player panel Left)
     end;
-    FOffCopyRect := Rect(168,2,23,24);  // where we have to copy state images from on our source bitmap
-    FHoverCopyRect := Rect(42,61,23,24);
-    FDownCopyRect := Rect(42,61,23,24);
+    FOffCopyRect := Classes.Rect(168,2,23,24);  // where we have to copy state images from on our source bitmap
+    FHoverCopyRect := Classes.Rect(42,61,23,24);
+    FDownCopyRect := Classes.Rect(42,61,23,24);
     FState := MPBtnOff;
   end;
   FButtons[BTN_ID_RADIO] := btn;
@@ -846,7 +846,7 @@ begin
       bitBlt(TempBitmap.Canvas.Handle,0,0,TempBitmap.Width,TempBitmap.Height,
              FSourceBitmap.Canvas.Handle,0,0,SRCCopy);
       backBitmap.Canvas.draw(FleftCenter,0,FSourceBitmap);
-      backBitmap.Canvas.StretchDraw(rect(FleftCenter+FSourceBitmap.Width,0,clientwidth,ClientHeight),TempBitmap);
+      backBitmap.Canvas.StretchDraw(Classes.Rect(FleftCenter+FSourceBitmap.Width,0,clientwidth,ClientHeight),TempBitmap);
     finally
       TempBitmap.Free;
     end;
@@ -894,9 +894,9 @@ begin
   end;
 
   ACanvas.brush.Color := $00323232;
-  ACanvas.fillrect(rect(lex,topy,Wi,He));
+  ACanvas.fillrect(Classes.Rect(lex,topy,Wi,He));
 
-  clirect := rect(lex+1,topy+1,wi-1,he-1);
+  clirect := Classes.Rect(lex+1,topy+1,wi-1,he-1);
 
   ACanvas.brush.Color := clBlack;
   ACanvas.fillrect(clirect);

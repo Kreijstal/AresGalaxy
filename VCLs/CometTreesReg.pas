@@ -52,7 +52,7 @@ begin
     BoxSize := ARect.Bottom - ARect.Top;
     EntryWidth := ARect.Right - ARect.Left;
 
-    R := Rect(ARect.Left + (EntryWidth - BoxSize) div 2, ARect.Top, ARect.Left + (EntryWidth + BoxSize) div 2,
+    R := Classes.Rect(ARect.Left + (EntryWidth - BoxSize) div 2, ARect.Top, ARect.Left + (EntryWidth + BoxSize) div 2,
       ARect.Bottom);
     InflateRect(R, -1, -1);
     State := DFCS_BUTTONCHECK;

@@ -27,7 +27,7 @@ unit CometTrack;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   ComCtrls, ExtCtrls;
 
 type
@@ -131,6 +131,7 @@ end;
 
 procedure TCometTrack.Loaded;
 begin
+  inherited Loaded;
   FLoaded := True;
 end;
 
@@ -160,7 +161,7 @@ begin
     BitBlt(TempBitmap.Canvas.handle,0,0,TempBitmap.width,TempBitmap.height,
       FSourceBitmap.Canvas.handle,0,22,SRCCOPY);
 
-    FBackGroundBitmap.Canvas.stretchDraw(rect(0,0,clientwidth,10),TempBitmap);
+    FBackGroundBitmap.Canvas.stretchDraw(Classes.Rect(0,0,clientwidth,10),TempBitmap);
   finally
     TempBitmap.Free;
   end;

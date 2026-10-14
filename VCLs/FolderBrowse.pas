@@ -8,7 +8,7 @@ unit folderBrowse;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls,
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, Messages, SysUtils, Classes, Graphics, Controls,
   Forms, Dialogs, ShlObj;
 
 type
@@ -96,10 +96,10 @@ type
     property Caption: WideString read FCaption write SetCaption;
   end;
 
-function BrowseCallbackProcA(dhwnd: HWND; uMsg: LongInt; lParam: LongInt;
-  lpData: LongInt): Integer; stdcall;
-function BrowseCallbackProcW(dhwnd: HWND; uMsg: LongInt; lParam: LongInt;
-  lpData: LongInt): Integer;stdcall;
+function BrowseCallbackProcA(dhwnd: HWND; uMsg: LongInt; lParam: Windows.LPARAM;
+  lpData: Windows.LPARAM): Integer; stdcall;
+function BrowseCallbackProcW(dhwnd: HWND; uMsg: LongInt; lParam: Windows.LPARAM;
+  lpData: Windows.LPARAM): Integer;stdcall;
 
 const
   shell32 = 'shell32.dll';
@@ -205,7 +205,7 @@ begin
     FBrowseInfoW.lpfn := @BrowseCallbackProcW;
     _inDataW.Path := PWideChar(FFolderName);
     _inDataW.Caption := PWideChar(FStatusText);
-    FBrowseInfoW.lParam := Integer(@_inDataW);
+    FBrowseInfoW.lParam := LPARAM(@_inDataW);
     FBrowseInfoW.ulFlags := FBrowseInfoW.ulFlags or BIF_VALIDATE;
     GetMem(FBrowseInfoW.pszDisplayName, 255);
     res := ShBrowseForFolderW(FBrowseInfoW);
@@ -231,7 +231,7 @@ begin
     FBrowseInfoA.lpfn := @BrowseCallbackProcA;
     _inDataA.Path := PChar(wtostr(FFolderName));
     _inDataA.Caption := PChar(wtostr(FStatusText));
-    FBrowseInfoA.lParam := Integer(@_inDataA);
+    FBrowseInfoA.lParam := LPARAM(@_inDataA);
     FBrowseInfoA.ulFlags := FBrowseInfoA.ulFlags or BIF_VALIDATE;
     GetMem(FBrowseInfoA.pszDisplayName, 255);
     res := ShBrowseForFolderA(FBrowseInfoA);
@@ -336,9 +336,9 @@ begin
       begin
         sFName := pointer(lpData);
         if Length(sFName.Path)<>0 then
-          SendMessage(dhwnd,BFFM_SETSELECTION ,1,Integer(sfname.Path));
+          SendMessage(dhwnd,BFFM_SETSELECTION ,1,Windows.LPARAM(sfname.Path));
         if Length(sFName.Caption)<>0 then
-          SendMessage(dhwnd,BFFM_SETSTATUSTEXT ,1,Integer(sfname.Caption));
+          SendMessage(dhwnd,BFFM_SETSTATUSTEXT ,1,Windows.LPARAM(sfname.Caption));
       end;
     BFFM_VALIDATEFAILED:
       begin
@@ -358,9 +358,9 @@ begin
       begin
         sFName := pointer(lpData);
         if Length(sFName.Path)<>0 then
-          SendMessage(dhwnd,BFFM_SETSELECTION ,1,Integer(sfname.Path));
+          SendMessage(dhwnd,BFFM_SETSELECTION ,1,Windows.LPARAM(sfname.Path));
         if Length(sFName.Caption)<>0 then
-          SendMessage(dhwnd,BFFM_SETSTATUSTEXT ,1,Integer(sfname.Caption));
+          SendMessage(dhwnd,BFFM_SETSTATUSTEXT ,1,Windows.LPARAM(sfname.Caption));
       end;
     BFFM_VALIDATEFAILED:
       begin

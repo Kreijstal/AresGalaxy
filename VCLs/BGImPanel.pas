@@ -3,7 +3,7 @@ unit bgimPanel;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ExtCtrls,Themes;
 
 type
@@ -205,9 +205,9 @@ var
 begin
   ACanvas.brush.color := color;
   ACanvas.pen.color := cl3ddkshadow;
-  ACanvas.Rectangle(Rect(-1,-1,clientwidth,FHeaderHeight));
+  ACanvas.Rectangle(Classes.Rect(-1,-1,clientwidth,FHeaderHeight));
 
-  r := Rect(0,0,clientwidth,FHeaderHeight);
+  r := Classes.Rect(0,0,clientwidth,FHeaderHeight);
   if Assigned(FonDrawHeaderBody) then
     FOnDrawHeaderBody(self,ACanvas,r,fheadercolor);
 
@@ -305,7 +305,7 @@ begin
 
   if Assigned(FOnXPDrawRound) then
   begin
-    rec := Rect(FXPRoundLeft,FXPRoundTop,FXPRoundLeft+FXPRoundWidth,FXPRoundTop+FXPRoundHeight);
+    rec := Classes.Rect(FXPRoundLeft,FXPRoundTop,FXPRoundLeft+FXPRoundWidth,FXPRoundTop+FXPRoundHeight);
     FOnXPDrawRound(self,ACanvas,rec,FXPRoundCenterHeader,ShouldContinue);
   end;
 
@@ -393,7 +393,7 @@ begin
 
   if Assigned(FOnDrawBackGround) then
   begin  //se non ho XP torno con ShouldContinue := True
-    r := Rect(0,FHeaderHeight,Width,Height);
+    r := Classes.Rect(0,FHeaderHeight,Width,Height);
     FOnDrawBackGround(self,ACanvas,r,ShouldContinue);
   end;
 

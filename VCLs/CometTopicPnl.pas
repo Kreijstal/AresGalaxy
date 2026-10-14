@@ -3,7 +3,7 @@ unit CometTopicPnl;
 interface
 
 uses
-  Windows, Graphics, ExtCtrls, Classes, Controls, Messages, Forms;
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, Graphics, ExtCtrls, Classes, Controls, Messages, Forms;
 
 type
   TCmtPaintEvent = procedure(Sender: TObject; Acanvas: TCanvas; capt: WideString; var ShouldContinue: Boolean) of object;

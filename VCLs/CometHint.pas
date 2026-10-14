@@ -32,7 +32,7 @@ unit CometHint;
 interface
 
 uses
-  Classes, Windows, Graphics, Messages, Controls, Forms, SysUtils;
+  {$IFDEF FPC}LCLType,{$ENDIF} Classes, Windows, Graphics, Messages, Controls, Forms, SysUtils{$IFDEF FPC}, VCLCompat{$ENDIF};
 
 type
   { THint95 }
@@ -225,18 +225,18 @@ var
   begin
     Pen := CreatePen(PS_SOLID, 1, ColorToRGB(TopLeftColor));
     SavePen := SelectObject(DC, Pen);
-    P[0] := Point(R.Left, R.Bottom-2);
-    P[1] := Point(R.Left, R.Top);
-    P[2] := Point(R.Right-1, R.Top);
+    P[0] := Classes.Point(R.Left, R.Bottom-2);
+    P[1] := Classes.Point(R.Left, R.Top);
+    P[2] := Classes.Point(R.Right-1, R.Top);
     PolyLine(DC, P, 3);
     SelectObject(DC, SavePen);
     DeleteObject(Pen);
 
     Pen := CreatePen(PS_SOLID, 1, ColorToRGB(BottomRightColor));
     SavePen := SelectObject(DC, Pen);
-    P[0] := Point(R.Left, R.Bottom-1);
-    P[1] := Point(R.Right-1, R.Bottom-1);
-    P[2] := Point(R.Right-1, R.Top-1);
+    P[0] := Classes.Point(R.Left, R.Bottom-1);
+    P[1] := Classes.Point(R.Right-1, R.Bottom-1);
+    P[2] := Classes.Point(R.Right-1, R.Top-1);
     PolyLine(DC, P, 3);
     SelectObject(DC, SavePen);
     DeleteObject(Pen);
@@ -292,7 +292,7 @@ var
   WideHintStr: WideString;
   Size: TSize;
 begin
-  Result := Rect(0, 0, MaxWidth, 0);
+  Result := Classes.Rect(0, 0, MaxWidth, 0);
 
   FHint := FindHint;
   Canvas.Font := FHint.FHintFont;
@@ -416,7 +416,7 @@ begin
         { Win95 and IE display the tooltips Right above the
           control they belong to. }
      //   if HintControl <> nil then begin
-     //     P := HintControl.Parent.ClientToScreen(Point(0, HintControl.Top));
+     //     P := HintControl.Parent.ClientToScreen(Classes.Point(0, HintControl.Top));
      //     Bottom := P.Y;
      //     Top := Bottom - FTextHeight - dy;
     //    end;
@@ -425,7 +425,7 @@ begin
   end;
   BoundsRect := Rect;
 
-  Pnt := ClientToScreen(Point(0, 0));
+  Pnt := ClientToScreen(Classes.Point(0, 0));
   SetWindowPos(Handle, HWND_TOPMOST, Pnt.X, Pnt.Y, 0, 0, SWP_SHOWWINDOW or SWP_NOACTIVATE or SWP_NOSIZE);
 end;
 
@@ -492,7 +492,7 @@ begin
     end;
   end; //while
 
-  Result := Integer(pwc) - Integer(@unicodeBuf);
+  Result := PAnsiChar(pwc) - PAnsiChar(@unicodeBuf);
 end; { UTF8BufToWideCharBuf }
 
 

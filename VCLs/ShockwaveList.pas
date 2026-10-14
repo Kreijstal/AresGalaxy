@@ -3,7 +3,7 @@ unit ShockwaveList;
 interface
 
 uses
-  SysUtils, Classes, Controls, OleCtrls, ShockwaveFlashObjects_TLB,
+  {$IFDEF FPC}LCLType,{$ENDIF} SysUtils, Classes, Controls, OleCtrls, ShockwaveFlashObjects_TLB,
   ShockwaveEx, Messages, ActiveX, Dialogs, Graphics;
 
 type

@@ -3,7 +3,7 @@ unit CometVerInfo;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs;
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs;
 
 type
   VS_FIXEDFILEINFO = record

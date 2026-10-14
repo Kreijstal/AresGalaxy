@@ -3,7 +3,7 @@ unit XPbutton;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   Extctrls, ImgList;
 
 type
@@ -141,6 +141,7 @@ end;
 
 procedure TXPbutton.Loaded;
 begin
+  inherited Loaded;
   bevelOuter := bvNone;
   bevelInner := bvNone;
 end;
@@ -173,7 +174,7 @@ begin
 
     if assigned(FXPButtonOnDraw) then
     begin
-      r := rect(0,0,width,height);
+      r := Classes.Rect(0,0,width,height);
       FXPButtonOnDraw(self,FBackBitmap.Canvas,r,FState,should_continue);
     end
     else
@@ -190,7 +191,7 @@ begin
       begin
         DrawEdge(FBackBitmap.Canvas.Handle, r, 2, BF_MIDDLE or BF_RECT);
         FBackBitmap.Canvas.Brush.Bitmap := AllocPatternBitmap(FColorBg, clBtnHighlight);
-        FBackBitmap.Canvas.FillRect(rect(2,2,width-2,height-2));
+        FBackBitmap.Canvas.FillRect(Classes.Rect(2,2,width-2,height-2));
       end
       else
       if (csHover in FState) then
@@ -417,7 +418,7 @@ begin { WideCharBufToUTF8Buf }
       AddByte($80 OR (wc AND $3F));
     end;
   end; //for
-  Result := Integer(pch) - Integer(@utf8Buf);
+  Result := PAnsiChar(pch) - PAnsiChar(@utf8Buf);
 end; { WideCharBufToUTF8Buf }
 
 
@@ -482,7 +483,7 @@ begin
       Dec(leftUTF8,3);
     end;
   end; //while
-  Result := Integer(pwc) - Integer(@unicodeBuf);
+  Result := PAnsiChar(pwc) - PAnsiChar(@unicodeBuf);
 end; { UTF8BufToWideCharBuf }
 
 procedure Register;

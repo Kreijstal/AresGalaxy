@@ -3,7 +3,7 @@ unit CometBtnEdit;
 interface
 
 uses
-  SysUtils, Classes, Windows, Messages, Controls, Graphics, Clipbrd, Forms,
+  {$IFDEF FPC}LCLType,{$ENDIF} SysUtils, Classes, Windows, Messages, Controls, Graphics, Clipbrd, Forms,
   StdCtrls;
 
 type
@@ -184,6 +184,9 @@ begin
   FMouseIsDown := False;
   Falignment := taleftjustify;
   FBtnState := [];
+  {$IFDEF FPC}
+  BorderStyle := bsSingle;
+  {$ELSE}
   ParentCtl3D := False;
   Ctl3D := True;
   BevelInner := bvnone;
@@ -191,10 +194,13 @@ begin
   BevelOuter := BVNone;
   BorderStyle := forms.bsSingle;
   BevelEdges := [];
+  {$ENDIF}
   ParentBiDiMode := False;
   BiDiMode := bdLeftToRight;
+  {$IFNDEF FPC}
   ImeMode := imDontCare;
   ImeName := '';
+  {$ENDIF}
   Text := '';
 
   ControlStyle := ControlStyle - [csSetCaption];
@@ -257,7 +263,7 @@ begin
   //This function is not compatible with passwordchar (passwordchar work only on no multiline edit
   if (not (csloading in ComponentState)) and (passwordChar = #0) then
   begin
-    SendMessage(Handle, EM_GETRECT, 0, LongInt(@Loc));
+    SendMessage(Handle, EM_GETRECT, 0, LPARAM(@Loc));
     Loc.Bottom := ClientHeight + 1;
 
     if FBorderColor <> clNone then
@@ -272,7 +278,7 @@ begin
 
     Loc.Top := 0;
     Loc.Left := 1;
-    SendMessage(Handle, EM_SETRECTNP, 0, LongInt(@Loc));
+    SendMessage(Handle, EM_SETRECTNP, 0, LPARAM(@Loc));
   end;
 end;
 

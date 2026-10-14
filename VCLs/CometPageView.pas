@@ -3,7 +3,7 @@ unit CometPageView;
 interface
 
 uses
-  Classes, ExtCtrls, Windows, Graphics, Messages, Controls, SysUtils;
+  {$IFDEF FPC}LCLType,{$ENDIF} Classes, ExtCtrls, Windows, Graphics, Messages, Controls, SysUtils;
 
 type
   TPaintBtnFrameEvent = procedure (Sender: TObject; aCanvas: TCanvas; paintRect: TRect)  of object;
@@ -592,7 +592,7 @@ begin
     Pnl.BtnHitRect.Top := Pnl.paintRow*FbuttonsHeight;
     Pnl.BtnHitRect.bottom := Pnl.BtnHitRect.top+FButtonsHeight;
     if Pnl.HasCloseButton then
-      Pnl.rcCloseButton := rect(
+      Pnl.rcCloseButton := Classes.Rect(
         Pnl.BtnHitRect.right-FCloseButtonLeftMargin,
         Pnl.BtnHitRect.top+FCloseButtonTopMargin,
         Pnl.BtnHitRect.right-FCloseButtonLeftMargin+FCloseButtonWidth,
@@ -635,7 +635,7 @@ begin
       if Pnl.HasCloseButton then
       begin
         right := OffsetX+GlyphWidth(Pnl)+Size.cX+(FButtonsLeftMargin+FButtonsRightMargin)+FCloseButtonWidth+2;
-              Pnl.rcCloseButton := rect(Pnl.BtnHitRect.right-FCloseButtonLeftMargin,
+              Pnl.rcCloseButton := Classes.Rect(Pnl.BtnHitRect.right-FCloseButtonLeftMargin,
                                       Pnl.BtnHitRect.top+FCloseButtonTopMargin,
                                       Pnl.BtnHitRect.right-FCloseButtonLeftMargin+FCloseButtonWidth,
                                       Pnl.BtnHitRect.top+FCloseButtonTopMargin+FCloseButtonHeight);
@@ -715,14 +715,14 @@ begin
   TempBitmap.Canvas.Font.Color := Self.Font.Color;
   TempBitmap.Canvas.Brush.Color := Self.Color;
 
-  rc := rect(0,0,TempBitmap.width,TempBitmap.height);
+  rc := Classes.Rect(0,0,TempBitmap.width,TempBitmap.height);
 
   if Assigned(FOnPaintButton) then
     FOnPaintButton(Self,Pnl,TempBitmap.Canvas,rc);
 
   if Pnl.HasCloseButton then
   begin
-    rcCloseButton := rect(rc.right-FCloseButtonLeftMargin,rc.top+FCloseButtonTopMargin,rc.right-FCloseButtonLeftMargin+FCloseButtonWidth,rc.top+FCloseButtonTopMargin+FCloseButtonHeight);
+    rcCloseButton := Classes.Rect(rc.right-FCloseButtonLeftMargin,rc.top+FCloseButtonTopMargin,rc.right-FCloseButtonLeftMargin+FCloseButtonWidth,rc.top+FCloseButtonTopMargin+FCloseButtonHeight);
 
     if Assigned(FOnPaintCloseButton) then
       FOnPaintCloseButton(Self,Pnl,TempBitmap.Canvas,rcCloseButton);
@@ -730,7 +730,7 @@ begin
 
   SetBkMode(TempBitmap.Canvas.Handle, TRANSPARENT);
 
-  TextRect := rect(rc.left, 0,
+  TextRect := Classes.Rect(rc.left, 0,
     (rc.right-((FCloseButtonWidth+2)*Integer(Pnl.HasCloseButton)))-5, rc.bottom);
 
 
@@ -1085,7 +1085,7 @@ begin
     TempBitmap.Height := FButtonsHeight*FNumRows;
 
     if Assigned(FOnPaintButtonFrame) then
-      FOnPaintButtonFrame(Self,TempBitmap.Canvas,rect(0,0,TempBitmap.width,TempBitmap.Height));
+      FOnPaintButtonFrame(Self,TempBitmap.Canvas,Classes.Rect(0,0,TempBitmap.width,TempBitmap.Height));
 
     TempBitmap.Canvas.Font.Name := Self.Font.Name;
     TempBitmap.Canvas.Font.Size := Self.Font.Size;
@@ -1108,7 +1108,7 @@ begin
 
       SetBkMode(TempBitmap.Canvas.Handle, TRANSPARENT);
 
-      TextRect := rect(Pnl.BtnHitRect.left,
+      TextRect := Classes.Rect(Pnl.BtnHitRect.left,
                     Pnl.BtnHitRect.top,
                     (Pnl.BtnHitRect.right-((FCloseButtonWidth+2)*Integer(Pnl.HasCloseButton)))-5,
                     Pnl.BtnHitRect.bottom);
@@ -1131,7 +1131,7 @@ begin
 
     if FDrawMargin then begin
       Canvas.Brush.Color := FColorFrame;
-      Canvas.frameRect(rect(-1,FbuttonsHeight,ClientWidth+1,clientheight+1));
+      Canvas.frameRect(Classes.Rect(-1,FbuttonsHeight,ClientWidth+1,clientheight+1));
     end;
 
     Canvas.Unlock;

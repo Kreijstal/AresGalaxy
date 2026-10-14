@@ -18,8 +18,8 @@ unit uTrayIcon;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
-  Menus, ExtCtrls, ComCtrls;
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
+  Menus, ExtCtrls, ComCtrls{$IFDEF FPC}, VCLCompat{$ENDIF};
 
 const
   // User-defined message sent by the trayicon
@@ -266,13 +266,13 @@ constructor TTrayIconHandler.Create;
 begin
   inherited Create;
   RefCount := 0;
-  FHandle := Classes.AllocateHWnd(HandleIconMessage);
+  FHandle := {$IFDEF FPC}VCLCompat{$ELSE}Classes{$ENDIF}.AllocateHWnd(HandleIconMessage);
 end;
 
 
 destructor TTrayIconHandler.Destroy;
 begin
-  Classes.DeallocateHWnd(FHandle);     // Free the tray window
+  {$IFDEF FPC}VCLCompat{$ELSE}Classes{$ENDIF}.DeallocateHWnd(FHandle);     // Free the tray window
   inherited Destroy;
 end;
 

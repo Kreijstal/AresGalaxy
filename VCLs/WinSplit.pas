@@ -30,7 +30,7 @@ unit WinSplit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  {$IFDEF FPC}LCLType,{$ENDIF} Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   ExtCtrls;
 
 type
@@ -67,17 +67,17 @@ type
     constructor Create(AOwner: TComponent); override;
     procedure Paint; override;
   published
-    property BevelInner;
-    property BevelOuter;
-    property BevelWidth;
+    {$ifndef FPC}property BevelInner;{$endif}
+    {$ifndef FPC}property BevelOuter;{$endif}
+    {$ifndef FPC}property BevelWidth;{$endif}
     property BorderWidth;
     property BorderStyle;
     property Color;
-    property Ctl3D;
+    {$ifndef FPC}property Ctl3D;{$endif}
     property Enabled;
     property Font;
     property ParentColor;
-    property ParentCtl3D;
+    {$ifndef FPC}property ParentCtl3D;{$endif}
     property ParentFont;
     property ParentShowHint;
     property ShowHint;
@@ -121,7 +121,7 @@ constructor TWinSplit.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FOrientation := wshorizontal;
-  FDelta := Point(0,0);
+  FDelta := Classes.Point(0,0);
   FSizing := False;
   Caption := '';
   TabStop := False;
@@ -161,9 +161,9 @@ begin
       SetCaptureControl(Self);
 
       if FOrientation=wsVertical then
-        FDelta := Point(0, Top)
+        FDelta := Classes.Point(0, Top)
       else
-        FDelta := Point(Left, 0);
+        FDelta := Classes.Point(Left, 0);
 
       ParentForm.Canvas.Handle := GetDCEx(ParentForm.Handle, 0, DCX_CACHE or DCX_NORESETATTRS or DCX_CLIPSIBLINGS or DCX_LOCKWINDOWUPDATE);
 
@@ -213,7 +213,7 @@ begin
     end;
   end;
 
-  FDelta := Point(0,0);
+  FDelta := Classes.Point(0,0);
 end;
 
 procedure TWinSplit.MouseMove(Shift: TShiftState; X, Y: Integer);
@@ -297,9 +297,9 @@ begin
     Canvas.brush.Color := RGB(RC,GC,BC);
 
     if FOrientation=wsHorizontal then
-      canvas.fillrect(rect(width div 2,0,(width div 2)+1,height))
+      canvas.fillrect(Classes.Rect(width div 2,0,(width div 2)+1,height))
     else
-      canvas.fillrect(rect(0,height div 2,width,(height div 2)+1));
+      canvas.fillrect(Classes.Rect(0,height div 2,width,(height div 2)+1));
 
     if red1>red2 then
       RC := Round(Red-R*RStep)
@@ -321,9 +321,9 @@ begin
   Canvas.brush.Color := col2;
 
   if FOrientation=wsHorizontal then
-    canvas.fillrect(rect(width div 2,0,(width div 2)+1,height))
+    canvas.fillrect(Classes.Rect(width div 2,0,(width div 2)+1,height))
   else
-    canvas.fillrect(rect(0,height div 2,width,(height div 2)+1));
+    canvas.fillrect(Classes.Rect(0,height div 2,width,(height div 2)+1));
 
   canvas.Unlock;
 
