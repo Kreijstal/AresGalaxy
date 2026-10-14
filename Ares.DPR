@@ -26,7 +26,13 @@ init application, get commandline params(any magnet URI?), look for concurrent i
 program Ares;
 
 uses
+  {$IFDEF FPC}
+  Interfaces,
+  AresDebug,
+  {$IFDEF ARES_DEBUG}LazLogger,{$ENDIF}
+  {$ELSE}
   FastMM4 in 'FastMM4.pas',
+  {$ENDIF}
   tntforms,
   Forms,
   windows,
@@ -71,6 +77,7 @@ Begin
     else Result := STR_UNKNOWNS;
 End;
 
+
 procedure DoneApplication;
 begin
   with Application do
@@ -107,7 +114,7 @@ if hGlobalMutex<>0  then begin
 
 
     vars_global.glob_shared_mem.LockMap;
-     p:=pointer(cardinal(vars_global.glob_shared_mem.PMapData));
+     p:=vars_global.glob_shared_mem.PMapData;
      copymemory(p, @buf[1], 512);
     vars_global.glob_shared_mem.unLockMap;
 
@@ -118,6 +125,7 @@ if hGlobalMutex<>0  then begin
   end;
 
   ARES_GLOBAL_MUTEX_NAME:='';
+  {$IFDEF ARES_DEBUG}AresDebugLog('another instance is running');{$ENDIF}
   exit;
 
 end else begin
@@ -133,9 +141,15 @@ end else begin
     application.Title:=' Ares ';
     application.ShowMainForm:=false;
     Application.CreateForm(Tares_frmmain, ares_frmmain);
+    {$IFDEF ARES_DEBUG}AresDebugLog('main form created');{$ENDIF}
   application.run;
+    {$IFDEF ARES_DEBUG}AresDebugLog('message loop ended');{$ENDIF}
        
     except
+      {$IFDEF ARES_DEBUG}
+      on E: Exception do
+        AresDebugLog('unhandled exception', E);
+      {$ENDIF}
     end;
 
     vars_global.glob_shared_mem.CloseMap;

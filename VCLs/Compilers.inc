@@ -61,6 +61,18 @@
 // QT_CLX      : Trolltech's QT library is being used.
 //----------------------------------------------------------------------------------------------------------------------
 
+{$ifdef FPC}
+  // Free Pascal (Delphi mode, LCL): treat it like Delphi 7 on Windows.
+  {$define COMPILER_7}
+  {$define DELPHI}
+  {$define DELPHI_7}
+  {$define DELPHI_2_UP}
+  {$define DELPHI_3_UP}
+  {$define DELPHI_4_UP}
+  {$define DELPHI_5_UP}
+  {$define DELPHI_6_UP}
+  {$define DELPHI_7_UP}
+{$else}
 {$ifdef Win32}
   {$ifdef VER150}        
     {$define COMPILER_7}
@@ -214,6 +226,7 @@
   {$endif}
 
 {$endif}
+{$endif FPC}
 
 // Compiler defines common to all platforms.
 {$ifdef COMPILER_1}
