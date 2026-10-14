@@ -13,6 +13,9 @@
 
 unit ShockwaveEx;
 
+{$IFDEF FPC}
+{$I ShockwaveEx_fpc.inc}
+{$ELSE}
 interface
 
 uses
@@ -225,3 +228,4 @@ finalization
   UnRegisterClass(TShockwaveFlashEx);
 
 end.
+{$ENDIF FPC}
