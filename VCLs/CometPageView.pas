@@ -607,6 +607,7 @@ var
   i: Integer;
   Pnl: TCometPagePanel;
   Size: TSize;
+  TextWidth: Integer;
   OffsetX: Integer;
 begin
   Result := True;
@@ -626,6 +627,7 @@ begin
       Windows.GetTextExtentPointW(Canvas.handle, PwideChar(Pnl.BtnCaption), Length(Pnl.BtnCaption), Size);
     end;
 
+    TextWidth := Size.cX; // FPC's TRect has a Size member that hides the local inside "with"
     with Pnl.BtnHitRect do
     begin
       left := OffsetX;
@@ -634,14 +636,14 @@ begin
 
       if Pnl.HasCloseButton then
       begin
-        right := OffsetX+GlyphWidth(Pnl)+Size.cX+(FButtonsLeftMargin+FButtonsRightMargin)+FCloseButtonWidth+2;
+        right := OffsetX+GlyphWidth(Pnl)+TextWidth+(FButtonsLeftMargin+FButtonsRightMargin)+FCloseButtonWidth+2;
               Pnl.rcCloseButton := Classes.Rect(Pnl.BtnHitRect.right-FCloseButtonLeftMargin,
                                       Pnl.BtnHitRect.top+FCloseButtonTopMargin,
                                       Pnl.BtnHitRect.right-FCloseButtonLeftMargin+FCloseButtonWidth,
                                       Pnl.BtnHitRect.top+FCloseButtonTopMargin+FCloseButtonHeight);
       end
       else
-        right := OffsetX+GlyphWidth(Pnl)+Size.cX+(FButtonsLeftMargin+FButtonsRightMargin);
+        right := OffsetX+GlyphWidth(Pnl)+TextWidth+(FButtonsLeftMargin+FButtonsRightMargin);
     end;
 
 

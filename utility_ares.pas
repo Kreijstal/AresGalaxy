@@ -591,30 +591,27 @@ while (i<=high(Data^.BitField)) do begin
  xr := ((int64(wid)*(offset+sizechunk)) div data^.size);
  //x := (wid*i) div lenarray;
  //inc(x,leftGlobal);
- with rect do begin
-  left := (cellrect.Left+3)+xl;
-  top := (CellRect.bottom-3)-Height;
-  right := (cellrect.Left+3)+xr;
-  bottom := (CellRect.bottom-3);
- end;
+ // no "with rect": FPC TRect has a Height member that would hide the local
+  rect.left := (cellrect.Left+3)+xl;
+  rect.top := (CellRect.bottom-3)-Height;
+  rect.right := (cellrect.Left+3)+xr;
+  rect.bottom := (CellRect.bottom-3);
  aCanvas.Brush.color := col1;
  acanvas.FillRect(rect);
 {
- with rect do begin
-  left := (cellrect.Left+3)+xl;
-  top := (CellRect.bottom-3)-Height;
-  right := ((cellrect.Left+3)+xr)-1;
-  bottom := (CellRect.bottom-3)-1;
- end;
+ // no "with rect": FPC TRect has a Height member that would hide the local
+  rect.left := (cellrect.Left+3)+xl;
+  rect.top := (CellRect.bottom-3)-Height;
+  rect.right := ((cellrect.Left+3)+xr)-1;
+  rect.bottom := (CellRect.bottom-3)-1;
  aCanvas.Brush.color := col2;
  acanvas.FillRect(rect);
 
- with rect do begin
-  left := (cellrect.Left+3)+xl+1;
-  top := (CellRect.bottom-3)-Height+1;
-  right := ((cellrect.Left+3)+xr)-1;
-  bottom := (CellRect.bottom-3)-1;
- end;
+ // no "with rect": FPC TRect has a Height member that would hide the local
+  rect.left := (cellrect.Left+3)+xl+1;
+  rect.top := (CellRect.bottom-3)-Height+1;
+  rect.right := ((cellrect.Left+3)+xr)-1;
+  rect.bottom := (CellRect.bottom-3)-1;
  aCanvas.Brush.color := col3;
  acanvas.FillRect(rect);
    }
@@ -674,30 +671,27 @@ while (i<=high(Data^.VisualBitfield.bits)) do begin
  xr := ((int64(wid)*(offset+sizechunk)) div data^.size);
  //x := (wid*i) div lenarray;
  //inc(x,leftGlobal);
- with rect do begin
-  left := (cellrect.Left+3)+xl;
-  top := (CellRect.bottom-3)-Height;
-  right := (cellrect.Left+3)+xr;
-  bottom := (CellRect.bottom-3);
- end;
+ // no "with rect": FPC TRect has a Height member that would hide the local
+  rect.left := (cellrect.Left+3)+xl;
+  rect.top := (CellRect.bottom-3)-Height;
+  rect.right := (cellrect.Left+3)+xr;
+  rect.bottom := (CellRect.bottom-3);
  aCanvas.Brush.color := col1;
  acanvas.FillRect(rect);
 {
- with rect do begin
-  left := (cellrect.Left+3)+xl;
-  top := (CellRect.bottom-3)-Height;
-  right := ((cellrect.Left+3)+xr)-1;
-  bottom := (CellRect.bottom-3)-1;
- end;
+ // no "with rect": FPC TRect has a Height member that would hide the local
+  rect.left := (cellrect.Left+3)+xl;
+  rect.top := (CellRect.bottom-3)-Height;
+  rect.right := ((cellrect.Left+3)+xr)-1;
+  rect.bottom := (CellRect.bottom-3)-1;
  aCanvas.Brush.color := col2;
  acanvas.FillRect(rect);
 
- with rect do begin
-  left := (cellrect.Left+3)+xl+1;
-  top := (CellRect.bottom-3)-Height+1;
-  right := ((cellrect.Left+3)+xr)-1;
-  bottom := (CellRect.bottom-3)-1;
- end;
+ // no "with rect": FPC TRect has a Height member that would hide the local
+  rect.left := (cellrect.Left+3)+xl+1;
+  rect.top := (CellRect.bottom-3)-Height+1;
+  rect.right := ((cellrect.Left+3)+xr)-1;
+  rect.bottom := (CellRect.bottom-3)-1;
  aCanvas.Brush.color := col3;
  acanvas.FillRect(rect);
    }
@@ -884,30 +878,27 @@ while (i<=high(DnData^.VisualBitField)) do begin
  xr := ((int64(wid)*(offset+sizechunk)) div DnData^.size);
  //x := (wid*i) div lenarray;
  //inc(x,leftGlobal);
- with rect do begin
-  left := (cellrect.Left+3)+xl;
-  top := (CellRect.bottom-3)-Height;
-  right := (cellrect.Left+3)+xr;
-  bottom := (CellRect.bottom-3);
- end;
+ // no "with rect": FPC TRect has a Height member that would hide the local
+  rect.left := (cellrect.Left+3)+xl;
+  rect.top := (CellRect.bottom-3)-Height;
+  rect.right := (cellrect.Left+3)+xr;
+  rect.bottom := (CellRect.bottom-3);
  aCanvas.Brush.color := col1;
  acanvas.FillRect(rect);
 
- with rect do begin
-  left := (cellrect.Left+3)+xl;
-  top := (CellRect.bottom-3)-Height;
-  right := ((cellrect.Left+3)+xr)-1;
-  bottom := (CellRect.bottom-3)-1;
- end;
+ // no "with rect": FPC TRect has a Height member that would hide the local
+  rect.left := (cellrect.Left+3)+xl;
+  rect.top := (CellRect.bottom-3)-Height;
+  rect.right := ((cellrect.Left+3)+xr)-1;
+  rect.bottom := (CellRect.bottom-3)-1;
  aCanvas.Brush.color := col2;
  acanvas.FillRect(rect);
 
- with rect do begin
-  left := (cellrect.Left+3)+xl+1;
-  top := (CellRect.bottom-3)-Height+1;
-  right := ((cellrect.Left+3)+xr)-1;
-  bottom := (CellRect.bottom-3)-1;
- end;
+ // no "with rect": FPC TRect has a Height member that would hide the local
+  rect.left := (cellrect.Left+3)+xl+1;
+  rect.top := (CellRect.bottom-3)-Height+1;
+  rect.right := ((cellrect.Left+3)+xr)-1;
+  rect.bottom := (CellRect.bottom-3)-1;
  aCanvas.Brush.color := col3;
  acanvas.FillRect(rect);
 
@@ -931,32 +922,29 @@ col3 := $00579328;
  xr := ((wid*progress) div size);
 
 
- with rect do begin
-  left := (cellrect.Left+3);
-  top := (CellRect.bottom-3)-Height;
-  right := (cellrect.Left+3)+xr;
-  bottom := (CellRect.bottom-3);
- end;
+ // no "with rect": FPC TRect has a Height member that would hide the local
+  rect.left := (cellrect.Left+3);
+  rect.top := (CellRect.bottom-3)-Height;
+  rect.right := (cellrect.Left+3)+xr;
+  rect.bottom := (CellRect.bottom-3);
  aCanvas.Brush.color := col1;
  acanvas.FillRect(rect);
 
 
- with rect do begin
-  left := (cellrect.Left+3);
-  top := (CellRect.bottom-3)-Height;
-  right := ((cellrect.Left+3)+xr)-1;
-  bottom := (CellRect.bottom-3)-1;
- end;
+ // no "with rect": FPC TRect has a Height member that would hide the local
+  rect.left := (cellrect.Left+3);
+  rect.top := (CellRect.bottom-3)-Height;
+  rect.right := ((cellrect.Left+3)+xr)-1;
+  rect.bottom := (CellRect.bottom-3)-1;
  aCanvas.Brush.color := col2;
  acanvas.FillRect(rect);
 
 
- with rect do begin
-  left := (cellrect.Left+3)+1;
-  top := (CellRect.bottom-3)-Height+1;
-  right := ((cellrect.Left+3)+xr)-1;
-  bottom := (CellRect.bottom-3)-1;
- end;
+ // no "with rect": FPC TRect has a Height member that would hide the local
+  rect.left := (cellrect.Left+3)+1;
+  rect.top := (CellRect.bottom-3)-Height+1;
+  rect.right := ((cellrect.Left+3)+xr)-1;
+  rect.bottom := (CellRect.bottom-3)-1;
  aCanvas.Brush.color := col3;
  acanvas.FillRect(rect);
 end;
