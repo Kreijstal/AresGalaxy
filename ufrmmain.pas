@@ -798,6 +798,10 @@ var
   imgscnlogo: Timage;
   GblTopMostList: Tlist;
 
+{$IFDEF FPC}
+procedure HookMainSkinWndProc(Wnd: HWND);
+{$ENDIF}
+
 implementation
 
 uses
@@ -875,8 +879,8 @@ begin
       end;
       HandleEdge(x, Left, Monitor.WorkareaRect.Left+yr);
       HandleEdge(y, Top, Monitor.WorkareaRect.Top+yr);
-      HandleEdge(x, Right, Width-xr);
-      HandleEdge(y, Bottom, Height-yr);
+      HandleEdge(x, Right, Self.Width-xr); // Self: FPC's TRect has Width/Height too
+      HandleEdge(y, Bottom, Self.Height-yr);
     end;
 
   inherited;
@@ -935,6 +939,51 @@ end;
 
 end;
         
+{$IFDEF FPC}
+var
+ MainOldWndProc: Pointer = nil;
+ MainHookedWnd: HWND = 0;
+
+// The LCL always runs DefWindowProc after the form's message handler for
+// WM_NCHITTEST/WM_NCLBUTTONDOWN, discarding the hit codes WMNCHitTest returns
+// for the skinned frame, and moving/sizing never starts. Subclass the window:
+// answer WM_NCHITTEST from WMNCHitTest, let WMNCLButtonDown handle the skinned
+// caption buttons, and give the other hit codes (caption, borders) to
+// DefWindowProc like the VCL "inherited" did.
+function MainSkinWndProc(Wnd: HWND; Msg: UINT; WParam: WPARAM; LParam: LPARAM): LRESULT; stdcall;
+var
+ M: TMessage;
+begin
+ if helper_skin.skinnedFrameLoaded and (ares_frmmain<>nil) and
+    ((Msg=WM_NCHITTEST) or (Msg=WM_NCLBUTTONDOWN)) then begin
+  if (Msg=WM_NCLBUTTONDOWN) and (WParam>=HTLEFT) and (WParam<=HTBOTTOMRIGHT) then begin
+   // without WS_THICKFRAME DefWindowProc will not size from the border hit
+   // codes, but SC_SIZE + WMSZ_xxx (= hit code - 9) does
+   Result := DefWindowProcW(Wnd, WM_SYSCOMMAND, SC_SIZE + (WParam - HTLEFT + WMSZ_LEFT), LParam);
+   exit;
+  end;
+  if (Msg=WM_NCLBUTTONDOWN) and (WParam<>HTMINBUTTON) and (WParam<>HTMAXBUTTON) and (WParam<>HTCLOSE) then begin
+   Result := DefWindowProcW(Wnd, Msg, WParam, LParam);
+   exit;
+  end;
+  M.Msg := Msg;
+  M.WParam := WParam;
+  M.LParam := LParam;
+  M.Result := 0;
+  ares_frmmain.Dispatch(M);
+  Result := M.Result;
+ end else
+  Result := CallWindowProc(MainOldWndProc, Wnd, Msg, WParam, LParam);
+end;
+
+procedure HookMainSkinWndProc(Wnd: HWND);
+begin
+ if Wnd=MainHookedWnd then exit; // the LCL recreates the window on BorderStyle changes
+ MainOldWndProc := Pointer(SetWindowLongPtr(Wnd, GWLP_WNDPROC, LONG_PTR(@MainSkinWndProc)));
+ MainHookedWnd := Wnd;
+end;
+
+{$ENDIF}
 procedure tares_frmmain.WMNCHitTest(var Message : TWMNCHitTest);
 var
   point: TPoint;
@@ -2575,8 +2624,15 @@ var
 begin
 if helper_skin.skinnedFrameLoaded then begin
 
+ {$IFDEF FPC}
+ // no sizing frame under FPC (see helper_skin.FrameToggleSkin): the
+ // region covers the whole window
+ borderwi := 1;
+ borderhe := 1;
+ {$ELSE}
  borderwi := GetSystemMetrics(SM_CXSIZEFRAME);
  borderhe := GetSystemMetrics(SM_CYSIZEFRAME);
+ {$ENDIF}
 
  clientPanel.left := helper_skin.fborderWidth;
  clientPanel.top := helper_skin.fcaptionHeight;

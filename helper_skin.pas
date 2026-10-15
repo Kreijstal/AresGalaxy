@@ -939,7 +939,15 @@ end else begin
 
 
  style := GetWindowLong(ares_frmmain.Handle,GWL_STYLE);
+ {$IFDEF FPC}
+ // No WS_SIZEBOX: LCL form sizes are client sizes and the (invisible on
+ // Win10/11) sizing border would shift and crop the skinned frame, which is
+ // painted in the client area. Resizing still works through WMNCHitTest.
+ style := style or WS_SYSMENU or WS_MINIMIZEBOX;
+ ufrmmain.HookMainSkinWndProc(ares_frmmain.Handle);
+ {$ELSE}
  style := style or WS_SYSMENU or WS_SIZEBOX or WS_MINIMIZEBOX;
+ {$ENDIF}
  SetWindowLong(ares_frmmain.Handle,GWL_STYLE,style);
 
  //DraGAcceptFiles(ares_frmmain.handle,true);
