@@ -31,7 +31,7 @@ type
   protected
    procedure CreateParams(var Params: TCreateParams); override;
   private
-   procedure DropFile(var message: ares_types.TWMDropFiles);  message WM_DROPFILES;
+   procedure DropFile(var message: {$IFDEF FPC}TWMDropFiles{$ELSE}ares_types.TWMDropFiles{$ENDIF});  message WM_DROPFILES;
   public
     { Public declarations }
   end;
@@ -52,7 +52,7 @@ inherited CreateParams(Params);
 Params.ExStyle := Params.ExStyle or WS_EX_ACCEPTFILES;
 end;
 
-procedure TPlaylistForm.DropFile(var message: ares_types.TWMDropFiles);
+procedure TPlaylistForm.DropFile(var message: {$IFDEF FPC}TWMDropFiles{$ELSE}ares_types.TWMDropFiles{$ENDIF});
 var
    i : integer;
 Begin

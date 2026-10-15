@@ -19,6 +19,14 @@ type
   TBevelEdges = set of TBevelEdge;
 
   TWMNCRButtonDown = TWMNCHitMessage;
+  { WM_COPYDATA, missing from FPC's Messages unit (pointer sized layout) }
+  TWMCopyData = record
+    Msg: UINT;
+    MsgFiller: TDWordFiller;
+    From: HWND;
+    CopyDataStruct: PCopyDataStruct;
+    Result: LRESULT;
+  end;
   TWMNCRButtonUp = TWMNCHitMessage;
   TWMNCRButtonDblClk = TWMNCHitMessage;
 

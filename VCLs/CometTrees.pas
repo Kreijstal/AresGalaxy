@@ -147,12 +147,22 @@ type
   TAutoScrollInterval = 1..1000;
 
   // Need to declare the correct WMNCPaint record as the VCL (D5-) doesn't.
+  {$ifdef FPC}
+  TRealWMNCPaint = record // WM_NCPAINT with Win64 (pointer sized) layout
+    Msg: UINT;
+    MsgFiller: TDWordFiller;
+    Rgn: HRGN;
+    lParam: LPARAM;
+    Result: LRESULT;
+  end;
+  {$else}
   TRealWMNCPaint = packed record
     Msg: Cardinal;
     Rgn: HRGN;
     lParam: Integer;
     Result: Integer;
   end;
+  {$endif}
 
 
 

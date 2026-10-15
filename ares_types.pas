@@ -275,6 +275,9 @@ type
    const
     INVALID_SOCKET		= TSocket(NOT(0));
 
+   {$IFNDEF FPC}
+   // Delphi 7 copies of the VCL message records with a 32 bit layout. FPC's
+   // Messages unit provides correct (pointer sized) ones for Win64.
    type
     TWMActivate = record
     Msg: Cardinal;
@@ -317,13 +320,16 @@ type
         ResultLo: Word;
         ResultHi: Word);
   end;
+   {$ENDIF}
 
+   type
   PRecToPass = ^TRecToPass;
   TRecToPass = packed record
   s: string[255];
   i: Integer;
   end;
 
+  {$IFNDEF FPC}
   // params
   TWMCopyData = packed record
     Msg: Cardinal;
@@ -331,6 +337,7 @@ type
     CopyDataStruct: PCopyDataStruct;
     Result: Longint;
   end;
+  {$ENDIF}
 
  type //secure hash
  TID = array [0..4] of integer;
